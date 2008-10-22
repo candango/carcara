@@ -3,6 +3,9 @@ package org.candango.carcara.ui;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 public class MainFrame extends JFrame {
 
@@ -14,8 +17,9 @@ public class MainFrame extends JFrame {
 	/**
 	 * Application title constant
 	 */
-	private static final String APP_TITLE = "Candango myFuses/iFlux Wireframer";
+	private static final String APP_TITLE = "Candango Caracara Wireframer Application";
 	
+	private CarcaraSplitPane splitPane;
 	
 	/**
 	 * Main constructor
@@ -28,7 +32,15 @@ public class MainFrame extends JFrame {
 		
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		
+		
+        splitPane = new CarcaraSplitPane();
+		
+		
+		add( splitPane );
+		
 		setVisible( true );
+		
+		
 		
 	}
 	
