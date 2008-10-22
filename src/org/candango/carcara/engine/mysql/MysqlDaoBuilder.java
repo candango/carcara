@@ -294,7 +294,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		
 		out += "    }\n\n";
 		
-		out += "    public function get" + tableSufix + "PorPk( " + pks + 
+		out += "    public function get" + tableSufix + "ByPk( " + pks + 
 			" ){\n";
 		out += "        $criteria = null;\n\n";
 		
@@ -348,12 +348,12 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		
 		out += "    /**\n";
 		out += "     * Return one " + entitySufix +  
-			" Dto with properties filled with the row values.\n";
+			" Dto with his properties filled with row data.\n";
 		out += "     *\n";
 		out += "     * @param array $row\n";
 		out += "     * @return " + entitySufix + "IadminGroupDto\n";
 		out += "     */\n";
-		out += "    public function popular" + tableSufix + "( $row ){\n";
+		out += "    public function populate" + tableSufix + "( $row ){\n";
 		
 		out += "        $" + tableAttr +  " = new " + entitySufix + 
 			"Dto();\n\n";
@@ -371,8 +371,8 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		
 		String dtoVar = "$" + CodeHandler.getAttributeName( table.getName() );
 		
-		out += "    public function salvar" + tableSufix + "( " + 
-			entitySufix + "Dto " + dtoVar + ",\n         $operacao ){\n";
+		out += "    public function save" + tableSufix + "( " + 
+			entitySufix + "Dto " + dtoVar + ",\n         $operation ){\n";
 		
 		out += "        $sql = \"\";\n";
 		out += "        $sth = null;\n";
@@ -393,7 +393,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		}
 		out += binds + "\n        );\n\n";
 		
-		out += "        if( $operacao == " + 
+		out += "        if( $operation == " + 
 			CodeHandler.getEntityName( configuration.getIdentifier() ) + 
 			"AbstractDaoFactory::OPERACAO_INCLUSAO ) {\n";
 		
@@ -477,7 +477,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		
 		out += "    }\n\n";
 		
-		out += "    public function deletar" + tableSufix + "( " + pks +  
+		out += "    public function delete" + tableSufix + "( " + pks +  
 			" ) { \n";
 		
 		

@@ -186,8 +186,8 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 		out += "    const ORACLE_DAO = 1;\n\n";
 		out += "    const PGSQL_DAO = 2;\n\n";
 		out += "    const MYSQL_DAO = 3;\n\n";
-		out += "    const OPERACAO_INCLUSAO = 1;\n\n";
-		out += "    const OPERACAO_ALTERACAO = 2;\n\n";
+		out += "    const INSERT_TRANSACTION = 1;\n\n";
+		out += "    const UPDATE_TRANSACTION = 2;\n\n";
 		out += "    private static $instances = array();\n\n";
 		out += "    /**\n";
 		out += "     * Return one DAO factory instance\n";
@@ -260,14 +260,14 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 		out += "    public function get" + tableSufix + 
 			"s( $criteria = null ); \n\n";
 		
-		out += "    public function get" + tableSufix + "PorPk( " + pks +  
+		out += "    public function get" + tableSufix + "ByPk( " + pks +  
 			" ); \n\n";
 		
-		out += "    public function salvar" + tableSufix + "( " + 
+		out += "    public function save" + tableSufix + "( " + 
 			entitySufix + "Dto $" + 
 			CodeHandler.getAttributeName( table.getName() ) +  " ); \n\n";
 		
-		out += "    public function deletar" + tableSufix + "( " + pks +  
+		out += "    public function delete" + tableSufix + "( " + pks +  
 			" ); \n\n";
 		
 		out += "}";
