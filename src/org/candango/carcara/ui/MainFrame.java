@@ -19,7 +19,9 @@ public class MainFrame extends JFrame {
 	 */
 	private static final String APP_TITLE = "Candango Caracara Wireframer Application";
 	
-	private CarcaraSplitPane splitPane;
+	private MainSplitPane splitPane;
+	
+	private MainMenuBar menuBar;
 	
 	/**
 	 * Main constructor
@@ -33,10 +35,12 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		
 		
-        splitPane = new CarcaraSplitPane();
-		
+        splitPane = new MainSplitPane();
+		menuBar = new MainMenuBar();
 		
 		add( splitPane );
+		
+		setJMenuBar( menuBar );
 		
 		setVisible( true );
 		
