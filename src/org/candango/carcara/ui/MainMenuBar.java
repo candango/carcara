@@ -9,6 +9,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
 public class MainMenuBar extends JMenuBar implements ActionListener {
@@ -21,7 +22,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 	private JMenu menu, submenu;
 	
 	private JRadioButtonMenuItem rbMenuItem;
-
+	
+	/**
+	 * Main constructor
+	 */
 	public MainMenuBar() {
 		super();
 
@@ -30,38 +34,110 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		menu.getAccessibleContext().setAccessibleDescription(
 				"The only menu in this program that has menu items");
 		
-		menu.add( createMenuItem( "New..." , KeyEvent.VK_N, "FILE_NEW", 
+		menu.add( createMenuItem( "New...", "FILE_NEW", KeyEvent.VK_N, 
 				KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.SHIFT_MASK + 
 						ActionEvent.ALT_MASK ) ) );
-
-		add(menu);
+		
+		menu.add( createMenuItem( "Open File...", "FILE_OPEN_FILE", 
+				KeyEvent.VK_O, KeyStroke.getKeyStroke(KeyEvent.VK_O, 
+						ActionEvent.SHIFT_MASK + ActionEvent.ALT_MASK ) ) );
+		
+		menu.add( new JSeparator() );
+		
+		menu.add( createMenuItem( "Save", "FILE_SAVE", 
+				KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, 
+						ActionEvent.SHIFT_MASK + ActionEvent.ALT_MASK ) ) );
+		
+		menu.add( createMenuItem( "Save As...", "FILE_SAVE_AS", 
+				KeyEvent.VK_A, KeyStroke.getKeyStroke(KeyEvent.VK_A, 
+						ActionEvent.SHIFT_MASK + ActionEvent.ALT_MASK ) ) );
+		
+		menu.add( new JSeparator() );
+		
+		menu.add( createMenuItem( "Exit", "FILE_EXIT", 
+				KeyEvent.VK_X, KeyStroke.getKeyStroke(KeyEvent.VK_F4, 
+						ActionEvent.ALT_MASK ) ) );
+		
+		add( menu );
 
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed( ActionEvent e ) {
 		
 		if( e.getActionCommand() == "FILE_NEW" ){
-			JOptionPane.showMessageDialog( this, "[File -> New ...] Menu pressed", 
+			JOptionPane.showMessageDialog( this, "[File -> New...] Menu pressed", 
 					"Main Menu", JOptionPane.INFORMATION_MESSAGE );
 		}
 		
+		if( e.getActionCommand() == "FILE_OPEN_FILE" ){
+			JOptionPane.showMessageDialog( this, "[File -> Open File...] Menu pressed", 
+					"Main Menu", JOptionPane.INFORMATION_MESSAGE );
+		}
+		
+		if( e.getActionCommand() == "FILE_SAVE" ){
+			JOptionPane.showMessageDialog( this, "[File -> Save] Menu pressed", 
+					"Main Menu", JOptionPane.INFORMATION_MESSAGE );
+		}
+		
+		if( e.getActionCommand() == "FILE_SAVE_AS" ){
+			JOptionPane.showMessageDialog( this, "[File -> Save As...] Menu pressed", 
+					"Main Menu", JOptionPane.INFORMATION_MESSAGE );
+		}
+		
+		if( e.getActionCommand() == "FILE_EXIT" ){
+			System.exit( 0 );
+		}
 		
 	}
 	
-	private JMenuItem createMenuItem( String caption, int eventKey, 
-			String actionCommand ) {
-		JMenuItem menuItem = new JMenuItem( caption, eventKey );
+	/**
+	 * Create a new menu item
+	 * 
+	 * @param caption
+	 * @param actionCommand
+	 * @return
+	 */
+	private JMenuItem createMenuItem( String caption, String actionCommand ) {
+		
+		JMenuItem menuItem = new JMenuItem( caption );
 		menuItem.setActionCommand( actionCommand );
 		menuItem.addActionListener( this );
 		
 		return menuItem;
+		
 	}
 	
-	private JMenuItem createMenuItem( String caption, int eventKey, 
-			String actionCommand, KeyStroke keystroke ){
-		JMenuItem menuItem = createMenuItem( caption, eventKey, 
-				actionCommand );
+	/**
+	 * Create a new menu item plus eventKey
+	 * 
+	 * @param caption
+	 * @param eventKey
+	 * @param actionCommand
+	 * @return
+	 */
+	private JMenuItem createMenuItem( String caption, String actionCommand, 
+			int mnemonic ) {
+		JMenuItem menuItem = createMenuItem(caption, actionCommand);
+		menuItem.setMnemonic( mnemonic );
+		menuItem.setActionCommand( actionCommand );
+		
+		return menuItem;
+	}
+	
+	/**
+	 * Create new menu item plus eventKey and mnemonic
+	 * 
+	 * @param caption
+	 * @param actionCommand
+	 * @param mnemonic
+	 * @param keystroke
+	 * @return
+	 */
+	private JMenuItem createMenuItem( String caption, String actionCommand, 
+			int mnemonic, KeyStroke keystroke ){
+		
+		JMenuItem menuItem = createMenuItem( caption, actionCommand, mnemonic );
 		
 		menuItem.setAccelerator( keystroke );
 		
