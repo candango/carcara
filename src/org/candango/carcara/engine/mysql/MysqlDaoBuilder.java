@@ -286,7 +286,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "        $" + tableAttr + "s = array();\n\n";
 	    
 		out += "        while( $row = $sth->fetch( PDO::FETCH_ASSOC ) ) {\n";
-		out += "            $" + tableAttr + "s[] = $this->popular" + 
+		out += "            $" + tableAttr + "s[] = $this->fill" + 
 			tableSufix + "( $row );\n";
 		out += "        }\n\n";
 		
@@ -353,7 +353,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "     * @param array $row\n";
 		out += "     * @return " + entitySufix + "IadminGroupDto\n";
 		out += "     */\n";
-		out += "    public function populate" + tableSufix + "( $row ){\n";
+		out += "    public function fill" + tableSufix + "( $row ){\n";
 		
 		out += "        $" + tableAttr +  " = new " + entitySufix + 
 			"Dto();\n\n";
