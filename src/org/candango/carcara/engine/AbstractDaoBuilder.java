@@ -206,7 +206,7 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 			"PgsqlDaoFactory\",\n";
 		out += "            self::MYSQL_DAO => \"" + 
 			CodeHandler.getEntityName( configuration.getIdentifier() )  +  
-			"MysqlOracleDaoFactory\"\n";
+			"MysqlDaoFactory\"\n";
 		out += "        );\n\n";
 		out += "        if( isset( $factories[ $whichFactory ] ) ) {\n";
 		out += "            if( !isset( self::$instances[ $whichFactory ] ) ) {\n";
