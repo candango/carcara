@@ -24,18 +24,18 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 	protected void buildConcreteDaoFactory(DatabaseConfiguration configuration,
 			DatabaseLoader loader) {
 		
-		String pgsqlDaoFileName = getDaoPath() + "/" +
+		String mysqlDaoFileName = getDaoPath() + "/" +
 			CodeHandler.upperCaseFirst( configuration.getIdentifier() ) + 
 			"MysqlDaoFactory.class.php";
 		
-		File pgsqlDaoFile = new File( pgsqlDaoFileName );
+		File mysqlDaoFile = new File( mysqlDaoFileName );
 		try {
-			if( !pgsqlDaoFile.exists() ) {
-				pgsqlDaoFile.createNewFile();
+			if( !mysqlDaoFile.exists() ) {
+				mysqlDaoFile.createNewFile();
 			}
 			
 			BufferedWriter out = 
-				new BufferedWriter( new FileWriter( pgsqlDaoFile ) );
+				new BufferedWriter( new FileWriter( mysqlDaoFile ) );
 			
 			out.write( getMysqlDaoFactoryCode( configuration, loader ) );
 			
@@ -58,7 +58,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		
 		String mysqlDaoClassName = 
 			CodeHandler.upperCaseFirst( configuration.getIdentifier() ) + 
-			"PgsqlDaoFactory";
+			"MysqlDaoFactory";
 		
 		String out = "<?php\n";
 		out += "class " + mysqlDaoClassName + " extends " + 
@@ -70,7 +70,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 						configuration.getIdentifier() + "\" " + 
 						")->getPath() .\n            \"conf/" + 
 						configuration.getIdentifier() + "_conf.php\";\n";
-		out += "        $connStr = \"pgsql:host=\" . $conf[ 'server' ] . " + 
+		out += "        $connStr = \"mysql:host=\" . $conf[ 'server' ] . " + 
 						"\";dbname=\" .\n            $conf[ 'database' ];\n";
 		out += "        try {\n";
 		out += "            $this->connection = new PDO( $connStr, " + 
