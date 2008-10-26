@@ -45,7 +45,7 @@ public class MysqlDatabaseLoader extends AbstractDatabaseLoader {
 			statement = getConnection().createStatement();
 			
 			ResultSet resultSet = statement.executeQuery( 
-					"SHOW FIELDS FROM " + table.getName() + ";" );
+					"SHOW FIELDS FROM " + configuration.getIdentifier() + "." + table.getName() + ";" );
 			
 			while( resultSet.next() ) {
 				Field field = new Field();
