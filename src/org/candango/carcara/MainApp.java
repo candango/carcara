@@ -12,9 +12,9 @@ public class MainApp {
 	public static void main( String[] args ) {
 		
 		
-		//MainFrame frame = new MainFrame();
+		MainFrame frame = new MainFrame();
 		
-		DatabaseLoader loader = AbstractDatabaseLoader.getLoader( 
+		/*DatabaseLoader loader = AbstractDatabaseLoader.getLoader( 
 				
 				AbstractDatabaseLoader.MYSQL_DATABASE );
 		
@@ -40,7 +40,7 @@ public class MainApp {
 		
 		builder.setPath( "./" );
 		
-		builder.build( configuration, loader );
+		builder.build( configuration, loader );*/
 		
 	}
 	
