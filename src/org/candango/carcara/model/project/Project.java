@@ -33,7 +33,7 @@ package org.candango.carcara.model.project;
  * This is the Carcara project interface. Defines behavior and how project will
  * work into application.
  *
- * @author     Flavio Goncalves Garcia <flavio.garcia@candango.org>
+ * @author     Flavio Goncalves Garcia <flavio.garcia at candango.org>
  * @copyright  Copyright (c) 2008 - 2009 Candango Open Source Group
  * @link       http://www.candango.org/myfuses
  * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
