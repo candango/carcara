@@ -50,3 +50,4 @@ public interface Project {
 	public void setProjectPackage( String pack );
 	
 }
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
