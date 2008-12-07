@@ -23,12 +23,16 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 	
 	private JRadioButtonMenuItem rbMenuItem;
 	
+	private MainFrame frame;
+	
 	/**
 	 * Main constructor
 	 */
-	public MainMenuBar() {
+	public MainMenuBar( MainFrame frame ) {
 		super();
-
+		
+		this.frame = frame;
+		
 		menu = new JMenu("File");
 		menu.setMnemonic(KeyEvent.VK_F);
 		menu.getAccessibleContext().setAccessibleDescription(
@@ -142,6 +146,40 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		menuItem.setAccelerator( keystroke );
 		
 		return menuItem;
+	}
+	
+	public void updateMenuState() {
+		
+		for( int i = 0; i < menu.getItemCount(); i ++ ) {
+			try {
+				String actionCommand = menu.getItem( i ).getActionCommand(); 
+				
+				if( this.getFrame().getFileState() == MainFrame.NO_FILES_OPENED ) {
+					if( actionCommand == "FILE_OPEN_FILE" || 
+							actionCommand == "FILE_SAVE" || 
+							actionCommand == "FILE_SAVE_AS" ) {
+						menu.getItem( i ).setEnabled( false );
+					}
+				}
+				else {
+					if( actionCommand == "FILE_OPEN_FILE" || 
+							actionCommand == "FILE_SAVE" || 
+							actionCommand == "FILE_SAVE_AS" ) {
+						menu.getItem( i ).setEnabled( true );
+					}
+				}
+				
+				
+			}
+			catch (NullPointerException e) {
+				// avoiding separators
+			}
+		}
+		
+	}
+	
+	public MainFrame getFrame() {
+		return frame;
 	}
 	
 }

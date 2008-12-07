@@ -3,12 +3,15 @@ package org.candango.carcara.ui;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 
 public class MainFrame extends JFrame {
-
+	
+	public static final int NO_FILES_OPENED = 0;
+	
+	public static final int FILE_OPENED = 1;
+	
+	private int fileState = 0;
+	
 	/**
 	 * This is a generated serial version UID
 	 */
@@ -36,7 +39,9 @@ public class MainFrame extends JFrame {
 		
 		
         splitPane = new MainSplitPane();
-		menuBar = new MainMenuBar();
+		menuBar = new MainMenuBar( this );
+		
+		menuBar.updateMenuState();
 		
 		add( splitPane );
 		
@@ -44,8 +49,13 @@ public class MainFrame extends JFrame {
 		
 		setVisible( true );
 		
-		
-		
 	}
-	
+
+	public int getFileState() {
+		return fileState;
+	}
+
+	public void setFileState(int fileState) {
+		this.fileState = fileState;
+	}
 }
