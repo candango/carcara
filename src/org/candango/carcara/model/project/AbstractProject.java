@@ -1,7 +1,6 @@
-/* Project - Project.java
+/* AbstractProject - AbstractProject.java
  * 
- * This is the Carcara project interface. Defines behavior and how project will
- * work into application.
+ * This is an Abstract implementation of Caracara Project.
  * 
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -28,23 +27,43 @@
 package org.candango.carcara.model.project;
 
 /**
- * This is the Carcara project interface. Defines behavior and how project will
- * work into application.
+ * This is an Abstract implementation of Caracara Project.
  *
  * @author     Flavio Goncalves Garcia <flavio.garcia at candango.org>
  * @copyright  Copyright (c) 2008 - 2009 Candango Open Source Group
  * @link       http://www.candango.org/myfuses
  * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
- * @version    SVN: $Id$
+ * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
  */
-public interface Project {
+public class AbstractProject implements Project {
 	
-	public String getName();
+	/**
+	 * Project name
+	 */
+	private String name = "Project n";
 	
-	public void setName( String name );
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
 	
-	public String getProjectPackage();
+	@Override
+	public String getProjectPackage() {
+		return this.getClass().getName();
+	}
 	
-	public String getFileString();
+	public String getFileString() {
+		String out = "<project>\n";
+		out += "\t<name>" + getName() + "</name>\n";
+		out += "\t<package>" + getProjectPackage() + "</package>\n";
+		out += "</project>\n";
+		return out;
+	}
+	
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
