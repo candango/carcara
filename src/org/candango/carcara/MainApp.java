@@ -28,7 +28,6 @@ package org.candango.carcara;
 
 import java.util.HashMap;
 
-
 import org.candango.carcara.ui.MainFrame;
 import org.candango.carcara.model.project.Project;
 
@@ -74,6 +73,7 @@ public class MainApp {
 		
 		for( String key : projectMap.keySet() ){
 			projects[ i ] = projectMap.get( key );
+			i++;
 		}
 		
 		return projects;
@@ -99,5 +99,13 @@ public class MainApp {
 		return projectMap.get( key );
 	}
 	
+	/**
+	 * Return the number of projects in application
+	 * 
+	 * @return
+	 */
+	public static int getProjectCount() {
+		return projectMap.size();
+	}
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
