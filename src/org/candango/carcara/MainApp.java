@@ -1,4 +1,4 @@
-/* AbstractProject - AbstractProject.java
+/* MainApp - MainApp.java
  * 
  * Carcara main application class.
  * 
@@ -61,6 +61,11 @@ public class MainApp {
 	
 	}
 	
+	/**
+	 * Return all projects stored in application
+	 * 
+	 * @return An array of projects
+	 */
 	public static Project[] getProjects() {
 		
 		Project[] projects = new Project[ projectMap.size() ];
@@ -74,4 +79,25 @@ public class MainApp {
 		return projects;
 	}
 	
+	/**
+	 * Add one project into application control.
+	 * 
+	 * @param key
+	 * @param project
+	 */
+	public static void addProject( String key, Project project ) {
+		projectMap.put( key , project );
+	}
+	
+	/**
+	 * Return one project by a given key
+	 * 
+	 * @param key
+	 * @return One project
+	 */
+	public static Project getProject( String key ) {
+		return projectMap.get( key );
+	}
+	
 }
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
