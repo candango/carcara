@@ -12,6 +12,9 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
+import org.candango.carcara.MainApp;
+import org.candango.carcara.model.project.Project;
+
 public class MainMenuBar extends JMenuBar implements ActionListener {
 
 	/**
@@ -69,9 +72,30 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 	@Override
 	public void actionPerformed( ActionEvent e ) {
 		
-		if( e.getActionCommand() == "FILE_NEW" ){
-			JOptionPane.showMessageDialog( this, "[File -> New...] Menu pressed", 
-					"Main Menu", JOptionPane.INFORMATION_MESSAGE );
+		if( e.getActionCommand() == "FILE_NEW" ) {
+			
+			String projectName = JOptionPane.showInputDialog( "Project Name:" );
+			
+			Project project = null;
+			
+		    try {
+				project = (Project) Class.forName( "org.candango.carcara.php.Project" ).newInstance();
+				
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}catch (InstantiationException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (IllegalAccessException e3) {
+				// TODO Auto-generated catch block
+				e3.printStackTrace();
+			}
+			
+			project.setName( projectName );
+			
+			MainApp.addProject( projectName , project );
+			
 		}
 		
 		if( e.getActionCommand() == "FILE_OPEN_FILE" ){
@@ -90,9 +114,21 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		}
 		
 		if( e.getActionCommand() == "FILE_EXIT" ){
-			System.exit( 0 );
+			if( MainApp.getProjectCount() > 0 ) {
+				int wantExit = JOptionPane.showConfirmDialog( frame , 
+						"You have non saved projets. Do you really want " + 
+						"to close the application?" );
+				
+				if( wantExit == 0 ) {
+					System.exit( 0 );
+				}
+			}
+			else {
+				System.exit( 0 );
+			}
 		}
 		
+		updateMenuState();
 	}
 	
 	/**
@@ -154,16 +190,14 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 			try {
 				String actionCommand = menu.getItem( i ).getActionCommand(); 
 				
-				if( this.getFrame().getFileState() == MainFrame.NO_FILES_OPENED ) {
-					if( actionCommand == "FILE_OPEN_FILE" || 
-							actionCommand == "FILE_SAVE" || 
+				if( MainApp.getProjectCount() == 0 ) {
+					if( actionCommand == "FILE_SAVE" || 
 							actionCommand == "FILE_SAVE_AS" ) {
 						menu.getItem( i ).setEnabled( false );
 					}
 				}
 				else {
-					if( actionCommand == "FILE_OPEN_FILE" || 
-							actionCommand == "FILE_SAVE" || 
+					if( actionCommand == "FILE_SAVE" || 
 							actionCommand == "FILE_SAVE_AS" ) {
 						menu.getItem( i ).setEnabled( true );
 					}
