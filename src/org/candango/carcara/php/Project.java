@@ -37,7 +37,7 @@ import org.candango.carcara.model.project.AbstractProject;
  * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
  * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
  */
-public class PhpProject extends AbstractProject {
+public class Project extends AbstractProject {
 	
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
