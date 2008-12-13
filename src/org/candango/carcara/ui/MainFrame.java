@@ -38,7 +38,7 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		
 		
-        splitPane = new MainSplitPane();
+        splitPane = new MainSplitPane( this );
 		menuBar = new MainMenuBar( this );
 		
 		menuBar.updateMenuState();
@@ -58,4 +58,14 @@ public class MainFrame extends JFrame {
 	public void setFileState(int fileState) {
 		this.fileState = fileState;
 	}
+	
+	public void update() {
+		splitPane.updateTreeState();
+		menuBar.updateMenuState();
+	}
+	
+	public ProjectTree getProjectTree() {
+		return splitPane.getProjectTree();
+	}
+	
 }

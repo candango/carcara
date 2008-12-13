@@ -39,7 +39,6 @@ import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
 import org.candango.carcara.MainApp;
-import org.candango.carcara.model.project.Project;
 
 /**
  * Carcara application main menu bar. Contains all commands of application.
@@ -61,15 +60,15 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 	
 	private JRadioButtonMenuItem rbMenuItem;
 	
-	private MainFrame frame;
+	private MainFrame mainFrame;
 	
 	/**
 	 * Main constructor
 	 */
-	public MainMenuBar( MainFrame frame ) {
+	public MainMenuBar( MainFrame mainFrame ) {
 		super();
 		
-		this.frame = frame;
+		this.mainFrame = mainFrame;
 		
 		menu = new JMenu("File");
 		menu.setMnemonic(KeyEvent.VK_F);
@@ -111,26 +110,9 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 			
 			String projectName = JOptionPane.showInputDialog( "Project Name:" );
 			
-			Project project = null;
-			
-		    try {
-				project = (Project) Class.forName( "org.candango.carcara.php.Project" ).newInstance();
-				
-			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}catch (InstantiationException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (IllegalAccessException e3) {
-				// TODO Auto-generated catch block
-				e3.printStackTrace();
+			if( projectName != null ) {
+				MainApp.createProject( projectName );
 			}
-			
-			project.setName( projectName );
-			
-			MainApp.addProject( projectName , project );
-			
 		}
 		
 		if( e.getActionCommand() == "FILE_OPEN_FILE" ){
@@ -150,7 +132,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		
 		if( e.getActionCommand() == "FILE_EXIT" ){
 			if( MainApp.getProjectCount() > 0 ) {
-				int wantExit = JOptionPane.showConfirmDialog( frame , 
+				int wantExit = JOptionPane.showConfirmDialog( mainFrame , 
 						"You have non saved projets. Do you really want " + 
 						"to close the application?" );
 				if( wantExit == 0 ) {
@@ -162,7 +144,6 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 			}
 		}
 		
-		updateMenuState();
 	}
 	
 	/**
@@ -236,8 +217,6 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 						menu.getItem( i ).setEnabled( true );
 					}
 				}
-				
-				
 			}
 			catch (NullPointerException e) {
 				// avoiding separators
@@ -246,8 +225,8 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		
 	}
 	
-	public MainFrame getFrame() {
-		return frame;
+	public MainFrame getMainFrame() {
+		return mainFrame;
 	}
 	
 }

@@ -28,6 +28,8 @@ package org.candango.carcara;
 
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import org.candango.carcara.ui.MainFrame;
 import org.candango.carcara.model.project.Project;
 
@@ -56,6 +58,7 @@ public class MainApp {
 	 * @param args
 	 */
 	public static void main( String[] args ) {
+		
 		
 		
 		mainFrame = new MainFrame();
@@ -107,28 +110,37 @@ public class MainApp {
 	
 	public static void createProject( String key  ) {
 		
-		Project project = null;
-		
-	    try {
-			project = (Project) Class.forName( 
-					"org.candango.carcara.php.Project" ).newInstance();
-			
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}catch (InstantiationException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (IllegalAccessException e3) {
-			// TODO Auto-generated catch block
-			e3.printStackTrace();
+		if( hasProject( key ) ){
+			JOptionPane.showMessageDialog(mainFrame, "A project with name \"" + 
+					key + "\" already exists in the workspace.", 
+					"Creating Project", JOptionPane.ERROR_MESSAGE );
 		}
-		
-		project.setName( key );
-		
-		MainApp.addProject( key , project );
-		
-		update();
+		else {
+			Project project = null;
+			
+		    try {
+				project = (Project) Class.forName( 
+						"org.candango.carcara.php.Project" ).newInstance();
+				
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}catch (InstantiationException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (IllegalAccessException e3) {
+				// TODO Auto-generated catch block
+				e3.printStackTrace();
+			}
+			
+			project.setName( key );
+			
+			MainApp.addProject( key , project );
+			
+			update();
+			
+			mainFrame.getProjectTree().selectProject( key );
+		}
 	}
 	
 	/**
