@@ -48,6 +48,8 @@ public class MainApp {
 	private static HashMap<String, Project> projectMap = 
 		new HashMap<String, Project>();
 	
+	private static MainFrame mainFrame;
+	
 	/**
 	 * Main methos. Begins all the magic.
 	 * 
@@ -56,7 +58,7 @@ public class MainApp {
 	public static void main( String[] args ) {
 		
 		
-		MainFrame frame = new MainFrame();
+		mainFrame = new MainFrame();
 	
 	}
 	
@@ -99,6 +101,36 @@ public class MainApp {
 		return projectMap.get( key );
 	}
 	
+	public static boolean hasProject( String key ) {
+		return projectMap.containsKey( key );
+	}
+	
+	public static void createProject( String key  ) {
+		
+		Project project = null;
+		
+	    try {
+			project = (Project) Class.forName( 
+					"org.candango.carcara.php.Project" ).newInstance();
+			
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}catch (InstantiationException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IllegalAccessException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
+		
+		project.setName( key );
+		
+		MainApp.addProject( key , project );
+		
+		update();
+	}
+	
 	/**
 	 * Return the number of projects in application
 	 * 
@@ -106,6 +138,10 @@ public class MainApp {
 	 */
 	public static int getProjectCount() {
 		return projectMap.size();
+	}
+	
+	private static void update() {
+		mainFrame.update();
 	}
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
