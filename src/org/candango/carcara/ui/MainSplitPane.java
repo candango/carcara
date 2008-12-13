@@ -1,8 +1,15 @@
 package org.candango.carcara.ui;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.tree.TreeModel;
+
+import org.candango.carcara.MainApp;
+
+import org.candango.carcara.model.project.Project;
 
 public class MainSplitPane extends JSplitPane {
 	
@@ -15,9 +22,18 @@ public class MainSplitPane extends JSplitPane {
 	
 	private JPanel panelRight;
 	
-	public MainSplitPane() {
+	private ProjectTree projectTree;
+	
+	private TreeModel treeModel;
+	
+	private MainFrame mainFrame;
+	
+	public MainSplitPane( MainFrame mainFrame ) {
 		
 		super( JSplitPane.HORIZONTAL_SPLIT, true );
+		
+		projectTree = new ProjectTree( );
+		
 		
 		panelLeft = new JPanel();
 		panelRight = new JPanel();
@@ -25,10 +41,15 @@ public class MainSplitPane extends JSplitPane {
 		JLabel j1 = new JLabel("Area 1");
         JLabel j2 = new JLabel("Area 2");
         
-        panelLeft.add(j1);
-        panelRight.add(j2);
+        
+        panelLeft.setLayout( new BorderLayout() );
+        
+        panelRight.setLayout( new BorderLayout() );
+        
+        panelLeft.add( projectTree );
+        //panelRight.add(j2);
 		
-        setLeftComponent( panelLeft );
+        setLeftComponent( projectTree );
         
         setRightComponent( panelRight );
         
@@ -36,6 +57,18 @@ public class MainSplitPane extends JSplitPane {
         
         setDividerLocation( 200 );
         
+	}
+	
+	public MainFrame getMainFrame() {
+		return mainFrame;
+	}
+	
+	public void updateTreeState(){
+		projectTree.updateTree();
+	}
+	
+	public ProjectTree getProjectTree() {
+		return projectTree;
 	}
 	
 }
