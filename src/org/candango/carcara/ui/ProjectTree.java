@@ -54,19 +54,33 @@ import org.candango.carcara.model.project.Project;
 public class ProjectTree extends JPanel {
 
 	/**
-	 * 
+	 * Generated serial version UID
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	protected DefaultMutableTreeNode rootNode;
+	/**
+	 * Tree root node that store all project nodes 
+	 */
+	protected ProjectElementNode rootNode;
+	
+	/**
+	 * Tree model used to reload tree data
+	 */
     protected DefaultTreeModel treeModel;
+    
+    /**
+     * JTree object
+     */
     protected JTree tree;
     
+    /**
+     * Default constructor.
+     */
     public ProjectTree() {
 
     	super( new GridLayout(1,0) );
         
-        rootNode = new DefaultMutableTreeNode( "Workspace" );
+        rootNode = new ProjectElementNode( "Workspace" );
         treeModel = new DefaultTreeModel( rootNode );
         
         tree = new JTree( treeModel );
@@ -99,6 +113,9 @@ public class ProjectTree extends JPanel {
     	
     }
     
+    /**
+     * Update the tree lading project data form MainApp. 
+     */
     public void updateTree() {
     	
     	rootNode.removeAllChildren();
@@ -109,7 +126,10 @@ public class ProjectTree extends JPanel {
     	for( Project project : MainApp.getProjects() ){
     		
     		
-    		DefaultMutableTreeNode node = new DefaultMutableTreeNode( project.getName() );
+    		ProjectElementNode node = new ProjectElementNode( 
+    				project.getName() );
+    		
+    		node.setType( ProjectElementNode.PROJECT_ELEMENT_TYPE );
     		
     		rootNode.add( node );
     		
@@ -120,7 +140,6 @@ public class ProjectTree extends JPanel {
     
     /**
      * Cell handler that sets the node images in project tree.
-     * Carcara main application class.
 	 *
 	 * @author     Flavio Goncalves Garcia <flavio.garcia at candango.org>
 	 * @copyright  Copyright (c) 2008 - 2009 Candango Open Source Group
@@ -131,7 +150,7 @@ public class ProjectTree extends JPanel {
     private class ProjectCellRender extends DefaultTreeCellRenderer { 
     	
     	/**
-    	 * 
+    	 * Generated serial version UID
     	 */
     	private static final long serialVersionUID = 1648364485810404508L;
 
@@ -147,15 +166,12 @@ public class ProjectTree extends JPanel {
                     row,
                     hasFocus );
     		
-    		DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) value;
+    		ProjectElementNode node = ( ProjectElementNode ) value;
     		
     		if( node.getParent() != null ) {
-    			if( node.getParent().toString().equals( "Workspace" ) ) {
-    				
+    			if( node.getType() == ProjectElementNode.PROJECT_ELEMENT_TYPE ) {
     				URL url = MainApp.class.getResource( "img/folder.png" ); 
-    				
     				setIcon( new ImageIcon( url ) );
-    				
     			}
     		}
     		return this;
@@ -163,4 +179,63 @@ public class ProjectTree extends JPanel {
     	
     }
     
+    /**
+     * Project element node is an rich TreeNode class that will store project
+     * details and help some action to be done over the tree.
+	 *
+	 * @author     Flavio Goncalves Garcia <flavio.garcia at candango.org>
+	 * @copyright  Copyright (c) 2008 - 2009 Candango Open Source Group
+	 * @link       http://www.candango.org/myfuses
+	 * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
+	 * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
+	 */
+    private class ProjectElementNode extends DefaultMutableTreeNode {
+    	
+    	/**
+		 * Generated serial version UID 
+		 */
+		private static final long serialVersionUID = -6927028384202838316L;
+
+		/**
+		 * Root element type constant.<br>Value is <code>1</code>
+		 */
+		public static final int ROOT_ELEMENT_TYPE = 1;
+    	
+		/**
+		 * Project element type constant.<br>Value is <code>2</code>
+		 */
+    	public static final int PROJECT_ELEMENT_TYPE = 2;
+    	
+    	/**
+    	 * Node type property
+    	 */
+    	private int type;
+    	
+    	/**
+    	 * Default constructor
+    	 * 
+    	 * @param name Name of the node
+    	 */
+    	public ProjectElementNode( String name ) {
+    		super( name );
+    	}
+    	
+    	/**
+    	 * Set node type
+    	 * 
+    	 * @return
+    	 */
+    	public int getType() {
+    		return type;
+    	}
+    	
+    	/**
+    	 * Set node type
+    	 * 
+    	 * @param type Type of node. Use ProjectElementNode type constants.
+    	 */
+    	public void setType(int type) {
+    		this.type = type;
+    	}
+    }
 }
