@@ -1,18 +1,56 @@
+/* ProjectTree - ProjectTree.java
+ * 
+ * Tree that show all workspace projects and his elements.
+ * 
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ * 
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * 
+ * This product includes software developed by the Fusebox Corporation 
+ * (http://www.fusebox.org/).
+ * 
+ * The Original Code is Carcara "a Candango Modelling tool to create 
+ * myFuses/iflux applications" part .
+ * 
+ * The Initial Developer of the Original Code is Flavio Goncalves Garcia.
+ * Portions created by Flavio Goncalves Garcia are Copyright (C) 2008 - 2009.
+ * All Rights Reserved.
+ * 
+ * Contributor(s): Flavio Goncalves Garcia.
+ */
 package org.candango.carcara.ui;
 
+import java.awt.Component;
 import java.awt.GridLayout;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.candango.carcara.MainApp;
 import org.candango.carcara.model.project.Project;
 
+/**
+ * Tree that show all workspace projects and his elements.
+ *
+ * @author     Flavio Goncalves Garcia <flavio.garcia at candango.org>
+ * @copyright  Copyright (c) 2008 - 2009 Candango Open Source Group
+ * @link       http://www.candango.org/myfuses
+ * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
+ * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
+ */
 public class ProjectTree extends JPanel {
 
 	/**
@@ -39,7 +77,9 @@ public class ProjectTree extends JPanel {
         tree.setRootVisible( false );
         
         tree.setShowsRootHandles( true );
-
+        
+        tree.setCellRenderer( new ProjectCellRender() );
+        
         JScrollPane scrollPane = new JScrollPane( tree );
         
         add(scrollPane);
@@ -49,13 +89,13 @@ public class ProjectTree extends JPanel {
     
     public void selectProject( String key ) {
     	
-    	for( int i = 0; i < rootNode.getChildCount(); i++ ){
+    	/*for( int i = 0; i < rootNode.getChildCount(); i++ ){
     		System.out.println( key + " - " + rootNode.getChildAt( i ).toString() );
     		
     		if( key.equals( rootNode.getChildAt( i ).toString() ) ){
     			System.out.println( tree.getPathForRow( i ) );
     		}
-    	}
+    	}*/
     	
     }
     
@@ -63,12 +103,64 @@ public class ProjectTree extends JPanel {
     	
     	rootNode.removeAllChildren();
     	
+    	//ImageIcon projectIcon = new ImageIcon( "img/project.png" );
+    	
+    	
     	for( Project project : MainApp.getProjects() ){
+    		
+    		
     		DefaultMutableTreeNode node = new DefaultMutableTreeNode( project.getName() );
+    		
     		rootNode.add( node );
+    		
     	}
     	
     	treeModel.reload();
+    }
+    
+    /**
+     * Cell handler that sets the node images in project tree.
+     * Carcara main application class.
+	 *
+	 * @author     Flavio Goncalves Garcia <flavio.garcia at candango.org>
+	 * @copyright  Copyright (c) 2008 - 2009 Candango Open Source Group
+	 * @link       http://www.candango.org/myfuses
+	 * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
+	 * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
+	 */
+    private class ProjectCellRender extends DefaultTreeCellRenderer { 
+    	
+    	/**
+    	 * 
+    	 */
+    	private static final long serialVersionUID = 1648364485810404508L;
+
+    	@Override
+    	public Component getTreeCellRendererComponent(JTree tree, Object value,
+    			boolean selected, boolean expanded, boolean leaf, int row,
+    			boolean hasFocus) {
+    		super.getTreeCellRendererComponent( tree,
+                    value,
+                    selected,
+                    expanded,
+                    leaf,
+                    row,
+                    hasFocus );
+    		
+    		DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) value;
+    		
+    		if( node.getParent() != null ) {
+    			if( node.getParent().toString().equals( "Workspace" ) ) {
+    				
+    				URL url = MainApp.class.getResource( "img/folder.png" ); 
+    				
+    				setIcon( new ImageIcon( url ) );
+    				
+    			}
+    		}
+    		return this;
+    	}
+    	
     }
     
 }
