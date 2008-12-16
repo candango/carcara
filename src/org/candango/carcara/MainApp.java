@@ -26,6 +26,7 @@
  */
 package org.candango.carcara;
 
+import java.io.File;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
@@ -53,13 +54,30 @@ public class MainApp {
 	private static MainFrame mainFrame;
 	
 	/**
+	 * Main Application root path
+	 */
+	private static String rootPath;
+	
+	/**
+	 * OS path separator
+	 */
+	private static String pathSeparator;
+	
+	/**
+	 * OS file separator
+	 */
+	private static String fileSeparator;
+	
+	/**
 	 * Main methos. Begins all the magic.
 	 * 
 	 * @param args
 	 */
 	public static void main( String[] args ) {
 		
+		configureEnv();
 		
+		configureWorkspace();
 		
 		mainFrame = new MainFrame();
 	
@@ -108,6 +126,11 @@ public class MainApp {
 		return projectMap.containsKey( key );
 	}
 	
+	/**
+	 * Create one project by a given key
+	 * 
+	 * @param key
+	 */
 	public static void createProject( String key  ) {
 		
 		if( hasProject( key ) ){
@@ -144,6 +167,31 @@ public class MainApp {
 	}
 	
 	/**
+	 * Configure some envirement variables useful for file operations
+	 */
+	private static void configureEnv() {
+		rootPath = System.getProperties().getProperty( "user.dir");
+		pathSeparator = System.getProperties().getProperty( "path.separator");
+		fileSeparator = System.getProperties().getProperty( "file.separator");
+	}
+	
+	/**
+	 * Configuring the workspace. Running tasks as verify if configuration file 
+	 * exists, create file if not exists, choose a workspace location, and so 
+	 * on...
+	 */
+	private static void configureWorkspace() {
+		
+		if( getConfigurationFile().exists() ) {
+			// load configuration file
+		}
+		else {
+			// create configuration file
+		}
+		
+	}
+	
+	/**
 	 * Return the number of projects in application
 	 * 
 	 * @return
@@ -155,5 +203,42 @@ public class MainApp {
 	private static void update() {
 		mainFrame.update();
 	}
+	
+	/**
+	 * Return main application root path
+	 * 
+	 * @return
+	 */
+	public static String getRootPath() {
+		return rootPath;
+	}
+	
+	/**
+	 * Return os path separator
+	 * 
+	 * @return
+	 */
+	public static String getPathSeparator() {
+		return pathSeparator;
+	}
+	
+	/**
+	 * Return os file separator
+	 * 
+	 * @return
+	 */
+	public static String getFileSeparator() {
+		return fileSeparator;
+	}
+	
+	/**
+	 * Return the carcara configuration file
+	 * 
+	 * @return
+	 */
+	public static File getConfigurationFile() {
+		return new File( getRootPath() + getFileSeparator() + "carcara.conf" );
+	}
+	
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
