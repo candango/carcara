@@ -27,12 +27,15 @@
 package org.candango.carcara;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
 import org.candango.carcara.ui.MainFrame;
+import org.candango.carcara.model.environment.BasicEnvironment;
+import org.candango.carcara.model.environment.Environment;
 import org.candango.carcara.model.project.Project;
 
 /**
@@ -53,6 +56,8 @@ public class MainApp {
 		new HashMap<String, Project>();
 	
 	private static MainFrame mainFrame;
+	
+	private static Environment environment;
 	
 	/**
 	 * Main Application root path
@@ -78,7 +83,7 @@ public class MainApp {
 		
 		configureEnv();
 		
-		configureWorkspace();
+		configureEnvironment();
 		
 		mainFrame = new MainFrame();
 	
@@ -177,16 +182,17 @@ public class MainApp {
 	}
 	
 	/**
-	 * Configuring the workspace. Running tasks as verify if configuration file 
+	 * Configuring the enviroment. Running tasks as verify if configuration file 
 	 * exists, create file if not exists, choose a workspace location, and so 
 	 * on...
 	 */
-	private static void configureWorkspace() {
+	private static void configureEnvironment() {
 		
 		if( getConfigurationFile().exists() ) {
 			// load configuration file
 		}
 		else {
+			environment = new BasicEnvironment();
 			createConfigurationFile();
 		}
 		
@@ -238,16 +244,27 @@ public class MainApp {
 	 * @return
 	 */
 	public static File getConfigurationFile() {
-		return new File( getRootPath() + getFileSeparator() + "carcara.conf" );
+		return new File( getRootPath() + getFileSeparator() + "carcara.xml" );
 	}
 	
 	public static void createConfigurationFile() {
 		try {
 			getConfigurationFile().createNewFile();
+			
+			saveEnvitonment();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void saveEnvitonment() throws IOException {
+		FileWriter out = new FileWriter( getConfigurationFile() );
+		
+		out.write( environment.toString() );
+		
+		out.close();
 	}
 	
 }
