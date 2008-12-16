@@ -27,6 +27,7 @@
 package org.candango.carcara;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
@@ -186,7 +187,7 @@ public class MainApp {
 			// load configuration file
 		}
 		else {
-			// create configuration file
+			createConfigurationFile();
 		}
 		
 	}
@@ -238,6 +239,15 @@ public class MainApp {
 	 */
 	public static File getConfigurationFile() {
 		return new File( getRootPath() + getFileSeparator() + "carcara.conf" );
+	}
+	
+	public static void createConfigurationFile() {
+		try {
+			getConfigurationFile().createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }
