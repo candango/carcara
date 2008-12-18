@@ -34,6 +34,7 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import org.candango.carcara.ui.MainFrame;
+import org.candango.carcara.ui.launcher.WorkspaceLauncherFrame;
 import org.candango.carcara.model.environment.BasicEnvironment;
 import org.candango.carcara.model.environment.Environment;
 import org.candango.carcara.model.project.Project;
@@ -81,11 +82,11 @@ public class MainApp {
 	 */
 	public static void main( String[] args ) {
 		
-		configureEnv();
+		configureEnviromentVariables();
 		
 		configureEnvironment();
 		
-		mainFrame = new MainFrame();
+		//mainFrame = new MainFrame();
 	
 	}
 	
@@ -175,7 +176,7 @@ public class MainApp {
 	/**
 	 * Configure some envirement variables useful for file operations
 	 */
-	private static void configureEnv() {
+	private static void configureEnviromentVariables() {
 		rootPath = System.getProperties().getProperty( "user.dir");
 		pathSeparator = System.getProperties().getProperty( "path.separator");
 		fileSeparator = System.getProperties().getProperty( "file.separator");
@@ -188,13 +189,16 @@ public class MainApp {
 	 */
 	private static void configureEnvironment() {
 		
-		if( getConfigurationFile().exists() ) {
-			// load configuration file
-		}
-		else {
+		if( !getConfigurationFile().exists() ) {
 			environment = new BasicEnvironment();
 			createConfigurationFile();
 		}
+		
+		
+		
+		WorkspaceLauncherFrame launcherFrame = new WorkspaceLauncherFrame();
+		
+		launcherFrame.setVisible( true );
 		
 	}
 	
