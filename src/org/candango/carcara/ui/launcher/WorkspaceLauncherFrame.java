@@ -183,7 +183,12 @@ public class WorkspaceLauncherFrame extends JFrame {
 		
 		c.insets = new Insets(2, 2, 14, 2);
 		
-		JCheckBox defaultWorkspaceCheckBox = new JCheckBox();
+		JCheckBox defaultWorkspaceCheckBox = new JCheckBox( "Use this as the default and do not ask again" );
+		
+		Font font1 = new Font( defaultWorkspaceCheckBox.getFont().getName(), 
+				Font.PLAIN, defaultWorkspaceCheckBox.getFont().getSize() );
+		
+		defaultWorkspaceCheckBox.setFont( font1 );
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		
@@ -192,25 +197,11 @@ public class WorkspaceLauncherFrame extends JFrame {
 		
 		pane.add( defaultWorkspaceCheckBox, c );
 		
-		JLabel degfaultWorkspaceLabel = new JLabel( "Use this as the default and do not ask again" );
-		
-		Font font1 = new Font( degfaultWorkspaceLabel.getFont().getName(), 
-				Font.PLAIN, degfaultWorkspaceLabel.getFont().getSize() );
-		
-		degfaultWorkspaceLabel.setFont( font1 );
-		
-		c.fill = GridBagConstraints.HORIZONTAL;
-		
-		c.gridx = 1;
-		c.gridy = 0;
-		pane.add( degfaultWorkspaceLabel, c );
-		
-		
 		JLabel spacerLabel = new JLabel( );
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 60;
-		c.gridx = 2;
+		c.gridx = 1;
 		c.gridy = 1;
 		
 		pane.add( spacerLabel, c );
@@ -219,7 +210,7 @@ public class WorkspaceLauncherFrame extends JFrame {
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 30;
-		c.gridx = 3;
+		c.gridx = 2;
 		c.gridy = 1;
 		
 		pane.add( okButton, c );
@@ -228,7 +219,7 @@ public class WorkspaceLauncherFrame extends JFrame {
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 8;
-		c.gridx = 4;
+		c.gridx = 3;
 		c.gridy = 1;
 		
 		pane.add( cancelButton, c );
