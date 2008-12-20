@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.tree.TreeModel;
 
 import org.candango.carcara.MainApp;
 
@@ -23,8 +22,6 @@ public class MainSplitPane extends JSplitPane {
 	private JPanel panelRight;
 	
 	private ProjectTree projectTree;
-	
-	private TreeModel treeModel;
 	
 	private MainFrame mainFrame;
 	
