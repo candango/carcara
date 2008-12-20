@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,6 +37,8 @@ public class WorkspaceLauncherFrame extends JFrame {
 	public WorkspaceLauncherFrame() {
 		
 		super( FRAME_TITLE );
+		
+		setResizable( false );
 		
 		setSize( new Dimension( 528, 322 ) );
 		
@@ -157,6 +160,17 @@ public class WorkspaceLauncherFrame extends JFrame {
 		
 		pane.add( browserButton, c );
 		
+		JLabel spacerLabel = new JLabel();
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipady = 70;
+		c.gridx = 0;
+		c.gridy = 1;
+		
+		pane.add( spacerLabel, c );
+		
+		
+		
 		add( pane, BorderLayout.CENTER );
 	}
 	
@@ -167,32 +181,55 @@ public class WorkspaceLauncherFrame extends JFrame {
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
-		c.insets = new Insets(10, 2, 10, 2);
+		c.insets = new Insets(2, 2, 14, 2);
+		
+		JCheckBox defaultWorkspaceCheckBox = new JCheckBox();
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		
+		pane.add( defaultWorkspaceCheckBox, c );
+		
+		JLabel degfaultWorkspaceLabel = new JLabel( "Use this as the default and do not ask again" );
+		
+		Font font1 = new Font( degfaultWorkspaceLabel.getFont().getName(), 
+				Font.PLAIN, degfaultWorkspaceLabel.getFont().getSize() );
+		
+		degfaultWorkspaceLabel.setFont( font1 );
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		c.gridx = 1;
+		c.gridy = 0;
+		pane.add( degfaultWorkspaceLabel, c );
+		
 		
 		JLabel spacerLabel = new JLabel( );
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipadx = 346;
-		c.gridx = 0;
-		c.gridy = 0;
+		c.ipadx = 60;
+		c.gridx = 2;
+		c.gridy = 1;
 		
 		pane.add( spacerLabel, c );
 		
 		JButton okButton = new JButton( "Ok" );
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipadx = 21;
-		c.gridx = 1;
-		c.gridy = 0;
+		c.ipadx = 30;
+		c.gridx = 3;
+		c.gridy = 1;
 		
 		pane.add( okButton, c );
 		
 		JButton cancelButton = new JButton( "Cancel" );
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipadx = 4;
-		c.gridx = 2;
-		c.gridy = 0;
+		c.ipadx = 8;
+		c.gridx = 4;
+		c.gridy = 1;
 		
 		pane.add( cancelButton, c );
 		
