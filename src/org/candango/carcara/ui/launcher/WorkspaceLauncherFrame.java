@@ -36,12 +36,16 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -56,7 +60,7 @@ import javax.swing.JTextArea;
  * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
  * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
  */
-public class WorkspaceLauncherFrame extends JFrame {
+public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 	
 	/**
 	 * Serial version UID
@@ -67,6 +71,10 @@ public class WorkspaceLauncherFrame extends JFrame {
 	 * Frame title constant
 	 */
 	public static final String FRAME_TITLE = "Workspace Launcher"; 
+	
+	private JComboBox workspacePathComboBox;
+	
+	private JButton browserButton;
 	
 	/**
 	 * Default constructor
@@ -180,16 +188,27 @@ public class WorkspaceLauncherFrame extends JFrame {
 		
 		pane.add( workspaceLabel, c );
 		
-		JComboBox workspacePathComboBox = new JComboBox();
+		workspacePathComboBox = new JComboBox();
+		
+		// Fixing combo box size
+		workspacePathComboBox.setMinimumSize( new Dimension( 1, 1) );
+		
+		workspacePathComboBox.setPreferredSize( new Dimension( 
+				workspacePathComboBox.getPreferredSize().width,
+				workspacePathComboBox.getPreferredSize().height ) );
+		//END Fixing combo box size
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 300;
+		
 		c.gridx = 1;
 		c.gridy = 0;
 		
 		pane.add( workspacePathComboBox, c );
 		
-		JButton browserButton = new JButton( "Browse..." );
+		browserButton = new JButton( "Browse..." );
+		
+		browserButton.addActionListener( this );
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 5;
@@ -264,6 +283,20 @@ public class WorkspaceLauncherFrame extends JFrame {
 		pane.add( cancelButton, c );
 		
 		add( pane, BorderLayout.SOUTH );
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JFileChooser fileChooser = new JFileChooser();
+		
+		fileChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
+		
+		int returnVal = fileChooser.showOpenDialog( this );
+		
+		if( returnVal == JFileChooser.APPROVE_OPTION ) {
+			workspacePathComboBox.addItem( fileChooser.getSelectedFile().getAbsolutePath() );
+		}
+		
 	}
 	
 }
