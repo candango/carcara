@@ -15,7 +15,7 @@
  * This product includes software developed by the Fusebox Corporation 
  * (http://www.fusebox.org/).
  * 
- * The Original Code is Carcara "a Candango Modelling tool to create 
+ * The Original Code is Carcara "a Candango Modeling tool to create 
  * myFuses/iflux applications" part .
  * 
  * The Initial Developer of the Original Code is Flavio Goncalves Garcia.
@@ -64,6 +64,8 @@ public class MainApp {
 	 * Main Application root path
 	 */
 	private static String rootPath;
+	
+	private static String userHomePath; 
 	
 	/**
 	 * OS path separator
@@ -178,6 +180,7 @@ public class MainApp {
 	 */
 	private static void configureEnviromentVariables() {
 		rootPath = System.getProperties().getProperty( "user.dir");
+		userHomePath = System.getProperties().getProperty( "user.home");
 		pathSeparator = System.getProperties().getProperty( "path.separator");
 		fileSeparator = System.getProperties().getProperty( "file.separator");
 	}
@@ -222,6 +225,15 @@ public class MainApp {
 	 */
 	public static String getRootPath() {
 		return rootPath;
+	}
+	
+	/**
+	 * Return user home path
+	 * 
+	 * @return
+	 */
+	public static String getUserHomePath() {
+		return userHomePath;
 	}
 	
 	/**
