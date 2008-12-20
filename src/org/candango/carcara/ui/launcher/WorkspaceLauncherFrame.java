@@ -49,6 +49,9 @@ public class WorkspaceLauncherFrame extends JFrame {
 		// creating center pane
 		createCenterPane();
 		
+		// creating south pane
+		createSouthPane();
+		
 	}
 	
 	private Point getCenteredCorner() {
@@ -145,18 +148,55 @@ public class WorkspaceLauncherFrame extends JFrame {
 		
 		pane.add( workspacePathComboBox, c );
 		
-		add( pane, BorderLayout.CENTER );
-		
 		JButton browserButton = new JButton( "Browse..." );
-		
-		pane.add( workspacePathComboBox, c );
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 5;
-		c.gridx = 3;
+		c.gridx = 2;
 		c.gridy = 0;
 		
 		pane.add( browserButton, c );
+		
+		add( pane, BorderLayout.CENTER );
+	}
+	
+	private void createSouthPane() {
+		JPanel pane = new JPanel();
+		
+		pane.setLayout( new GridBagLayout() );
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.insets = new Insets(10, 2, 10, 2);
+		
+		JLabel spacerLabel = new JLabel( );
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipadx = 346;
+		c.gridx = 0;
+		c.gridy = 0;
+		
+		pane.add( spacerLabel, c );
+		
+		JButton okButton = new JButton( "Ok" );
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipadx = 21;
+		c.gridx = 1;
+		c.gridy = 0;
+		
+		pane.add( okButton, c );
+		
+		JButton cancelButton = new JButton( "Cancel" );
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipadx = 4;
+		c.gridx = 2;
+		c.gridy = 0;
+		
+		pane.add( cancelButton, c );
+		
+		add( pane, BorderLayout.SOUTH );
 	}
 	
 }
