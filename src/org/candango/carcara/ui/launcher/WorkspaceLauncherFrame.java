@@ -38,6 +38,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -49,6 +50,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
+
+import org.candango.carcara.MainApp;
 
 /**
  * This screen handles the workspace creating and selection and launches the 
@@ -208,6 +211,8 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		
 		browserButton = new JButton( "Browse..." );
 		
+		browserButton.setActionCommand( "BROWSE" );
+		
 		browserButton.addActionListener( this );
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -286,15 +291,25 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		JFileChooser fileChooser = new JFileChooser();
+	public void actionPerformed( ActionEvent e ) {
 		
-		fileChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
-		
-		int returnVal = fileChooser.showOpenDialog( this );
-		
-		if( returnVal == JFileChooser.APPROVE_OPTION ) {
-			workspacePathComboBox.addItem( fileChooser.getSelectedFile().getAbsolutePath() );
+		if( e.getActionCommand().equals( "BROWSE" ) ){
+			JFileChooser fileChooser = new JFileChooser();
+			
+			fileChooser.setCurrentDirectory( new File( 
+					MainApp.getUserHomePath() ) );
+			
+			fileChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
+			
+			int returnVal = fileChooser.showOpenDialog( this );
+			
+			if( returnVal == JFileChooser.APPROVE_OPTION ) {
+				workspacePathComboBox.addItem( 
+						fileChooser.getSelectedFile().getAbsolutePath() );
+				
+				workspacePathComboBox.setSelectedItem( 
+						fileChooser.getSelectedFile().getAbsolutePath() );
+			}
 		}
 		
 	}
