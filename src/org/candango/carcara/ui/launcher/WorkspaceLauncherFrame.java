@@ -46,7 +46,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -280,6 +279,10 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		
 		JButton cancelButton = new JButton( "Cancel" );
 		
+		cancelButton.setActionCommand( "CANCEL" );
+		
+		cancelButton.addActionListener( this );
+		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 8;
 		c.gridx = 3;
@@ -293,6 +296,7 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed( ActionEvent e ) {
 		
+		// do browse action
 		if( e.getActionCommand().equals( "BROWSE" ) ){
 			JFileChooser fileChooser = new JFileChooser();
 			
@@ -310,6 +314,9 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 				workspacePathComboBox.setSelectedItem( 
 						fileChooser.getSelectedFile().getAbsolutePath() );
 			}
+		}
+		else if( e.getActionCommand().equals( "CANCEL" )  ){
+			System.exit( 0 );
 		}
 		
 	}
