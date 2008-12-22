@@ -78,7 +78,7 @@ public class MainApp {
 	private static String fileSeparator;
 	
 	/**
-	 * Main methos. Begins all the magic.
+	 * Main method. Begins all the magic.
 	 * 
 	 * @param args
 	 */
@@ -197,8 +197,6 @@ public class MainApp {
 			createConfigurationFile();
 		}
 		
-		
-		
 		WorkspaceLauncherFrame launcherFrame = new WorkspaceLauncherFrame();
 		
 		launcherFrame.setVisible( true );
@@ -260,18 +258,30 @@ public class MainApp {
 	 * @return
 	 */
 	public static File getConfigurationFile() {
-		return new File( getRootPath() + getFileSeparator() + "carcara.xml" );
+		
+		
+		return new File( getRootPath() + getFileSeparator() + "conf" + getFileSeparator() + "environment.xml" );
 	}
 	
 	public static void createConfigurationFile() {
 		try {
+			File dir = new File( getConfigurationFile().getParentFile().toString() ) ;
+			
+			dir.mkdir();
+			
 			getConfigurationFile().createNewFile();
 			
 			saveEnvitonment();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			
+			JOptionPane.showMessageDialog( null, 
+					"Can't create configuration file.", 
+					"Caracara Modeling Tool", JOptionPane.ERROR_MESSAGE );
+			
+			System.exit( 1 );
 		}
 	}
 	
