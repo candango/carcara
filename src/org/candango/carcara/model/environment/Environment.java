@@ -2,12 +2,12 @@ package org.candango.carcara.model.environment;
 
 public interface Environment {
 	
-	public void addWorkspace( Workspace workspace );
+	public void addReference( WorkspaceReference ref );
 	
-	public Workspace[] getWorkspaces();
+	public WorkspaceReference[] getReferences();
 	
-	public Workspace getWorkspace( int index );
+	public WorkspaceReference getReference( int index );
 	
-	public Workspace getDefaultWorkspace();
+	public WorkspaceReference getDefaultReference();
 	
 }
