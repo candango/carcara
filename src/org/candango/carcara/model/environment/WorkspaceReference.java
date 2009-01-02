@@ -4,8 +4,10 @@ public interface WorkspaceReference {
 	
 	public String getPath();
 	
-	public String setPath( String path );
+	public void setPath( String path );
 	
 	public boolean isDefault();
+	
+	public void setDefault( boolean value );
 	
 }
