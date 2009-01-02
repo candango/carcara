@@ -199,8 +199,7 @@ public class MainApp {
 		
 		WorkspaceLauncherFrame launcherFrame = new WorkspaceLauncherFrame();
 		
-		launcherFrame.setVisible( true );
-		
+		launcherFrame.setVisible( true );	
 	}
 	
 	/**
@@ -258,14 +257,13 @@ public class MainApp {
 	 * @return
 	 */
 	public static File getConfigurationFile() {
-		
-		
-		return new File( getRootPath() + getFileSeparator() + "conf" + getFileSeparator() + "environment.xml" );
+		return new File( getRootPath() + getFileSeparator() + 
+				".conf" + getFileSeparator() + "environment.xml" );
 	}
 	
 	public static void createConfigurationFile() {
 		try {
-			File dir = new File( getConfigurationFile().getParentFile().toString() ) ;
+			File dir = new File( getConfigurationFile().getParent() ) ;
 			
 			dir.mkdir();
 			
