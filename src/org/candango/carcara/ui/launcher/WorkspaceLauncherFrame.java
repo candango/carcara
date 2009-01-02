@@ -51,6 +51,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 
 import org.candango.carcara.MainApp;
+import org.candango.carcara.model.environment.WorkspaceReference;
 
 /**
  * This screen handles the workspace creating and selection and launches the 
@@ -98,6 +99,8 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		
 		// creating center pane
 		createCenterPane();
+		
+		updateWorkspacePathComboBox();
 		
 		// creating south pane
 		createSouthPane();
@@ -184,7 +187,7 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		workspaceLabel.setFont( font );
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
-		
+//		c.ipady = 20;
 		c.gridx = 0;
 		c.gridy = 0;
 		
@@ -192,8 +195,10 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		
 		workspacePathComboBox = new JComboBox();
 		
+		workspacePathComboBox.setEditable( true );
+		
 		// Fixing combo box size
-		workspacePathComboBox.setMinimumSize( new Dimension( 1, 1) );
+		workspacePathComboBox.setMinimumSize( new Dimension( 1, 26) );
 		
 		workspacePathComboBox.setPreferredSize( new Dimension( 
 				workspacePathComboBox.getPreferredSize().width,
@@ -202,7 +207,6 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 300;
-		
 		c.gridx = 1;
 		c.gridy = 0;
 		
@@ -307,6 +311,8 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 			
 			int returnVal = fileChooser.showOpenDialog( this );
 			
+			updateWorkspacePathComboBox();
+			
 			if( returnVal == JFileChooser.APPROVE_OPTION ) {
 				workspacePathComboBox.addItem( 
 						fileChooser.getSelectedFile().getAbsolutePath() );
@@ -319,6 +325,14 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 			System.exit( 0 );
 		}
 		
+	}
+	
+	private void updateWorkspacePathComboBox() {
+		workspacePathComboBox.removeAllItems();
+		for( WorkspaceReference reference : 
+			MainApp.getEnvironment().getReferences() ){
+			workspacePathComboBox.addItem( reference.getPath() );
+		}
 	}
 	
 }
