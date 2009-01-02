@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 
 import org.candango.carcara.ui.MainFrame;
 import org.candango.carcara.ui.launcher.WorkspaceLauncherFrame;
+import org.candango.carcara.engine.EnvironmentHandler;
 import org.candango.carcara.model.environment.BasicEnvironment;
 import org.candango.carcara.model.environment.Environment;
 import org.candango.carcara.model.project.Project;
@@ -59,7 +60,7 @@ public class MainApp {
 	private static MainFrame mainFrame;
 	
 	private static Environment environment;
-	
+
 	/**
 	 * Main Application root path
 	 */
@@ -196,6 +197,9 @@ public class MainApp {
 			environment = new BasicEnvironment();
 			createConfigurationFile();
 		}
+		else {
+			environment = EnvironmentHandler.loadEnvironment();
+		}
 		
 		WorkspaceLauncherFrame launcherFrame = new WorkspaceLauncherFrame();
 		
@@ -291,5 +295,12 @@ public class MainApp {
 		out.close();
 	}
 	
+	public static Environment getEnvironment() {
+		return environment;
+	}
+
+	public static void setEnvironment(Environment environment) {
+		MainApp.environment = environment;
+	}
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */

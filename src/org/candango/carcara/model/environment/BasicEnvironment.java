@@ -2,7 +2,6 @@ package org.candango.carcara.model.environment;
 
 import java.util.ArrayList;
 
-
 public class BasicEnvironment implements Environment {
 	
 	/**
