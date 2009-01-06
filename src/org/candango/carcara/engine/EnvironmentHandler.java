@@ -78,7 +78,7 @@ public class EnvironmentHandler {
 						if( node.getAttributes().item( j ).getNodeName().toLowerCase().equals( "path" ) ) {
 							reference.setPath( node.getAttributes().item( j ).getNodeValue() );
 						}
-						else if( node.getAttributes().item( j ).getNodeName().toLowerCase().equals( "path" ) ) {
+						else if( node.getAttributes().item( j ).getNodeName().toLowerCase().equals( "default" ) ) {
 							if( node.getAttributes().item( j ).getNodeValue().toLowerCase().equals( "true" ) ) {
 								reference.setDefault( true );
 							}
