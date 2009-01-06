@@ -7,11 +7,21 @@ public class BasicEnvironment implements Environment {
 	/**
 	 * Workspace array list. Store all environment workspaces
 	 */
-	private ArrayList<WorkspaceReference> referenceList = new ArrayList<WorkspaceReference>();
+	private ArrayList<WorkspaceReference> referenceList = 
+		new ArrayList<WorkspaceReference>();
 	
 	@Override
 	public void addReference( WorkspaceReference ref ) {
-		referenceList.add( ref );
+		if( referenceExists( ref ) ) {
+			for( int i = 0; i < referenceList.size(); i++ ) {
+				if( referenceList.get( i ).getPath().equals( ref.getPath() ) ) {
+					referenceList.set( i , ref );
+				}
+			}
+		}
+		else {
+			referenceList.add( ref );
+		}
 	}
 
 	@Override
@@ -21,7 +31,8 @@ public class BasicEnvironment implements Environment {
 
 	@Override
 	public WorkspaceReference[] getReferences() {
-		WorkspaceReference[] references = new WorkspaceReference[ referenceList.size() ];
+		WorkspaceReference[] references = 
+			new WorkspaceReference[ referenceList.size() ];
 		return referenceList.toArray( references );
 	}
 
@@ -35,13 +46,22 @@ public class BasicEnvironment implements Environment {
 		return null;
 	}
 	
+	public boolean referenceExists( WorkspaceReference reference ) {
+		for( WorkspaceReference ref : getReferences() ) {
+			if( ref.getPath().equals( reference.getPath() ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	public String toString() {
 		String out = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 		out += "<environment>\n";
 		out += "\t<workspaces>\n";
 		for( WorkspaceReference ref : referenceList ) {
-			out += "\t<workspace path=\"" + ref.getPath() + "\"/>\n";
+			out += "\t\t<workspace path=\"" + ref.getPath() + "\"" + 
+			( ref.isDefault() ? " default=\"true\"" : "" ) + "/>\n";
 		}
 		out += "\t</workspaces>\n";
 		out += "</environment>";
