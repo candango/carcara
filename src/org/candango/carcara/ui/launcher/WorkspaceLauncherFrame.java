@@ -371,6 +371,9 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		for( WorkspaceReference reference : 
 			MainApp.getEnvironment().getReferences() ){
 			workspacePathComboBox.addItem( reference.getPath() );
+			if( reference.isDefault() ) {
+				workspacePathComboBox.setSelectedItem( reference.getPath() );
+			}
 		}
 	}
 	
