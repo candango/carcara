@@ -333,14 +333,17 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		else if( e.getActionCommand().equals( "OK" )  ){
 			
 			if( workspacePathComboBox.getSelectedItem() != null ) {
-				WorkspaceReference reference = new BasicWorkspaceReference();
-				reference.setPath( "" + workspacePathComboBox.getSelectedItem() );
-				reference.setDefault( true );
 				
 				for( WorkspaceReference reference2 : 
 					MainApp.getEnvironment().getReferences() ) {
 					reference2.setDefault( false );
 				}
+				
+				WorkspaceReference reference = new BasicWorkspaceReference();
+				reference.setPath( "" + workspacePathComboBox.getSelectedItem() );
+				reference.setDefault( true );
+				
+				
 				
 				MainApp.getEnvironment().addReference( reference );
 			}
@@ -351,6 +354,10 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
+		    setVisible( false );
+		    
+		    MainApp.showMainFrame();
 			
 		}
 		else if( e.getActionCommand().equals( "CANCEL" )  ){

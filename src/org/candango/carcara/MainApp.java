@@ -88,8 +88,6 @@ public class MainApp {
 		configureEnviromentVariables();
 		
 		configureEnvironment();
-		
-		//mainFrame = new MainFrame();
 	
 	}
 	
@@ -204,6 +202,10 @@ public class MainApp {
 		WorkspaceLauncherFrame launcherFrame = new WorkspaceLauncherFrame();
 		
 		launcherFrame.setVisible( true );	
+	}
+	
+	public static void showMainFrame() {
+		mainFrame = new MainFrame();
 	}
 	
 	/**
