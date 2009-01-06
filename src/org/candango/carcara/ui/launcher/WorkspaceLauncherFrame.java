@@ -39,6 +39,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -46,12 +47,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 
 import org.candango.carcara.MainApp;
+import org.candango.carcara.model.environment.BasicWorkspaceReference;
 import org.candango.carcara.model.environment.WorkspaceReference;
+
+import com.sun.org.apache.xml.internal.security.encryption.Reference;
 
 /**
  * This screen handles the workspace creating and selection and launches the 
@@ -274,6 +279,10 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		
 		JButton okButton = new JButton( "Ok" );
 		
+		okButton.setActionCommand( "OK" );
+		
+		okButton.addActionListener( this );
+		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 30;
 		c.gridx = 2;
@@ -320,6 +329,29 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 				workspacePathComboBox.setSelectedItem( 
 						fileChooser.getSelectedFile().getAbsolutePath() );
 			}
+		}
+		else if( e.getActionCommand().equals( "OK" )  ){
+			
+			if( workspacePathComboBox.getSelectedItem() != null ) {
+				WorkspaceReference reference = new BasicWorkspaceReference();
+				reference.setPath( "" + workspacePathComboBox.getSelectedItem() );
+				reference.setDefault( true );
+				
+				for( WorkspaceReference reference2 : 
+					MainApp.getEnvironment().getReferences() ) {
+					reference2.setDefault( false );
+				}
+				
+				MainApp.getEnvironment().addReference( reference );
+			}
+			
+			try {
+				MainApp.saveEnvitonment();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		}
 		else if( e.getActionCommand().equals( "CANCEL" )  ){
 			System.exit( 0 );
