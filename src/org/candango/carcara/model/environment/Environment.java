@@ -10,4 +10,8 @@ public interface Environment {
 	
 	public WorkspaceReference getDefaultReference();
 	
+	public Workspace getWorkspace();
+
+	public void setWorkspace( Workspace workspace );
+	
 }

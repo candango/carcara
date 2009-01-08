@@ -10,6 +10,8 @@ public class BasicEnvironment implements Environment {
 	private ArrayList<WorkspaceReference> referenceList = 
 		new ArrayList<WorkspaceReference>();
 	
+	private Workspace workspace;
+
 	@Override
 	public void addReference( WorkspaceReference ref ) {
 		if( referenceExists( ref ) ) {
@@ -67,5 +69,14 @@ public class BasicEnvironment implements Environment {
 		out += "</environment>";
 		return out;
 	}
-	
+
+	@Override
+	public Workspace getWorkspace() {
+		return workspace;
+	}
+
+	@Override
+	public void setWorkspace( Workspace workspace ) {
+		this.workspace = workspace;
+	}
 }
