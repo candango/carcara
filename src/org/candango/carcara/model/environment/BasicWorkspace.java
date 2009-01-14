@@ -11,6 +11,24 @@ public class BasicWorkspace implements Workspace {
 	 */
 	private  ArrayList< Project > projectList = new ArrayList<Project>(); 
 	
+	private String path;
+	
+	/* (non-Javadoc)
+	 * @see org.candango.carcara.model.environment.Workspace#getPath()
+	 */
+	@Override
+	public String getPath() {
+		return path;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.candango.carcara.model.environment.Workspace#setPath(java.lang.String)
+	 */
+	@Override
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.candango.carcara.model.environment.Workspace#addProject(org.candango.carcara.model.project.Project)
 	 */
@@ -59,5 +77,17 @@ public class BasicWorkspace implements Workspace {
 		out += "</workspace>";
 		return out;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.candango.carcara.model.environment.Workspace#getReference()
+	 */
+	@Override
+	public WorkspaceReference getReference() {
+		WorkspaceReference reference = new BasicWorkspaceReference();
+		reference.setPath( "" );
+		return null;
+	}
+
+	
 	
 }
