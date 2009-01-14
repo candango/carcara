@@ -36,8 +36,10 @@ import javax.swing.JOptionPane;
 import org.candango.carcara.ui.MainFrame;
 import org.candango.carcara.ui.launcher.WorkspaceLauncherFrame;
 import org.candango.carcara.engine.EnvironmentHandler;
+import org.candango.carcara.engine.WorkspaceHandler;
 import org.candango.carcara.model.environment.BasicEnvironment;
 import org.candango.carcara.model.environment.Environment;
+import org.candango.carcara.model.environment.WorkspaceReference;
 import org.candango.carcara.model.project.Project;
 
 /**
@@ -204,7 +206,10 @@ public class MainApp {
 		launcherFrame.setVisible( true );	
 	}
 	
-	public static void showMainFrame() {
+	public static void showMainFrame( WorkspaceReference reference ) {
+		
+		WorkspaceHandler.create( reference );
+		
 		mainFrame = new MainFrame();
 	}
 	
