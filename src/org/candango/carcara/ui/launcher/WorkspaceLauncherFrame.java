@@ -309,6 +309,8 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed( ActionEvent e ) {
 		
+		WorkspaceReference reference = null;
+		
 		// do browse action
 		if( e.getActionCommand().equals( "BROWSE" ) ){
 			JFileChooser fileChooser = new JFileChooser();
@@ -339,7 +341,7 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 					reference2.setDefault( false );
 				}
 				
-				WorkspaceReference reference = new BasicWorkspaceReference();
+				reference = new BasicWorkspaceReference();
 				reference.setPath( "" + workspacePathComboBox.getSelectedItem() );
 				reference.setDefault( true );
 				
@@ -357,7 +359,7 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 			
 		    setVisible( false );
 		    
-		    MainApp.showMainFrame();
+		    MainApp.showMainFrame( reference );
 			
 		}
 		else if( e.getActionCommand().equals( "CANCEL" )  ){
