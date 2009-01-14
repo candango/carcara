@@ -84,8 +84,8 @@ public class BasicWorkspace implements Workspace {
 	@Override
 	public WorkspaceReference getReference() {
 		WorkspaceReference reference = new BasicWorkspaceReference();
-		reference.setPath( "" );
-		return null;
+		reference.setPath( getPath() );
+		return reference;
 	}
 
 	
