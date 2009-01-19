@@ -88,6 +88,16 @@ public class BasicWorkspace implements Workspace {
 		return reference;
 	}
 
+	@Override
+	public boolean hasProject(String name) {
+		for( Project project : projectList ) {
+			if( project.getName().equals( name ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	
 	
 }

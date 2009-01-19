@@ -41,6 +41,14 @@ public interface Workspace {
 	public void addProject( Project project );
 	
 	/**
+	 * Verifies if the workspace has a project by a given name
+	 *
+	 * @param name
+	 * @return
+	 */
+	public boolean hasProject( String name );
+	
+	/**
 	 * Return the workspace reference
 	 * 
 	 * @return
