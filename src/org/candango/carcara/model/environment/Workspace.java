@@ -1,5 +1,6 @@
 package org.candango.carcara.model.environment;
 
+import org.candango.carcara.model.environment.exception.ProjectAlreadyExistsException;
 import org.candango.carcara.model.project.Project;
 
 public interface Workspace {
@@ -37,8 +38,10 @@ public interface Workspace {
 	 * Add a new project to workspace
 	 * 
 	 * @param project
+	 * @throws ProjectAlreadyExistsException
 	 */
-	public void addProject( Project project );
+	public void addProject( Project project ) throws 
+		ProjectAlreadyExistsException;
 	
 	/**
 	 * Verifies if the workspace has a project by a given name

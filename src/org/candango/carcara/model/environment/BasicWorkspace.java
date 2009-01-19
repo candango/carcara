@@ -1,7 +1,10 @@
 package org.candango.carcara.model.environment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.candango.carcara.engine.WorkspaceHandler;
+import org.candango.carcara.model.environment.exception.ProjectAlreadyExistsException;
 import org.candango.carcara.model.project.Project;
 
 public class BasicWorkspace implements Workspace {
@@ -33,8 +36,18 @@ public class BasicWorkspace implements Workspace {
 	 * @see org.candango.carcara.model.environment.Workspace#addProject(org.candango.carcara.model.project.Project)
 	 */
 	@Override
-	public void addProject(Project project) {
+	public void addProject(Project project)throws 
+		ProjectAlreadyExistsException {
+		if( hasProject( project.getName() ) ) {
+			throw new ProjectAlreadyExistsException();
+		}
 		projectList.add( project );
+		try {
+			WorkspaceHandler.save( this );
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/* (non-Javadoc)
