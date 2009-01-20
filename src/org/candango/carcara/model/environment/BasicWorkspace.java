@@ -116,14 +116,14 @@ public class BasicWorkspace implements Workspace {
 	public String toString() {
 		String out = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 		out += "<workspace>\n";
-		out += "\t<project>\n";
+		out += "\t<projects>\n";
 		for( Project project : projectList ) {
-			out += "\t\t<project >\n";
+			out += "\t\t<project>\n";
 			out += "\t\t\t<name>" + project.getName() + "</name>\n";
 			out += "\t\t\t<package>" + project.getProjectPackage() + "</package>\n";
-			out += "\t\t</project >\n";
+			out += "\t\t</project>\n";
 		}
-		out += "\t</project>\n";
+		out += "\t</projects>\n";
 		out += "</workspace>";
 		return out;
 	}
