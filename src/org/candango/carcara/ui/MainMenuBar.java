@@ -34,7 +34,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
@@ -135,6 +134,8 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 							"\" already exists in the workspace.", 
 							"Creating Project", JOptionPane.ERROR_MESSAGE );
 				}
+				
+				getMainFrame().update();
 			}
 		}
 		
