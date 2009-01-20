@@ -68,18 +68,26 @@ public class EnvironmentHandler {
 		ArrayList<WorkspaceReference> referenceList = 
 				new ArrayList<WorkspaceReference>();
 		
-		for( int i = 0; i < nodes.getLength(); i++ ){
+		for( int i = 0; i < nodes.getLength(); i++ ) {
 			Node node = nodes.item( i );
 			if( !node.getNodeName().equals( "#text" ) ) {
 				String name = node.getNodeName(); 
 				if( name.toLowerCase().equals( "workspace" ) ) {
-					WorkspaceReference reference = new BasicWorkspaceReference();
-					for( int j = 0; j < node.getAttributes().getLength(); j++) {
-						if( node.getAttributes().item( j ).getNodeName().toLowerCase().equals( "path" ) ) {
-							reference.setPath( node.getAttributes().item( j ).getNodeValue() );
+					WorkspaceReference reference = 
+						new BasicWorkspaceReference();
+					for( int j = 0; j < 
+						node.getAttributes().getLength(); j++ ) {
+						if( node.getAttributes().item( j ).getNodeName().
+								toLowerCase().equals( "path" ) ) {
+							reference.setPath( node.getAttributes().item( 
+									j ).getNodeValue() );
 						}
-						else if( node.getAttributes().item( j ).getNodeName().toLowerCase().equals( "default" ) ) {
-							if( node.getAttributes().item( j ).getNodeValue().toLowerCase().equals( "true" ) ) {
+						else if( node.getAttributes().item( 
+								j ).getNodeName().toLowerCase().equals( 
+										"default" ) ) {
+							if( node.getAttributes().item( 
+									j ).getNodeValue().toLowerCase().equals( 
+											"true" ) ) {
 								reference.setDefault( true );
 							}
 						}
@@ -88,7 +96,9 @@ public class EnvironmentHandler {
 				}
 			}
 		}
-		WorkspaceReference[] references = new WorkspaceReference[ referenceList.size() ];
+		
+		WorkspaceReference[] references = 
+			new WorkspaceReference[ referenceList.size() ];
 		
 		return referenceList.toArray( references );
 	}

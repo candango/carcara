@@ -47,7 +47,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -55,8 +54,6 @@ import javax.swing.JTextArea;
 import org.candango.carcara.MainApp;
 import org.candango.carcara.model.environment.BasicWorkspaceReference;
 import org.candango.carcara.model.environment.WorkspaceReference;
-
-import com.sun.org.apache.xml.internal.security.encryption.Reference;
 
 /**
  * This screen handles the workspace creating and selection and launches the 

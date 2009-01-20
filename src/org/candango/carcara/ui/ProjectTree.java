@@ -97,8 +97,6 @@ public class ProjectTree extends JPanel {
         JScrollPane scrollPane = new JScrollPane( tree );
         
         add(scrollPane);
-
-    	
 	}
     
     public void selectProject( String key ) {
@@ -121,7 +119,6 @@ public class ProjectTree extends JPanel {
     	rootNode.removeAllChildren();
     	
     	//ImageIcon projectIcon = new ImageIcon( "img/project.png" );
-    	
     	
     	for( Project project : 
     		MainApp.getEnvironment().getWorkspace().getProjects() ){
