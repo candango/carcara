@@ -24,7 +24,7 @@ public class WorkspaceHandler {
 	 * 
 	 * @param reference
 	 */
-	public static void create( WorkspaceReference reference ) {
+	public static Workspace create( WorkspaceReference reference ) {
 		
 		if( !isCreated( reference ) ) {
 			
@@ -49,17 +49,20 @@ public class WorkspaceHandler {
 				}
 			}
 			
-			Workspace workspace = new BasicWorkspace();
-			
-			workspace.setPath( reference.getPath() );
-			
-			try {
-				save( workspace );
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
+		
+		Workspace workspace = new BasicWorkspace();
+		
+		workspace.setPath( reference.getPath() );
+		
+		try {
+			save( workspace );
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return workspace;
 		
 	}
 	

@@ -39,6 +39,7 @@ import org.candango.carcara.engine.EnvironmentHandler;
 import org.candango.carcara.engine.WorkspaceHandler;
 import org.candango.carcara.model.environment.BasicEnvironment;
 import org.candango.carcara.model.environment.Environment;
+import org.candango.carcara.model.environment.Workspace;
 import org.candango.carcara.model.environment.WorkspaceReference;
 import org.candango.carcara.model.project.Project;
 
@@ -120,7 +121,9 @@ public class MainApp {
 	
 	public static void showMainFrame( WorkspaceReference reference ) {
 		
-		WorkspaceHandler.create( reference );
+		Workspace workspace = WorkspaceHandler.create( reference );
+		
+		getEnvironment().setWorkspace( workspace );
 		
 		mainFrame = new MainFrame();
 	}
