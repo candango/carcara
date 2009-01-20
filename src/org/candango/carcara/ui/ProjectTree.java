@@ -123,7 +123,8 @@ public class ProjectTree extends JPanel {
     	//ImageIcon projectIcon = new ImageIcon( "img/project.png" );
     	
     	
-    	for( Project project : MainApp.getProjects() ){
+    	for( Project project : 
+    		MainApp.getEnvironment().getWorkspace().getProjects() ){
     		
     		
     		ProjectElementNode node = new ProjectElementNode( 

@@ -39,6 +39,9 @@ import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
 import org.candango.carcara.MainApp;
+import org.candango.carcara.engine.ProjectHandler;
+import org.candango.carcara.model.environment.exception.ProjectAlreadyExistsException;
+import org.candango.carcara.model.project.Project;
 
 /**
  * Carcara application main menu bar. Contains all commands of application.
@@ -52,14 +55,18 @@ import org.candango.carcara.MainApp;
 public class MainMenuBar extends JMenuBar implements ActionListener {
 
 	/**
-	 * 
+	 * Generated serial version UID
 	 */
 	private static final long serialVersionUID = -3279898217783003530L;
-
+	
+	/**
+	 * Menu and submenu references
+	 */
 	private JMenu menu, submenu;
 	
-	private JRadioButtonMenuItem rbMenuItem;
-	
+	/**
+	 * Main frame reference
+	 */
 	private MainFrame mainFrame;
 	
 	/**
@@ -103,6 +110,9 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed( ActionEvent e ) {
 		
@@ -111,7 +121,20 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 			String projectName = JOptionPane.showInputDialog( "Project Name:" );
 			
 			if( projectName != null ) {
-				MainApp.createProject( projectName );
+				
+				Project project = ProjectHandler.createProject( projectName , 
+						"org.candango.carcara.php.Project" );
+				
+				try {
+					MainApp.getEnvironment().getWorkspace().addProject( 
+							project );
+				} 
+				catch (ProjectAlreadyExistsException paee ) {
+					JOptionPane.showMessageDialog( getMainFrame(), 
+							"A project with name \"" + projectName + 
+							"\" already exists in the workspace.", 
+							"Creating Project", JOptionPane.ERROR_MESSAGE );
+				}
 			}
 		}
 		
@@ -131,7 +154,8 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		}
 		
 		if( e.getActionCommand() == "FILE_EXIT" ){
-			if( MainApp.getProjectCount() > 0 ) {
+			if( MainApp.getEnvironment().getWorkspace().getProjectCount() 
+					> 0 ) {
 				int wantExit = JOptionPane.showConfirmDialog( mainFrame , 
 						"You have non saved projets. Do you really want " + 
 						"to close the application?" );
@@ -205,7 +229,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 			try {
 				String actionCommand = menu.getItem( i ).getActionCommand(); 
 				
-				if( MainApp.getProjectCount() == 0 ) {
+				
+				
+				if( MainApp.getEnvironment().getWorkspace().getProjectCount() 
+						== 0 ) {
 					if( actionCommand == "FILE_SAVE" || 
 							actionCommand == "FILE_SAVE_AS" ) {
 						menu.getItem( i ).setEnabled( false );
