@@ -49,6 +49,8 @@ public class MainFrame extends JFrame {
 		
 		setVisible( true );
 		
+		update();
+		
 	}
 
 	public int getFileState() {

@@ -108,12 +108,13 @@ public class WorkspaceHandler {
 			loadWorkspace( workspace );
 		}
 		
-		/*try {
+		try {
 			save( workspace );
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		
 		return workspace;
 		
@@ -195,13 +196,11 @@ public class WorkspaceHandler {
 						if( !child.getNodeName().equals( "#text" ) ) {
 							
 							if( child.getNodeName().toLowerCase().equals( "name" ) ) {
-								System.out.println( child.getNodeValue() );
-								System.out.println( "" + child.getNextSibling().getNodeValue() );
-								name = child.getNodeValue();
+								name = child.getTextContent();
 							}
 							
 							if( child.getNodeName().toLowerCase().equals( "package" ) ) {
-								pack = child.getNodeValue();
+								pack = child.getTextContent();
 							}
 							
 						}
