@@ -29,7 +29,6 @@ package org.candango.carcara;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
@@ -41,7 +40,6 @@ import org.candango.carcara.model.environment.BasicEnvironment;
 import org.candango.carcara.model.environment.Environment;
 import org.candango.carcara.model.environment.Workspace;
 import org.candango.carcara.model.environment.WorkspaceReference;
-import org.candango.carcara.model.project.Project;
 
 /**
  * Carcara main application class.
@@ -51,6 +49,7 @@ import org.candango.carcara.model.project.Project;
  * @link       http://www.candango.org/myfuses
  * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
  * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
+ * @since 0.0.1
  */
 public class MainApp {
 	
@@ -126,10 +125,6 @@ public class MainApp {
 		getEnvironment().setWorkspace( workspace );
 		
 		mainFrame = new MainFrame();
-	}
-	
-	private static void update() {
-		mainFrame.update();
 	}
 	
 	/**
