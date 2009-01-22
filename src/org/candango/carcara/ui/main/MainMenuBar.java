@@ -41,6 +41,7 @@ import org.candango.carcara.MainApp;
 import org.candango.carcara.engine.ProjectHandler;
 import org.candango.carcara.model.environment.exception.ProjectAlreadyExistsException;
 import org.candango.carcara.model.project.Project;
+import org.candango.carcara.ui.wizard.NewProjectWizardFrame;
 
 /**
  * Carcara application main menu bar. Contains all commands of application.
@@ -117,7 +118,11 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		
 		if( e.getActionCommand() == "FILE_NEW" ) {
 			
-			String projectName = JOptionPane.showInputDialog( "Project Name:" );
+			NewProjectWizardFrame newFrame = new NewProjectWizardFrame();
+			
+			newFrame.setVisible( true );
+			
+			/*String projectName = JOptionPane.showInputDialog( "Project Name:" );
 			
 			if( projectName != null ) {
 				
@@ -136,7 +141,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 				}
 				
 				getMainFrame().update();
-			}
+			}*/
 		}
 		
 		if( e.getActionCommand() == "FILE_OPEN_FILE" ){
