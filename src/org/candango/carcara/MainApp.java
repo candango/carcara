@@ -33,8 +33,8 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
-import org.candango.carcara.ui.MainFrame;
 import org.candango.carcara.ui.launcher.WorkspaceLauncherFrame;
+import org.candango.carcara.ui.main.MainFrame;
 import org.candango.carcara.engine.EnvironmentHandler;
 import org.candango.carcara.engine.WorkspaceHandler;
 import org.candango.carcara.model.environment.BasicEnvironment;
