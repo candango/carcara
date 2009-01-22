@@ -41,18 +41,28 @@ import javax.swing.JFrame;
 public class AbstractWizardFrame extends JFrame {
 
 	/**
-	 * 
+	 * Generated serial version UID 
 	 */
 	private static final long serialVersionUID = 5771792647335637156L;
 	
-	private String title;
-	
+	/**
+	 * Constructor with a title only
+	 * 
+	 * @param title
+	 */
 	public AbstractWizardFrame( String title ) {
 		super( title );
 	}
 	
+	/**
+	 * Construction with a title and wizard instruction
+	 * 
+	 * @param title
+	 * @param instruction
+	 */
 	public AbstractWizardFrame( String title, String instruction ) {
 		this( title );
 	}
 	
 }
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
