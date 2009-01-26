@@ -28,23 +28,17 @@ package org.candango.carcara.ui.wizard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
+import java.awt.Point;
 
-import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
-import javax.swing.SpringLayout;
-import javax.swing.border.Border;
 
 import org.candango.carcara.MainApp;
-
-import com.sun.java.swing.plaf.motif.MotifBorders.BevelBorder;
 
 /**
  * Base class to create wizard frames in carcara.
@@ -76,27 +70,24 @@ public class AbstractWizardDialog extends JDialog {
 		setDefaultSize();
 		
 		createNorthPane();
+		
+		setLocation( getCenteredCorner() );
 	}
-	
 	
 	private void createNorthPane() {
 		JPanel pane = new JPanel();
 		
-		
 		pane.setLayout( new BorderLayout() );
-		
 		
 		// Creating workspace command label
 		JLabel selectWorkspaceLabel = new JLabel( "  " + instruction );
-		
 		
 		selectWorkspaceLabel.setPreferredSize( new Dimension( 40, 25 ) );
 		
 		pane.add( selectWorkspaceLabel, BorderLayout.PAGE_START );
 		
 		// creating workspace info text area
-		JTextArea workspaceInfoTextArea = new JTextArea( 
-				"   " );
+		JTextArea workspaceInfoTextArea = new JTextArea( "   " );
 		
 		workspaceInfoTextArea.setPreferredSize( new Dimension( 40, 40 ) );
 		
@@ -104,13 +95,9 @@ public class AbstractWizardDialog extends JDialog {
 		
 		workspaceInfoTextArea.setEditable( false );
 		
-		
 		pane.add( workspaceInfoTextArea, BorderLayout.CENTER );
 		
-		
 		JSeparator separator = new JSeparator();
-		
-		
 		
 		separator.setForeground( Color.GRAY );
 		
@@ -118,8 +105,12 @@ public class AbstractWizardDialog extends JDialog {
 		
 		pane.setBackground( Color.WHITE );
 		
-		
 		add( pane, BorderLayout.NORTH );
+		
+	}
+	
+	public void addCenterComponent( Component component ) {
+		add( component );
 	}
 	
 	private void setDefaultSize() {
@@ -134,7 +125,13 @@ public class AbstractWizardDialog extends JDialog {
 		return instruction;
 	}
 	
-	
+	private Point getCenteredCorner() {
+        Dimension dim = new Dimension( getParent().getWidth(), getParent().getHeight() );
+        return new Point(
+            (int)((dim.getWidth() - getWidth()) / 2) + getParent().getX(),
+            (int)((dim.getHeight() - getHeight()) / 2) + getParent().getY()
+        );
+    }
 	
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
