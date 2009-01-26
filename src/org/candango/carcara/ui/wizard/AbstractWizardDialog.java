@@ -26,7 +26,9 @@
  */
 package org.candango.carcara.ui.wizard;
 
-import javax.swing.JFrame;
+import javax.swing.JDialog;
+
+import org.candango.carcara.MainApp;
 
 /**
  * Base class to create wizard frames in carcara.
@@ -38,31 +40,39 @@ import javax.swing.JFrame;
  * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
  * @since 0.0.1
  */
-public class AbstractWizardFrame extends JFrame {
+public class AbstractWizardDialog extends JDialog {
 
 	/**
 	 * Generated serial version UID 
 	 */
 	private static final long serialVersionUID = 5771792647335637156L;
 	
-	/**
-	 * Constructor with a title only
-	 * 
-	 * @param title
-	 */
-	public AbstractWizardFrame( String title ) {
-		super( title );
+	private String instruction;
+	
+	public AbstractWizardDialog( String title, String instruction ) {
+		
+		super( MainApp.getMainFrame(), true );
+		
+		setInstruction( instruction );
+		
+		setTitle( title );
+		
+		setDefaultSize();
 	}
 	
-	/**
-	 * Construction with a title and wizard instruction
-	 * 
-	 * @param title
-	 * @param instruction
-	 */
-	public AbstractWizardFrame( String title, String instruction ) {
-		this( title );
+	private void setDefaultSize() {
+		setSize( 525, 500 );
 	}
+
+	public void setInstruction(String instruction) {
+		this.instruction = instruction;
+	}
+
+	public String getInstruction() {
+		return instruction;
+	}
+	
+	
 	
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
