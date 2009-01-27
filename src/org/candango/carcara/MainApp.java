@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.candango.carcara.ui.launcher.WorkspaceLauncherFrame;
@@ -209,6 +210,10 @@ public class MainApp {
 
 	public static void setEnvironment(Environment environment) {
 		MainApp.environment = environment;
+	}
+	
+	public static JFrame getMainFrame(){
+		return mainFrame;
 	}
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
