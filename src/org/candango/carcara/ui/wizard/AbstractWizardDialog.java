@@ -142,23 +142,41 @@ public class AbstractWizardDialog extends JDialog {
 		
 		JPanel buttonPane = new JPanel();
 		
-		buttonPane.setLayout( new GridLayout( 0, 4 ) );
+		JPanel innerButtonPane1 = new JPanel();
+		
+		JPanel innerButtonPane2 = new JPanel();
+		
+		buttonPane.setLayout( new GridLayout( 0, 2, 10, 0 ) );
+		
+		innerButtonPane1.setLayout( new GridLayout( 0, 2, 2, 0 ) );
+		
+		innerButtonPane2.setLayout( new GridLayout( 0, 2, 10, 0 ) );
 		
 		backButton = new JButton( "< Back" );
 		
+		backButton.setEnabled( false );
+		
 		nextButton = new JButton( "Next >" );
+		
+		nextButton.setEnabled( false );
 		
 		finishButton = new JButton( "Finish" );
 		
+		finishButton.setEnabled( false );
+		
 		cancelButton = new JButton( "Cancel" );
 		
-		buttonPane.add( backButton );
+		innerButtonPane1.add( backButton );
 		
-		buttonPane.add( nextButton );
+		innerButtonPane1.add( nextButton );
 		
-		buttonPane.add( finishButton );
+		innerButtonPane2.add( finishButton );
 		
-		buttonPane.add( cancelButton );
+		innerButtonPane2.add( cancelButton );
+		
+		buttonPane.add( innerButtonPane1 );
+		
+		buttonPane.add( innerButtonPane2 );
 		
 		buttonPane.setBorder( 
 				BorderFactory.createEmptyBorder( 15, 100, 15, 15) );
