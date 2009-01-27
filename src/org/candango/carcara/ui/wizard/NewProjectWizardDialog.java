@@ -28,7 +28,6 @@
 package org.candango.carcara.ui.wizard;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -36,8 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.TreeSelectionModel;
-
-
 
 /**
  * This is a new project wizard dialog. Apears when new project is fired in
