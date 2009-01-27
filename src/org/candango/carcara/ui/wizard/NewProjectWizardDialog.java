@@ -27,6 +27,11 @@
  */
 package org.candango.carcara.ui.wizard;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -65,7 +70,21 @@ public class NewProjectWizardDialog extends AbstractWizardDialog {
 	
     private void createCenterPane() {
     	
-    	JPanel pane = new JPanel();
+    	JPanel centerPanel = new JPanel();
+    	
+    	centerPanel.setLayout( new BorderLayout() );
+    	
+    	JPanel labelPane = new JPanel();
+    	
+    	labelPane.setBorder( BorderFactory.createEmptyBorder( 10, 10, 0, 10) );
+    	
+    	labelPane.setLayout( new BorderLayout() );
+    	
+    	labelPane.add( new JLabel( "Wizards:" ) );
+    	
+    	centerPanel.add( labelPane, BorderLayout.PAGE_START );
+    	
+    	JPanel treePane = new JPanel();
     	
     	tree = new JTree();
         tree.setEditable( true );
@@ -80,9 +99,15 @@ public class NewProjectWizardDialog extends AbstractWizardDialog {
         
         JScrollPane scrollPane = new JScrollPane( tree );
         
-        pane.add( scrollPane );
+        treePane.setBorder( BorderFactory.createEmptyBorder( 10, 10, 10, 10) );
         
-        addCenterComponent( scrollPane );
+        treePane.setLayout( new BorderLayout() );
+        
+        treePane.add( scrollPane, BorderLayout.CENTER );
+        
+        centerPanel.add( treePane, BorderLayout.CENTER );
+        
+        addCenterComponent( centerPanel );
     	
     }
 }
