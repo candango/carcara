@@ -30,8 +30,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Point;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -59,6 +62,14 @@ public class AbstractWizardDialog extends JDialog {
 	
 	private String instruction;
 	
+	private JButton backButton;
+	
+	private JButton nextButton;
+	
+	private JButton finishButton;
+	
+	private JButton cancelButton;
+	
 	public AbstractWizardDialog( String title, String instruction ) {
 		
 		super( MainApp.getMainFrame(), true );
@@ -70,6 +81,8 @@ public class AbstractWizardDialog extends JDialog {
 		setDefaultSize();
 		
 		createNorthPane();
+		
+		createSouthPane();
 		
 		setLocation( getCenteredCorner() );
 	}
@@ -109,6 +122,53 @@ public class AbstractWizardDialog extends JDialog {
 		
 	}
 	
+	private void createSouthPane() {
+		
+		JPanel pane = new JPanel();
+		
+		pane.setLayout( new BorderLayout() );
+		
+		// creating workspace info text area
+		
+		JSeparator separator = new JSeparator();
+		
+		separator.setForeground( Color.GRAY );
+		
+		pane.add( separator, BorderLayout.PAGE_START );
+		
+		pane.setBackground( Color.WHITE );
+		
+		// creating buttons
+		
+		JPanel buttonPane = new JPanel();
+		
+		buttonPane.setLayout( new GridLayout( 0, 4 ) );
+		
+		backButton = new JButton( "< Back" );
+		
+		nextButton = new JButton( "Next >" );
+		
+		finishButton = new JButton( "Finish" );
+		
+		cancelButton = new JButton( "Cancel" );
+		
+		buttonPane.add( backButton );
+		
+		buttonPane.add( nextButton );
+		
+		buttonPane.add( finishButton );
+		
+		buttonPane.add( cancelButton );
+		
+		buttonPane.setBorder( 
+				BorderFactory.createEmptyBorder( 15, 100, 15, 15) );
+		
+		pane.add( buttonPane, BorderLayout.CENTER );
+		
+		add( pane, BorderLayout.SOUTH );
+		
+	}
+	
 	public void addCenterComponent( Component component ) {
 		add( component );
 	}
@@ -132,6 +192,38 @@ public class AbstractWizardDialog extends JDialog {
             (int)((dim.getHeight() - getHeight()) / 2) + getParent().getY()
         );
     }
+
+	public JButton getBackButton() {
+		return backButton;
+	}
+
+	public void setBackButton(JButton backButton) {
+		this.backButton = backButton;
+	}
+
+	public JButton getNextButton() {
+		return nextButton;
+	}
+
+	public void setNextButton(JButton nextButton) {
+		this.nextButton = nextButton;
+	}
+
+	public JButton getFinishButton() {
+		return finishButton;
+	}
+
+	public void setFinishButton(JButton finishButton) {
+		this.finishButton = finishButton;
+	}
+
+	public JButton getCancelButton() {
+		return cancelButton;
+	}
+
+	public void setCancelButton(JButton cancelButton) {
+		this.cancelButton = cancelButton;
+	}
 	
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
