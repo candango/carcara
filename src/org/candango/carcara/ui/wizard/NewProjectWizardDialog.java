@@ -44,8 +44,8 @@ import javax.swing.tree.TreeSelectionModel;
  * @copyright  Copyright (c) 2008 - 2009 Candango Open Source Group
  * @link       http://www.candango.org/myfuses
  * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
- * @version    SVN: $Id$
- * @since 0.0.1
+ * @version    SVN: $Revision$
+ * @since 95
  */
 public class NewProjectWizardDialog extends AbstractWizardDialog {
 
