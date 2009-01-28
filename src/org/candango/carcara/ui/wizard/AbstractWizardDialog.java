@@ -55,10 +55,6 @@ import org.candango.carcara.MainApp;
  * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
  * @since 0.0.1
  */
-/**
- * @author fpiraz
- *
- */
 public class AbstractWizardDialog extends JDialog {
 
 	/**
