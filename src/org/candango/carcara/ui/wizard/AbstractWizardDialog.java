@@ -52,7 +52,7 @@ import org.candango.carcara.MainApp;
  * @copyright  Copyright (c) 2008 - 2009 Candango Open Source Group
  * @link       http://www.candango.org/myfuses
  * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
- * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
+ * @version    SVN: $Id$
  * @since 0.0.1
  */
 public class AbstractWizardDialog extends JDialog {
@@ -61,6 +61,16 @@ public class AbstractWizardDialog extends JDialog {
 	 * Generated serial version UID 
 	 */
 	private static final long serialVersionUID = 5771792647335637156L;
+	
+	/**
+	 * Wizard back dialog
+	 */
+	private AbstractWizardDialog backDialog;
+	
+	/**
+	 * Wizard next dialog
+	 */
+	private AbstractWizardDialog nextDialog;
 	
 	/**
 	 * Wizard instruction
@@ -271,7 +281,7 @@ public class AbstractWizardDialog extends JDialog {
 	/**
 	 * Return the centered point that the dialog must appears in the screen
 	 * 
-	 * @return
+	 * @return A <code>Point</code> for positioning the dialog
 	 */
 	private Point getCenteredCorner() {
         Dimension dim = new Dimension( getParent().getWidth(), getParent().getHeight() );
@@ -282,7 +292,7 @@ public class AbstractWizardDialog extends JDialog {
     }
 
 	/**
-	 * Return the wizard back button reference
+	 * Return the wizard back button
 	 * 
 	 * @return
 	 */
@@ -291,7 +301,7 @@ public class AbstractWizardDialog extends JDialog {
 	}
 	
 	/**
-	 * Return the wizard next button reference
+	 * Return the wizard next button
 	 * 
 	 * @return
 	 */
@@ -300,7 +310,7 @@ public class AbstractWizardDialog extends JDialog {
 	}
 	
 	/**
-	 * Return the wizard finish button reference
+	 * Return the wizard finish button
 	 * 
 	 * @return
 	 */
@@ -309,7 +319,7 @@ public class AbstractWizardDialog extends JDialog {
 	}
 
 	/**
-	 * Return the wizard cancel button reference
+	 * Return the wizard cancel button
 	 * 
 	 * @return
 	 */
@@ -317,9 +327,20 @@ public class AbstractWizardDialog extends JDialog {
 		return cancelButton;
 	}
 	
+	/**
+	 * Return the wizard next dialog
+	 * @return
+	 */
+	public AbstractWizardDialog getNextDialog() {
+		return nextDialog;
+	}
 	
 	public void setNextDialog( AbstractWizardDialog dialog ) {
+		this.nextDialog = dialog;
 		
+		if( this.nextDialog != null ) {
+			getNextButton().setEnabled( true );
+		}
 	}
 	
 }

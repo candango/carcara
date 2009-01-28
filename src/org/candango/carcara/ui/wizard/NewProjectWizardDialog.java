@@ -44,13 +44,13 @@ import javax.swing.tree.TreeSelectionModel;
  * @copyright  Copyright (c) 2008 - 2009 Candango Open Source Group
  * @link       http://www.candango.org/myfuses
  * @license    http://www.mozilla.org/MPL/MPL-1.1.html  MPL 1.1
- * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
+ * @version    SVN: $Id$
  * @since 0.0.1
  */
 public class NewProjectWizardDialog extends AbstractWizardDialog {
 
 	/**
-	 * 
+	 * Generated serial version UID
 	 */
 	private static final long serialVersionUID = -8450906280661697033L;
 	
@@ -91,8 +91,6 @@ public class NewProjectWizardDialog extends AbstractWizardDialog {
         tree.setRootVisible( false );
         
         tree.setShowsRootHandles( true );
-        
-        //tree.setCellRenderer( new ProjectCellRender() );
         
         JScrollPane scrollPane = new JScrollPane( tree );
         
