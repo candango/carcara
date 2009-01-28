@@ -104,17 +104,14 @@ public class AbstractWizardDialog extends JDialog {
 	 * @param instruction
 	 */
 	public AbstractWizardDialog( String title, String instruction ) {
-		
 		super( MainApp.getMainFrame(), true );
 		
 		setInstruction( instruction );
-		
 		setTitle( title );
 		
 		setDefaultSize();
 		
 		createNorthPane();
-		
 		createSouthPane();
 		
 		defineCancelAction();
@@ -166,55 +163,40 @@ public class AbstractWizardDialog extends JDialog {
 	private void createSouthPane() {
 		
 		JPanel pane = new JPanel();
-		
 		pane.setLayout( new BorderLayout() );
 		
 		// creating workspace info text area
 		JSeparator separator = new JSeparator();
-		
 		separator.setForeground( Color.GRAY );
-		
 		pane.add( separator, BorderLayout.PAGE_START );
-		
 		pane.setBackground( Color.WHITE );
 		
 		// creating buttons
 		JPanel buttonPane = new JPanel();
-		
 		JPanel innerButtonPane1 = new JPanel();
-		
 		JPanel innerButtonPane2 = new JPanel();
 		
 		buttonPane.setLayout( new GridLayout( 0, 2, 10, 0 ) );
-		
 		innerButtonPane1.setLayout( new GridLayout( 0, 2, 2, 0 ) );
-		
 		innerButtonPane2.setLayout( new GridLayout( 0, 2, 10, 0 ) );
 		
 		backButton = new JButton( "< Back" );
-		
 		backButton.setEnabled( false );
 		
 		nextButton = new JButton( "Next >" );
-		
 		nextButton.setEnabled( false );
 		
 		finishButton = new JButton( "Finish" );
-		
 		finishButton.setEnabled( false );
 		
 		cancelButton = new JButton( "Cancel" );
 		
 		innerButtonPane1.add( backButton );
-		
 		innerButtonPane1.add( nextButton );
-		
 		innerButtonPane2.add( finishButton );
-		
 		innerButtonPane2.add( cancelButton );
 		
 		buttonPane.add( innerButtonPane1 );
-		
 		buttonPane.add( innerButtonPane2 );
 		
 		buttonPane.setBorder( 
@@ -230,18 +212,13 @@ public class AbstractWizardDialog extends JDialog {
 	 * Define a default action on cancel button click
 	 */
 	private void defineCancelAction() {
-		
 		getCancelButton().addActionListener( new ActionListener() {
-
 			@Override
 			public void actionPerformed( ActionEvent e ) {
 				setVisible( false );
 				dispose();
 			}
-			
-		}
-		);
-		
+		} );
 	}
 	
 	/**
@@ -328,17 +305,45 @@ public class AbstractWizardDialog extends JDialog {
 	}
 	
 	/**
+	 * Return the wizard back dialog
+	 * 
+	 * @return The back <code>AbstractWizardDialog</code>
+	 */
+	public AbstractWizardDialog getBackDialog() {
+		return backDialog;
+	}
+	
+	/**
+	 * Set back dialog.
+	 * 
+	 * @param dialog The back <code>AbstractWizardDialog</code>
+	 */
+	public void setBackDialog( AbstractWizardDialog dialog ) {
+		backDialog = dialog;
+		
+		if( backDialog != null ) {
+			getBackButton().setEnabled( true );
+		}
+	}
+	
+	/**
 	 * Return the wizard next dialog
-	 * @return
+	 * 
+	 * @return The next <code>AbstractWizardDialog</code>
 	 */
 	public AbstractWizardDialog getNextDialog() {
 		return nextDialog;
 	}
 	
+	/**
+	 * Set next dialog.
+	 * 
+	 * @param dialog The next <code>AbstractWizardDialog</code>
+	 */
 	public void setNextDialog( AbstractWizardDialog dialog ) {
-		this.nextDialog = dialog;
+		nextDialog = dialog;
 		
-		if( this.nextDialog != null ) {
+		if( nextDialog != null ) {
 			getNextButton().setEnabled( true );
 		}
 	}
