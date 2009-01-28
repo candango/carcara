@@ -55,6 +55,10 @@ import org.candango.carcara.MainApp;
  * @version    SVN: $Id: Project.java 23 2008-12-07 02:54:38Z flavio.garcia $
  * @since 0.0.1
  */
+/**
+ * @author fpiraz
+ *
+ */
 public class AbstractWizardDialog extends JDialog {
 
 	/**
@@ -62,16 +66,37 @@ public class AbstractWizardDialog extends JDialog {
 	 */
 	private static final long serialVersionUID = 5771792647335637156L;
 	
+	/**
+	 * Wizard instruction
+	 */
 	private String instruction;
 	
+	/**
+	 * Wizard back button
+	 */
 	private JButton backButton;
 	
+	/**
+	 * Wizard next button
+	 */
 	private JButton nextButton;
 	
+	/**
+	 * Wizard finish button
+	 */
 	private JButton finishButton;
 	
+	/**
+	 * Wizard cancel button
+	 */
 	private JButton cancelButton;
 	
+	/**
+	 * Default constructor
+	 * 
+	 * @param title
+	 * @param instruction
+	 */
 	public AbstractWizardDialog( String title, String instruction ) {
 		
 		super( MainApp.getMainFrame(), true );
@@ -91,6 +116,9 @@ public class AbstractWizardDialog extends JDialog {
 		setLocation( getCenteredCorner() );
 	}
 	
+	/**
+	 * Mount the north pane in wizard dialog
+	 */
 	private void createNorthPane() {
 		JPanel pane = new JPanel();
 		
@@ -126,6 +154,9 @@ public class AbstractWizardDialog extends JDialog {
 		
 	}
 	
+	/**
+	 * Mount the south pane in wizard dialog
+	 */
 	private void createSouthPane() {
 		
 		JPanel pane = new JPanel();
@@ -133,7 +164,6 @@ public class AbstractWizardDialog extends JDialog {
 		pane.setLayout( new BorderLayout() );
 		
 		// creating workspace info text area
-		
 		JSeparator separator = new JSeparator();
 		
 		separator.setForeground( Color.GRAY );
@@ -143,7 +173,6 @@ public class AbstractWizardDialog extends JDialog {
 		pane.setBackground( Color.WHITE );
 		
 		// creating buttons
-		
 		JPanel buttonPane = new JPanel();
 		
 		JPanel innerButtonPane1 = new JPanel();
@@ -191,6 +220,9 @@ public class AbstractWizardDialog extends JDialog {
 		
 	}
 	
+	/**
+	 * Define a default action on cancel button click
+	 */
 	private void defineCancelAction() {
 		
 		getCancelButton().addActionListener( new ActionListener() {
@@ -206,22 +238,45 @@ public class AbstractWizardDialog extends JDialog {
 		
 	}
 	
+	/**
+	 * Add one component in the dialog center
+	 * 
+	 * @param component
+	 */
 	public void addCenterComponent( Component component ) {
-		add( component );
+		add( component, BorderLayout.CENTER );
 	}
 	
+	/**
+	 * Set the dialog dafault size as 525x500.
+	 */
 	private void setDefaultSize() {
 		setSize( 525, 500 );
 	}
-
+	
+	/**
+	 * Set wizard instruction
+	 * 
+	 * @param instruction
+	 */
 	public void setInstruction(String instruction) {
 		this.instruction = instruction;
 	}
 
+	/**
+	 * Return wizard instruction
+	 * 
+	 * @return
+	 */
 	public String getInstruction() {
 		return instruction;
 	}
 	
+	/**
+	 * Return the centered point that the dialog must appears in the screen
+	 * 
+	 * @return
+	 */
 	private Point getCenteredCorner() {
         Dimension dim = new Dimension( getParent().getWidth(), getParent().getHeight() );
         return new Point(
@@ -230,36 +285,45 @@ public class AbstractWizardDialog extends JDialog {
         );
     }
 
+	/**
+	 * Return the wizard back button reference
+	 * 
+	 * @return
+	 */
 	public JButton getBackButton() {
 		return backButton;
 	}
-
-	public void setBackButton(JButton backButton) {
-		this.backButton = backButton;
-	}
-
+	
+	/**
+	 * Return the wizard next button reference
+	 * 
+	 * @return
+	 */
 	public JButton getNextButton() {
 		return nextButton;
 	}
-
-	public void setNextButton(JButton nextButton) {
-		this.nextButton = nextButton;
-	}
-
+	
+	/**
+	 * Return the wizard finish button reference
+	 * 
+	 * @return
+	 */
 	public JButton getFinishButton() {
 		return finishButton;
 	}
 
-	public void setFinishButton(JButton finishButton) {
-		this.finishButton = finishButton;
-	}
-
+	/**
+	 * Return the wizard cancel button reference
+	 * 
+	 * @return
+	 */
 	public JButton getCancelButton() {
 		return cancelButton;
 	}
-
-	public void setCancelButton(JButton cancelButton) {
-		this.cancelButton = cancelButton;
+	
+	
+	public void setNextDialog( AbstractWizardDialog dialog ) {
+		
 	}
 	
 }
