@@ -1,4 +1,4 @@
-/* AbstractWizardFrame - AbstractWizardFrame.java
+/* $Id$
  * 
  * Base class to create wizard frames in carcara.
  * 

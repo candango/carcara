@@ -1,4 +1,4 @@
-/* NewProjectWizardDialog - NewProjectWizardDialog.java
+/* $Id$
  * 
  * This is a new project wizard dialog. Apears when new project is fired in
  * application menu.
