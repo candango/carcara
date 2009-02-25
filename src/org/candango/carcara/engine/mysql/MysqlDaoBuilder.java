@@ -101,7 +101,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 			out += "     * @return " + daoName + "\n";
 			out += "     **/\n";
 			out += "    public function " + methodName + "(){\n";
-			out += "        require_once \"dao/" + attrName + "/" +  
+			out += "        require_once \"dao/" + table.getName() + "/" +  
 				daoName + ".class.php\";\n";
 			out += "        return new " + daoName + "( $this );\n";
 			out += "    }\n\n";
@@ -185,8 +185,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		
 		String out = "<?php\n";
 		
-		out += "require_once \"" + "dao/" + 
-			CodeHandler.getAttributeName( table.getName() ) +  "/" +
+		out += "require_once \"" + "dao/" + table.getName() +  "/" +
 			entitySufix + "AbstractMysqlDao.class.php\";\n\n";
 		
 		out += "class " + entitySufix + "MysqlDao extends " + 
