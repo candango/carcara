@@ -27,14 +27,20 @@
  */
 package org.candango.carcara.ui.wizard;
 
-import java.awt.BorderLayout;
 
-import javax.swing.BorderFactory;
+import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.TreeSelectionModel;
+import javax.swing.JTextField;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * This is a new project wizard dialog. Apears when new project is fired in
@@ -48,7 +54,17 @@ import javax.swing.tree.TreeSelectionModel;
  * @since 95
  */
 public class NewProjectWizardDialog extends AbstractWizardDialog {
-
+	
+	/**
+	 * Tree root node that store all project nodes 
+	 */
+	protected DefaultMutableTreeNode rootNode;
+	
+	/**
+	 * Tree model used to reload tree data
+	 */
+    protected DefaultTreeModel treeModel;
+	
 	/**
 	 * Generated serial version UID
 	 */
@@ -56,54 +72,105 @@ public class NewProjectWizardDialog extends AbstractWizardDialog {
 	
 	private static String title = "New Project";
 	
-	private static String instruction = "Select a  Wizard";
+	private static String instruction = "Create a New Project";
 	
-	private JTree tree;
+	private JTextField txtProjectName;
 	
+	/**
+	 * Default constructor
+	 */
 	public NewProjectWizardDialog() {
 		super( title, instruction );
+		
+		Dimension d = getSize();
+		
+		d.setSize( getSize().getWidth() , 250);
+		
+		setSize( d );
+		
+		setLocation( getCenteredCorner() );
+		
+		setHint( "Create a new Carcara Project" );
+		
 		createCenterPane();
 	}
 	
+    /**
+     * Create all cente pane components
+     */
     private void createCenterPane() {
     	
     	JPanel centerPanel = new JPanel();
     	
-    	centerPanel.setLayout( new BorderLayout() );
+    	centerPanel.setLayout( new MigLayout( "fillx", "[right]rel[grow,fill]" ) );
     	
-    	JPanel labelPane = new JPanel();
+    	centerPanel.add( new JLabel( "Project name" ) );
     	
-    	labelPane.setBorder( BorderFactory.createEmptyBorder( 10, 10, 0, 10) );
+    	rootNode = new DefaultMutableTreeNode( "Wizards" );
     	
-    	labelPane.setLayout( new BorderLayout() );
+    	txtProjectName = new JTextField( "" );
     	
-    	labelPane.add( new JLabel( "Wizards:" ) );
+    	txtProjectName.addFocusListener( new FocusListener(){
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				setHint( "Enter a project name" );
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+    		
+    	});
     	
-    	centerPanel.add( labelPane, BorderLayout.PAGE_START );
+    	txtProjectName.addKeyListener( new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if( txtProjectName.getText().trim().equals( "" ) ) {
+					getFinishButton().setEnabled( false );
+				}
+				else {
+					
+					getFinishButton().setEnabled( true );
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+    		
+    	});
     	
-    	JPanel treePane = new JPanel();
+    	centerPanel.add( txtProjectName, "grow" );
     	
-    	tree = new JTree();
-        tree.setEditable( true );
-        tree.getSelectionModel().setSelectionMode
-                ( TreeSelectionModel.SINGLE_TREE_SELECTION );
-        
-        tree.setRootVisible( false );
-        
-        tree.setShowsRootHandles( true );
-        
-        JScrollPane scrollPane = new JScrollPane( tree );
-        
-        treePane.setBorder( BorderFactory.createEmptyBorder( 10, 10, 10, 10) );
-        
-        treePane.setLayout( new BorderLayout() );
-        
-        treePane.add( scrollPane, BorderLayout.CENTER );
-        
-        centerPanel.add( treePane, BorderLayout.CENTER );
-        
-        addCenterComponent( centerPanel );
-    	
+    	addCenterComponent( centerPanel );
     }
+    
+    /**
+     * Update the tree lading project data form MainApp. 
+     */
+    public void updateTree() {
+    	rootNode.removeAllChildren();
+    		
+    	DefaultMutableTreeNode node = new DefaultMutableTreeNode( "General" );
+    	
+    	DefaultMutableTreeNode projectNode = new DefaultMutableTreeNode( "Project" );
+    		
+    	rootNode.add( node );
+    	
+    	node.add( projectNode );
+    	
+    	treeModel.reload();
+    }
+    
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */

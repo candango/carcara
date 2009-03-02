@@ -55,6 +55,10 @@ import org.candango.carcara.MainApp;
  * @version    SVN: $Revision$
  * @since 93
  */
+/**
+ * @author fpiraz
+ *
+ */
 public class AbstractWizardDialog extends JDialog {
 
 	/**
@@ -78,6 +82,11 @@ public class AbstractWizardDialog extends JDialog {
 	private String instruction;
 	
 	/**
+	 * Wizard hint
+	 */
+	private String hint;
+
+	/**
 	 * Wizard back button
 	 */
 	private JButton backButton;
@@ -98,6 +107,16 @@ public class AbstractWizardDialog extends JDialog {
 	private JButton cancelButton;
 	
 	/**
+	 * Wizard instuction label
+	 */
+	private JLabel instructionLabel;
+	
+	/**
+	 * Wizard hint label
+	 */
+	private JTextArea hintTextArea;
+	
+	/**
 	 * Default constructor
 	 * 
 	 * @param title
@@ -106,12 +125,14 @@ public class AbstractWizardDialog extends JDialog {
 	public AbstractWizardDialog( String title, String instruction ) {
 		super( MainApp.getMainFrame(), true );
 		
-		setInstruction( instruction );
 		setTitle( title );
+		
+		createNorthPane();
+		
+		setInstruction( instruction );
 		
 		setDefaultSize();
 		
-		createNorthPane();
 		createSouthPane();
 		
 		defineCancelAction();
@@ -128,22 +149,22 @@ public class AbstractWizardDialog extends JDialog {
 		pane.setLayout( new BorderLayout() );
 		
 		// Creating workspace command label
-		JLabel selectWorkspaceLabel = new JLabel( "  " + instruction );
+		instructionLabel = new JLabel( "" );
 		
-		selectWorkspaceLabel.setPreferredSize( new Dimension( 40, 25 ) );
+		instructionLabel.setPreferredSize( new Dimension( 40, 25 ) );
 		
-		pane.add( selectWorkspaceLabel, BorderLayout.PAGE_START );
+		pane.add( instructionLabel, BorderLayout.PAGE_START );
 		
 		// creating workspace info text area
-		JTextArea workspaceInfoTextArea = new JTextArea( "   " );
+		hintTextArea = new JTextArea( "" );
 		
-		workspaceInfoTextArea.setPreferredSize( new Dimension( 40, 40 ) );
+		hintTextArea.setPreferredSize( new Dimension( 40, 40 ) );
 		
-		workspaceInfoTextArea.setOpaque( false );
+		hintTextArea.setOpaque( false );
 		
-		workspaceInfoTextArea.setEditable( false );
+		hintTextArea.setEditable( false );
 		
-		pane.add( workspaceInfoTextArea, BorderLayout.CENTER );
+		pane.add( hintTextArea, BorderLayout.CENTER );
 		
 		JSeparator separator = new JSeparator();
 		
@@ -205,7 +226,6 @@ public class AbstractWizardDialog extends JDialog {
 		pane.add( buttonPane, BorderLayout.CENTER );
 		
 		add( pane, BorderLayout.SOUTH );
-		
 	}
 	
 	/**
@@ -238,15 +258,6 @@ public class AbstractWizardDialog extends JDialog {
 	}
 	
 	/**
-	 * Set wizard instruction
-	 * 
-	 * @param instruction
-	 */
-	public void setInstruction(String instruction) {
-		this.instruction = instruction;
-	}
-
-	/**
 	 * Return wizard instruction
 	 * 
 	 * @return
@@ -256,11 +267,41 @@ public class AbstractWizardDialog extends JDialog {
 	}
 	
 	/**
+	 * Set wizard instruction
+	 * 
+	 * @param instruction
+	 */
+	public void setInstruction(String instruction) {
+		this.instruction = instruction;
+		
+		this.instructionLabel.setText( instruction );
+	}
+	
+	/**
+	 * Return wizard hint
+	 * 
+	 * @return
+	 */
+	public String getHint() {
+		return hint;
+	}
+	
+	/**
+	 * Set wizard hint
+	 * 
+	 * @param hint
+	 */
+	public void setHint(String hint) {
+		this.hint = hint;
+		this.hintTextArea.setText( hint );
+	}
+	
+	/**
 	 * Return the centered point that the dialog must appears in the screen
 	 * 
 	 * @return A <code>Point</code> for positioning the dialog
 	 */
-	private Point getCenteredCorner() {
+	protected Point getCenteredCorner() {
         Dimension dim = new Dimension( getParent().getWidth(), getParent().getHeight() );
         return new Point(
             (int)((dim.getWidth() - getWidth()) / 2) + getParent().getX(),
