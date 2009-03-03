@@ -56,7 +56,6 @@ public class BasicWorkspace implements Workspace {
 	/* (non-Javadoc)
 	 * @see org.candango.carcara.model.environment.Workspace#getPath()
 	 */
-	@Override
 	public String getPath() {
 		return path;
 	}
@@ -64,7 +63,6 @@ public class BasicWorkspace implements Workspace {
 	/* (non-Javadoc)
 	 * @see org.candango.carcara.model.environment.Workspace#setPath(java.lang.String)
 	 */
-	@Override
 	public void setPath(String path) {
 		this.path = path;
 	}
@@ -72,7 +70,6 @@ public class BasicWorkspace implements Workspace {
 	/* (non-Javadoc)
 	 * @see org.candango.carcara.model.environment.Workspace#addProject(org.candango.carcara.model.project.Project)
 	 */
-	@Override
 	public void addProject(Project project)throws 
 		ProjectAlreadyExistsException {
 		if( hasProject( project.getName() ) ) {
@@ -90,7 +87,6 @@ public class BasicWorkspace implements Workspace {
 	/* (non-Javadoc)
 	 * @see org.candango.carcara.model.environment.Workspace#getProject(java.lang.String)
 	 */
-	@Override
 	public Project getProject(String name) {
 		for( Project project : projectList ) {
 			if( project.getName().equals( name ) ) {
@@ -103,7 +99,6 @@ public class BasicWorkspace implements Workspace {
 	/* (non-Javadoc)
 	 * @see org.candango.carcara.model.environment.Workspace#getProjects()
 	 */
-	@Override
 	public Project[] getProjects() {
 		Project[] projects = new Project[ projectList.size() ];
 		return projectList.toArray( projects );
@@ -131,7 +126,6 @@ public class BasicWorkspace implements Workspace {
 	/* (non-Javadoc)
 	 * @see org.candango.carcara.model.environment.Workspace#getReference()
 	 */
-	@Override
 	public WorkspaceReference getReference() {
 		WorkspaceReference reference = new BasicWorkspaceReference();
 		reference.setPath( getPath() );
@@ -141,7 +135,6 @@ public class BasicWorkspace implements Workspace {
 	/* (non-Javadoc)
 	 * @see org.candango.carcara.model.environment.Workspace#hasProject(java.lang.String)
 	 */
-	@Override
 	public boolean hasProject(String name) {
 		for( Project project : projectList ) {
 			if( project.getName().equals( name ) ) {
@@ -154,7 +147,6 @@ public class BasicWorkspace implements Workspace {
 	/* (non-Javadoc)
 	 * @see org.candango.carcara.model.environment.Workspace#getProjectCount()
 	 */
-	@Override
 	public int getProjectCount() {
 		return getProjects().length;
 	}

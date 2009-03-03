@@ -20,6 +20,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected void makeActions(IWorkbenchWindow window) {
 		introAction = ActionFactory.INTRO.create(window);
 		register(introAction);
+		
 	}
 
 	protected void fillMenuBar(IMenuManager menuBar) {

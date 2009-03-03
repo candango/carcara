@@ -6,22 +6,18 @@ public class BasicWorkspaceReference implements WorkspaceReference {
 	
 	private boolean defaultFlag = false;
 	
-	@Override
 	public String getPath() {
 		return path;
 	}
 	
-	@Override
 	public void setPath(String path) {
 		this.path = path;
 	}
 	
-	@Override
 	public boolean isDefault() {
 		return defaultFlag;
 	}
 
-	@Override
 	public void setDefault( boolean value ) {
 		defaultFlag = value;
 	}

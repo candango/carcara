@@ -303,7 +303,6 @@ public class WorkspaceLauncherFrame extends JFrame implements ActionListener {
 		add( pane, BorderLayout.SOUTH );
 	}
 
-	@Override
 	public void actionPerformed( ActionEvent e ) {
 		
 		WorkspaceReference reference = null;

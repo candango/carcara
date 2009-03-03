@@ -233,7 +233,6 @@ public class AbstractWizardDialog extends JDialog {
 	 */
 	private void defineCancelAction() {
 		getCancelButton().addActionListener( new ActionListener() {
-			@Override
 			public void actionPerformed( ActionEvent e ) {
 				setVisible( false );
 				dispose();

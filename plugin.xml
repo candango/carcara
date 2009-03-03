@@ -18,6 +18,12 @@
             class="org.candango.carcara.intro.Perspective"
             id="org.candango.carcara.perspective">
       </perspective>
+      <perspective
+            class="org.candango.carcara.perspectives.Carcara"
+            icon="icons/releng_gears.gif"
+            id="org.candango.carcara.perspectives.Carcara"
+            name="Carcara">
+      </perspective>
    </extension>
    <extension
          id="product"

@@ -112,12 +112,10 @@ public class NewProjectWizardDialog extends AbstractWizardDialog {
     	
     	txtProjectName.addFocusListener( new FocusListener(){
 
-			@Override
 			public void focusGained(FocusEvent e) {
 				setHint( "Enter a project name" );
 			}
 
-			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
 				
@@ -127,13 +125,11 @@ public class NewProjectWizardDialog extends AbstractWizardDialog {
     	
     	txtProjectName.addKeyListener( new KeyListener() {
 
-			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 
-			@Override
 			public void keyReleased(KeyEvent e) {
 				if( txtProjectName.getText().trim().equals( "" ) ) {
 					getFinishButton().setEnabled( false );
@@ -144,7 +140,6 @@ public class NewProjectWizardDialog extends AbstractWizardDialog {
 				}
 			}
 
-			@Override
 			public void keyTyped(KeyEvent e) {
 			}
     		

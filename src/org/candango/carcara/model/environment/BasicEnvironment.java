@@ -12,7 +12,6 @@ public class BasicEnvironment implements Environment {
 	
 	private Workspace workspace;
 
-	@Override
 	public void addReference( WorkspaceReference ref ) {
 		if( referenceExists( ref ) ) {
 			for( int i = 0; i < referenceList.size(); i++ ) {
@@ -26,19 +25,16 @@ public class BasicEnvironment implements Environment {
 		}
 	}
 
-	@Override
 	public WorkspaceReference getReference( int index ) {
 		return referenceList.get( index );
 	}
 
-	@Override
 	public WorkspaceReference[] getReferences() {
 		WorkspaceReference[] references = 
 			new WorkspaceReference[ referenceList.size() ];
 		return referenceList.toArray( references );
 	}
 
-	@Override
 	public WorkspaceReference getDefaultReference() {
 		for( WorkspaceReference ref : referenceList ) {
 			if( ref.isDefault() ) {
@@ -70,12 +66,10 @@ public class BasicEnvironment implements Environment {
 		return out;
 	}
 
-	@Override
 	public Workspace getWorkspace() {
 		return workspace;
 	}
 
-	@Override
 	public void setWorkspace( Workspace workspace ) {
 		this.workspace = workspace;
 	}

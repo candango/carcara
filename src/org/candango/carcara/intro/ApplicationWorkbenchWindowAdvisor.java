@@ -21,6 +21,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setInitialSize(new Point(700, 550));
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);
+        
+        configurer.setShowPerspectiveBar(false);
+        
+        configurer.setShowFastViewBars(true);
+        
         configurer.setTitle("Carcara Modelling Tool");
     }
 }

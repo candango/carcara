@@ -1,5 +1,7 @@
 package org.candango.carcara.intro;
 
+import org.candango.carcara.ui.launcher.WorkspaceLauncherFrame;
+import org.eclipse.jdt.internal.corext.refactoring.changes.WorkspaceTracker;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -10,11 +12,12 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	private static final String PERSPECTIVE_ID = "org.candango.carcara.perspective";
 
     public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
-        return new ApplicationWorkbenchWindowAdvisor(configurer);
+    	return new ApplicationWorkbenchWindowAdvisor(configurer);
     }
     
     public void initialize(IWorkbenchConfigurer configurer) {
         super.initialize(configurer);
+        
         configurer.setSaveAndRestore(true);
     }
 

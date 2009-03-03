@@ -113,7 +113,6 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	@Override
 	public void actionPerformed( ActionEvent e ) {
 		
 		if( e.getActionCommand() == "FILE_NEW" ) {

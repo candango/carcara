@@ -42,17 +42,14 @@ public class AbstractProject implements Project {
 	 */
 	private String name = "Project n";
 	
-	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 	
-	@Override
 	public String getProjectPackage() {
 		return this.getClass().getName();
 	}
