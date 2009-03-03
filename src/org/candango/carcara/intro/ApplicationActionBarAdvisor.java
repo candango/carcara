@@ -13,11 +13,18 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
     private IWorkbenchAction introAction;
     
+    private IWorkbenchAction aboutAction;
+    
+    
 	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
 	}
 
 	protected void makeActions(IWorkbenchWindow window) {
+		aboutAction = ActionFactory.ABOUT.create(window);
+		
+		register( aboutAction );
+		
 		introAction = ActionFactory.INTRO.create(window);
 		register(introAction);
 		
@@ -26,10 +33,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected void fillMenuBar(IMenuManager menuBar) {
 		
 		MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
+		MenuManager aboutMenu = new MenuManager("&Abaout", IWorkbenchActionConstants.ABOUT);
 		menuBar.add(helpMenu);
+		
+		helpMenu.add( aboutMenu );
 
 		// Help
 		helpMenu.add(introAction);
+		menuBar.add(aboutAction);
 	}
 
 }
