@@ -394,7 +394,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		
 		out += "        if( $operation == " + 
 			CodeHandler.getEntityName( configuration.getIdentifier() ) + 
-			"AbstractDaoFactory::OPERACAO_INCLUSAO ) {\n";
+			"AbstractDaoFactory::INSERT_TRANSACTION ) {\n";
 		
 		String selects = "";
 		String values = "";
