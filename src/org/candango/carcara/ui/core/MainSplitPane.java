@@ -1,4 +1,4 @@
-package org.candango.carcara.ui.main;
+package org.candango.carcara.ui.core;
 
 import java.awt.BorderLayout;
 

@@ -25,7 +25,7 @@
  * 
  * Contributor(s): Flavio Goncalves Garcia.
  */
-package org.candango.carcara.ui.wizard;
+package org.candango.carcara.ui.core;
 
 
 import java.awt.Dimension;
@@ -39,6 +39,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+
+import org.candango.carcara.ui.wizard.AbstractWizardDialog;
 
 import net.miginfocom.swing.MigLayout;
 

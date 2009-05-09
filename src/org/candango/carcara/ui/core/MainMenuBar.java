@@ -24,7 +24,7 @@
  * 
  * Contributor(s): Flavio Goncalves Garcia.
  */
-package org.candango.carcara.ui.main;
+package org.candango.carcara.ui.core;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +41,6 @@ import org.candango.carcara.MainApp;
 import org.candango.carcara.engine.ProjectHandler;
 import org.candango.carcara.model.environment.exception.ProjectAlreadyExistsException;
 import org.candango.carcara.model.project.Project;
-import org.candango.carcara.ui.wizard.NewProjectWizardDialog;
 
 /**
  * Carcara application main menu bar. Contains all commands of application.

@@ -33,8 +33,8 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.candango.carcara.ui.core.MainFrame;
 import org.candango.carcara.ui.launcher.WorkspaceLauncherFrame;
-import org.candango.carcara.ui.main.MainFrame;
 import org.candango.carcara.engine.EnvironmentHandler;
 import org.candango.carcara.engine.WorkspaceHandler;
 import org.candango.carcara.model.environment.BasicEnvironment;

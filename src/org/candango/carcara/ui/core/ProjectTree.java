@@ -24,7 +24,7 @@
  * 
  * Contributor(s): Flavio Goncalves Garcia.
  */
-package org.candango.carcara.ui.main;
+package org.candango.carcara.ui.core;
 
 import java.awt.Component;
 import java.awt.GridLayout;
