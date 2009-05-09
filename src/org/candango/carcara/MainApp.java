@@ -212,7 +212,7 @@ public class MainApp {
 		MainApp.environment = environment;
 	}
 	
-	public static JFrame getMainFrame(){
+	public static MainFrame getMainFrame(){
 		return mainFrame;
 	}
 }
