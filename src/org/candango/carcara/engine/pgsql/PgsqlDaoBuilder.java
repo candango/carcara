@@ -216,8 +216,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		
 		out += "require_once \"" + "dao/" + table.getName() + "/" + 
 			entitySufix + "Dto.class.php\";\n\n";
-		out += "require_once \"" + "dao/" + 
-			CodeHandler.getAttributeName( table.getName() ) + "/" + 
+		out += "require_once \"" + "dao/" + table.getName() + "/" + 
 			entitySufix + "Dao.class.php\";\n\n";
 		
 		out += "abstract class " + entitySufix + "AbstractPgsqlDao {\n\n";
