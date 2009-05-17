@@ -194,8 +194,8 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 		out += "     *\n";
 		out += "     * @param int $whichFactory\n";
 		out += "     *\n";
-		out += "     * @return ScbAbstractDAOFactory\n";
-		out += "     **/\n";
+		out += "     * @return " + abstractDaoClassName +  "\n";
+		out += "     */\n";
 		out += "    public static function getInstance( $whichFactory ) {\n\n";
 		out += "        $factories = array(\n";
 		out += "            self::ORACLE_DAO => \"" + 
@@ -222,8 +222,7 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 		
 		for( Table table : loader.getTables() ){
 			
-			String daoName = CodeHandler.upperCaseFirst( 
-					CodeHandler.getAttributeName( table.getName() ) ) + "Dao" ;
+			String daoName = getEntitySufix( configuration, table ) + "Dao" ;
 			
 			String methodName = "get" + daoName ;
 			
