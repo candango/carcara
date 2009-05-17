@@ -90,8 +90,6 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 			
 			String daoName = getEntitySufix( configuration, table ) + "PgsqlDao";
 			
-			String attrName = CodeHandler.getAttributeName( table.getName() );
-			
 			String methodName = "get" + CodeHandler.getEntityName( 
 					table.getName() ) + "Dao" ;
 			
@@ -101,7 +99,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 			out += "     * @return " + daoName + "\n";
 			out += "     **/\n";
 			out += "    public function " + methodName + "(){\n";
-			out += "        require_once \"dao/" + attrName + "/" +  
+			out += "        require_once \"dao/" + table.getName() + "/" +  
 				daoName + ".class.php\";\n";
 			out += "        return new " + daoName + "( $this );\n";
 			out += "    }\n\n";
@@ -185,8 +183,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		
 		String out = "<?php\n";
 		
-		out += "require_once \"" + "dao/" + 
-			CodeHandler.getAttributeName( table.getName() ) +  "/" +
+		out += "require_once \"" + "dao/" + table.getName() +  "/" +
 			entitySufix + "AbstractPgsqlDao.class.php\";\n\n";
 		
 		out += "class " + entitySufix + "PgsqlDao extends " + 
@@ -217,8 +214,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		
 		String out = "<?php\n";
 		
-		out += "require_once \"" + "dao/" + 
-			CodeHandler.getAttributeName( table.getName() ) + "/" + 
+		out += "require_once \"" + "dao/" + table.getName() + "/" + 
 			entitySufix + "Dto.class.php\";\n\n";
 		out += "require_once \"" + "dao/" + 
 			CodeHandler.getAttributeName( table.getName() ) + "/" + 
@@ -372,7 +368,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		String dtoVar = "$" + CodeHandler.getAttributeName( table.getName() );
 		
 		out += "    public function salvar" + tableSufix + "( " + 
-			entitySufix + "Dto " + dtoVar + ",\n         $operacao ){\n";
+			entitySufix + "Dto " + dtoVar + ",\n         $transaction ){\n";
 		
 		out += "        $sql = \"\";\n";
 		out += "        $sth = null;\n";
@@ -393,9 +389,9 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		}
 		out += binds + "\n        );\n\n";
 		
-		out += "        if( $operacao == " + 
+		out += "        if( $transaction == " + 
 			CodeHandler.getEntityName( configuration.getIdentifier() ) + 
-			"AbstractDaoFactory::OPERACAO_INCLUSAO ) {\n";
+			"AbstractDaoFactory::INSERT_TRANSACTION ) {\n";
 		
 		String selects = "";
 		String values = "";
