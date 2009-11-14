@@ -224,7 +224,8 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 			
 			String daoName = getEntitySufix( configuration, table ) + "Dao" ;
 			
-			String methodName = "get" + daoName ;
+			String methodName = "get" + CodeHandler.getEntityName( 
+					table.getName() ) + "Dao" ;
 			
 			out += "    /**\n";
 			out += "     * Return a new " + daoName + "\n";
