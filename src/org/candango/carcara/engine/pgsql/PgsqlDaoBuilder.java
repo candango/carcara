@@ -65,8 +65,8 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 			abstractDaoClassName +  "{\n\n";
 		out += "    private $connection;\n\n";
 		out += "    public function __construct() {\n";
-		out += "        $iflux = Iflux::getInstance();\n";
-		out += "        $conf = require $iflux->getApplication( \""+ 
+		out += "        $myfuses = MyFuses::getInstance();\n";
+		out += "        $conf = require $myfuses->getApplication( \""+ 
 						configuration.getIdentifier() + "\" " + 
 						")->getPath() .\n            \"conf/" + 
 						configuration.getIdentifier() + "_conf.php\";\n";
@@ -76,6 +76,9 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		out += "            $this->connection = new PDO( $connStr, " + 
 							"$conf[ 'user' ],\n" + 
 							"                 $conf[ 'password' ] );\n";
+		out += "            $$this->connection->setAttribute( " + 
+							"PDO::ATTR_ERRMODE,\n" + 
+							"                 PDO::ERRMODE_WARNING );\n";
 		out += "        }\n";
 		out += "        catch ( Exception $e ) {\n";
 		out += "            echo \"Failed: \" . $e->getMessage();\n";
@@ -281,7 +284,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		out += "        $" + tableAttr + "s = array();\n\n";
 	    
 		out += "        while( $row = $sth->fetch( PDO::FETCH_ASSOC ) ) {\n";
-		out += "            $" + tableAttr + "s[] = $this->popular" + 
+		out += "            $" + tableAttr + "s[] = $this->fill" + 
 			tableSufix + "( $row );\n";
 		out += "        }\n\n";
 		
@@ -289,7 +292,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		
 		out += "    }\n\n";
 		
-		out += "    public function get" + tableSufix + "PorPk( " + pks + 
+		out += "    public function get" + tableSufix + "ByPk( " + pks + 
 			" ){\n";
 		out += "        $criteria = null;\n\n";
 		
@@ -348,7 +351,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		out += "     * @param array $row\n";
 		out += "     * @return " + entitySufix + "IadminGroupDto\n";
 		out += "     */\n";
-		out += "    public function popular" + tableSufix + "( $row ){\n";
+		out += "    public function fill" + tableSufix + "( $row ){\n";
 		
 		out += "        $" + tableAttr +  " = new " + entitySufix + 
 			"Dto();\n\n";
@@ -366,7 +369,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		
 		String dtoVar = "$" + CodeHandler.getAttributeName( table.getName() );
 		
-		out += "    public function salvar" + tableSufix + "( " + 
+		out += "    public function save" + tableSufix + "( " + 
 			entitySufix + "Dto " + dtoVar + ",\n         $transaction ){\n";
 		
 		out += "        $sql = \"\";\n";
@@ -472,7 +475,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		
 		out += "    }\n\n";
 		
-		out += "    public function deletar" + tableSufix + "( " + pks +  
+		out += "    public function delete" + tableSufix + "( " + pks +  
 			" ) { \n";
 		
 		
