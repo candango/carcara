@@ -76,7 +76,7 @@ public class PgsqlDaoBuilder extends AbstractDaoBuilder {
 		out += "            $this->connection = new PDO( $connStr, " + 
 							"$conf[ 'user' ],\n" + 
 							"                 $conf[ 'password' ] );\n";
-		out += "            $$this->connection->setAttribute( " + 
+		out += "            $this->connection->setAttribute( " + 
 							"PDO::ATTR_ERRMODE,\n" + 
 							"                 PDO::ERRMODE_WARNING );\n";
 		out += "        }\n";
