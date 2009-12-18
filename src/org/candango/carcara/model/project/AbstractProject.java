@@ -42,18 +42,55 @@ public class AbstractProject implements Project {
 	 */
 	private String name = "Project n";
 	
+	/**
+	 * Project path
+	 */
+	private String path = "";
+	
+	/* (non-Javadoc)
+	 * @see org.candango.carcara.model.project.Project#getName()
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.candango.carcara.model.project.Project#setName(java.lang.String)
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.candango.carcara.model.project.Project#getPath()
+	 */
+	@Override
+	public String getPath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.candango.carcara.model.project.Project#setPath(java.lang.String)
+	 */
+	@Override
+	public void setPath(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.candango.carcara.model.project.Project#getProjectPackage()
+	 */
 	public String getProjectPackage() {
 		return this.getClass().getName();
 	}
 	
+	
+	
+	/* (non-Javadoc)
+	 * @see org.candango.carcara.model.project.Project#getFileString()
+	 */
 	public String getFileString() {
 		String out = "<project>\n";
 		out += "\t<name>" + getName() + "</name>\n";
@@ -61,6 +98,8 @@ public class AbstractProject implements Project {
 		out += "</project>\n";
 		return out;
 	}
+
+	
 	
 }
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */

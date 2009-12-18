@@ -43,6 +43,10 @@ public interface Project {
 	
 	public void setName( String name );
 	
+	public String getPath();
+	
+	public void setPath( String path );
+	
 	public String getProjectPackage();
 	
 	public String getFileString();
