@@ -32,6 +32,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -301,7 +302,19 @@ public class AbstractWizardDialog extends JDialog {
 	 * @return A <code>Point</code> for positioning the dialog
 	 */
 	protected Point getCenteredCorner() {
-        Dimension dim = new Dimension( getParent().getWidth(), getParent().getHeight() );
+		
+		Dimension dim = null;
+		
+		// if the parent dont exists or his size is 0,0 get the screen size
+		if( getParent().getX() == 0 && getParent().getY() == 0 && 
+				getParent().getWidth() == 0 && getParent().getHeight() == 0 ) {
+			dim = Toolkit.getDefaultToolkit().getScreenSize();
+		}
+		else {
+			dim = new Dimension( getParent().getWidth(), 
+					getParent().getHeight() );
+		}
+		
         return new Point(
             (int)((dim.getWidth() - getWidth()) / 2) + getParent().getX(),
             (int)((dim.getHeight() - getHeight()) / 2) + getParent().getY()
