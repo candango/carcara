@@ -86,7 +86,6 @@ public class MainApp {
 		configureEnviromentVariables();
 		
 		configureEnvironment();
-	
 	}
 	
 	/**
@@ -119,6 +118,11 @@ public class MainApp {
 		launcherFrame.setVisible( true );	
 	}
 	
+	/**
+	 * Show the Main Frame and stats all the "magic"
+	 * 
+	 * @param reference
+	 */
 	public static void showMainFrame( WorkspaceReference reference ) {
 		
 		Workspace workspace = WorkspaceHandler.create( reference );
@@ -204,14 +208,29 @@ public class MainApp {
 		out.close();
 	}
 	
+	/**
+	 * Return the environment
+	 * 
+	 * @return
+	 */
 	public static Environment getEnvironment() {
 		return environment;
 	}
-
+    
+	/**
+	 * Set the environment
+	 * 
+	 * @param environment
+	 */
 	public static void setEnvironment(Environment environment) {
 		MainApp.environment = environment;
 	}
 	
+	/**
+	 * Gets the main frame
+	 * 
+	 * @return
+	 */
 	public static MainFrame getMainFrame(){
 		return mainFrame;
 	}

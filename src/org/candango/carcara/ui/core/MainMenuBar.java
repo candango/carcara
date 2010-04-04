@@ -77,7 +77,9 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		this.mainFrame = mainFrame;
 		
 		menu = new JMenu("File");
-		menu.setMnemonic(KeyEvent.VK_F);
+		
+		menu.setMnemonic( KeyEvent.VK_F );
+		
 		menu.getAccessibleContext().setAccessibleDescription(
 				"The only menu in this program that has menu items");
 		
@@ -85,9 +87,9 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.SHIFT_MASK + 
 						ActionEvent.ALT_MASK ) ) );
 		
-		menu.add( createMenuItem( "Open File...", "FILE_OPEN_FILE", 
+		/*menu.add( createMenuItem( "Open File...", "FILE_OPEN_FILE", 
 				KeyEvent.VK_O, KeyStroke.getKeyStroke(KeyEvent.VK_O, 
-						ActionEvent.SHIFT_MASK + ActionEvent.ALT_MASK ) ) );
+						ActionEvent.SHIFT_MASK + ActionEvent.ALT_MASK ) ) );*/
 		
 		menu.add( new JSeparator() );
 		
@@ -120,26 +122,6 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 			
 			newFrame.setVisible( true );
 			
-			/*String projectName = JOptionPane.showInputDialog( "Project Name:" );
-			
-			if( projectName != null ) {
-				
-				Project project = ProjectHandler.createProject( projectName , 
-						"org.candango.carcara.php.Project" );
-				
-				try {
-					MainApp.getEnvironment().getWorkspace().addProject( 
-							project );
-				} 
-				catch (ProjectAlreadyExistsException paee ) {
-					JOptionPane.showMessageDialog( getMainFrame(), 
-							"A project with name \"" + projectName + 
-							"\" already exists in the workspace.", 
-							"Creating Project", JOptionPane.ERROR_MESSAGE );
-				}
-				
-				getMainFrame().update();
-			}*/
 		}
 		
 		if( e.getActionCommand() == "FILE_OPEN_FILE" ){
