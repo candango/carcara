@@ -63,6 +63,14 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		String out = "<?php\n";
 		out += "class " + mysqlDaoClassName + " extends " + 
 			abstractDaoClassName +  "{\n\n";
+		
+		out += "    /**\n";
+		out += "     * Configuration database name\n";
+		out += "     *\n";
+		out += "     * @var string\n";
+		out += "     */\n";
+		out += "    private $dbName;\n\n";
+		
 		out += "    private $connection;\n\n";
 		out += "    public function __construct() {\n";
 		out += "        $iflux = Iflux::getInstance();\n";
@@ -72,6 +80,8 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 						configuration.getIdentifier() + "_conf.php\";\n";
 		out += "        $connStr = \"mysql:host=\" . $conf[ 'server' ] . " + 
 						"\";dbname=\" .\n            $conf[ 'database' ];\n";
+		out += "        $this->dbName = $conf[ 'database' ];\n";
+		
 		out += "        try {\n";
 		out += "            $this->connection = new PDO( $connStr, " + 
 							"$conf[ 'user' ],\n" + 
@@ -82,6 +92,20 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "        }\n";
 		out += "    }\n\n";
 		
+		out += "    /**\n";
+		out += "     * Returns the configuration database name\n";
+		out += "     *\n";
+		out += "     * @returns string\n";
+		out += "     */\n";
+		out += "    public function getDbName() {\n";
+		out += "        return $this->dbName;\n";
+		out += "    }\n\n";
+		
+		out += "    /**\n";
+		out += "     * Returns the PDO connection object\n";
+		out += "     *\n";
+		out += "     * @returns PDO\n";
+		out += "     */\n";
 		out += "    public function getConnection() {\n";
 		out += "        return $this->connection;\n";
 		out += "    }\n\n";
@@ -240,13 +264,25 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "        $this->factory = $factory;\n";
 		out += "    }\n\n";
 		
+		out += "    /**\n";
+		out += "     * Returns the mysql dao factory\n";
+		out += "     *\n";
+		out += "     * @returns " + CodeHandler.getEntityName( 
+				configuration.getIdentifier() ) + 
+				"MysqlDaoFactory\n";
+		out += "     */\n";
+		out += "    protected function getFactory() {\n";
+		out += "        return $this->factory;\n";
+		out += "    }\n\n";
+		
 		out += "    public function get" + tableSufix + 
 			"s( $criteria = null ) { \n";
 		
 		out += "        if( is_null( $criteria ) ) {\n";
 		out += "            $criteria[ 'fields' ] = \"*\";\n";
-		out += "            $criteria[ 'from' ] = \"" + 
-			configuration.getIdentifier() + "." + table.getName() + "\"; \n";
+		out += "            $criteria[ 'from' ] = " + 
+			"$this->getFactory()->getDbName() . \"." + 
+			table.getName() + "\"; \n";
 		out += "            $criteria[ 'where' ] = null;\n";
 		out += "            $criteria[ 'order_by' ] = null;\n";
 		out += "        }\n";
@@ -255,9 +291,9 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "                $criteria[ 'fields' ] = \"*\";\n";
 		out += "            }\n";
 		out += "            if( !isset( $criteria[ 'from' ] ) ) {\n";
-		out += "                $criteria[ 'from' ] = \"" + 
-			configuration.getIdentifier() + "." + table.getName() + "\";\n";
-		out += "            }\n";
+		out += "                $criteria[ 'from' ] = " + 
+			"$this->getFactory()->getDbName() . \"." + 
+			table.getName() + "\"; \n";
 		out += "            if( !isset( $criteria[ 'where' ] ) ) {\n";
 		out += "                $criteria[ 'where' ] = null;\n";
 		out += "            }\n";
@@ -276,7 +312,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
                 out += "            $sql .= \" ORDER BY \" . $criteria[ 'order_by' ];\n";
                 out += "        }\n\n";
 		
-		out += "        $sth = $this->factory->getConnection(" + 
+		out += "        $sth = $this->getFactory()->getConnection(" + 
 			")->prepare( $sql );\n\n";
 		
 		out += "        $sth->execute( isset( $criteria[ 'bind' ] ) " + 
@@ -425,8 +461,8 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 			}
 		}
 		out += unsets;
-		out += "\n            $sql = \"INSERT INTO  " +  
-			configuration.getIdentifier() + "." + 
+		out += "\n            $sql = \"INSERT INTO " +  
+			"\" . $this->getFactory()->getDbName() . \"" + "." + 
 			table.getName() +  "  ( \" .\n";
 		
 		out += selects + " )\" .\n";
@@ -439,7 +475,8 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 			out += "        else{\n";
 			
 			out += "            $sql = \"UPDATE " +  
-				configuration.getIdentifier() + "." + table.getName() +  
+				"\" . $this->getFactory()->getDbName() . \"" 
+				+ "." + table.getName() +  
 				" SET \" .\n";
 			
 			String sets = "";
@@ -470,8 +507,8 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 			out += wheres + "\";\n";
 			out += "        }\n";
 		}
-		out += "\n        $sth = $this->factory->getConnection()->prepare(" + 
-			" $sql );\n\n";
+		out += "\n        $sth = $this->getFactory()->getConnection()->" + 
+			"prepare( $sql );\n\n";
 		out += "        $sth->execute( $values );\n";
 		
 		out += "    }\n\n";
@@ -480,8 +517,9 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 			" ) { \n";
 		
 		
-		out += "        $sql = \"DELETE FROM \" .\n                   \"" +  
-			configuration.getIdentifier() + "." + table.getName() +  
+		out += "        $sql = \"DELETE FROM \" .\n                   " +  
+			"$this->getFactory()->getDbName() . \"" + 
+			"." + table.getName() +  
 			" \" .\n               \"WHERE \" .\n";
 		
 		wheres = "";
