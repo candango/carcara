@@ -265,7 +265,8 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 		
 		out += "    public function save" + tableSufix + "( " + 
 			entitySufix + "Dto $" + 
-			CodeHandler.getAttributeName( table.getName() ) +  " ); \n\n";
+			CodeHandler.getAttributeName( table.getName() ) +  
+			", $transaction ); \n\n";
 		
 		out += "    public function delete" + tableSufix + "( " + pks +  
 			" ); \n\n";
