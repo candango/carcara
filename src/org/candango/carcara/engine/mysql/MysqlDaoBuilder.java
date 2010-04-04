@@ -293,7 +293,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "            if( !isset( $criteria[ 'from' ] ) ) {\n";
 		out += "                $criteria[ 'from' ] = " + 
 			"$this->getFactory()->getDbName() . \"." + 
-			table.getName() + "\"; \n";
+			table.getName() + "\"; \n            }\n";
 		out += "            if( !isset( $criteria[ 'where' ] ) ) {\n";
 		out += "                $criteria[ 'where' ] = null;\n";
 		out += "            }\n";
