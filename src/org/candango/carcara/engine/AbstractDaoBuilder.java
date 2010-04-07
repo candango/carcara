@@ -318,10 +318,11 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 		String attrName = CodeHandler.getAttributeName( table.getName() );
 		
 		String out = "<?php\n";
-		out += "require_once \"dao/" + attrName + "/" + parentName + 
+		out += "require_once \"dao/" + table.getName() + "/" + parentName + 
 			".class.php\";\n\n";
 		out += "class " + className + " extends " + parentName + " {\n\n";
 		out += "}";
+		
 		return out;
 	}
 	
