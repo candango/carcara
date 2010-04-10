@@ -29,6 +29,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 			"MysqlDaoFactory.class.php";
 		
 		File mysqlDaoFile = new File( mysqlDaoFileName );
+		
 		try {
 			if( !mysqlDaoFile.exists() ) {
 				mysqlDaoFile.createNewFile();
@@ -156,27 +157,24 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 			if( !daoFile.exists() ) {
 				daoFile.createNewFile();
 				
+				BufferedWriter out = 
+					new BufferedWriter( new FileWriter( daoFile ) );
 				
+				out.write( getMysqlDaoCode( configuration, table ) );
+				
+				out.close();
+				
+				if( !abstractDaoFile.exists() ) {
+					abstractDaoFile.createNewFile();
+				}
+				
+				BufferedWriter out1 = 
+					new BufferedWriter( new FileWriter( abstractDaoFile ) );
+				
+				out1.write( getMysqlAbstractDaoCode( configuration, table ) );
+				
+				out1.close();
 			}
-			
-			BufferedWriter out = 
-				new BufferedWriter( new FileWriter( daoFile ) );
-			
-			out.write( getMysqlDaoCode( configuration, table ) );
-			
-			out.close();
-			
-			if( !abstractDaoFile.exists() ) {
-				abstractDaoFile.createNewFile();
-			}
-			
-			BufferedWriter out1 = 
-				new BufferedWriter( new FileWriter( abstractDaoFile ) );
-			
-			out1.write( getMysqlAbstractDaoCode( configuration, table ) );
-			
-			out1.close();
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -275,8 +273,15 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "        return $this->factory;\n";
 		out += "    }\n\n";
 		
+		out += "    /**\n";
+		out += "     * Returns an array of by a given criteria array\n";
+		out += "     *\n";
+		out += "     * @param array $criteria\n";
+		out += "     * @returns array an array of " + entitySufix + "Dto\n";
+		out += "     */\n";
 		out += "    public function get" + tableSufix + 
-			"s( $criteria = null ) { \n";
+			"s( $criteria = null, $fillMethod = 'fill" + tableSufix + 
+			"' ) { \n";
 		
 		out += "        if( is_null( $criteria ) ) {\n";
 		out += "            $criteria[ 'fields' ] = \"*\";\n";
@@ -321,8 +326,8 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "        $" + tableAttr + "s = array();\n\n";
 	    
 		out += "        while( $row = $sth->fetch( PDO::FETCH_ASSOC ) ) {\n";
-		out += "            $" + tableAttr + "s[] = $this->fill" + 
-			tableSufix + "( $row );\n";
+		out += "            $" + tableAttr + 
+			"s[] = $this->$fillMethod( $row );\n";
 		out += "        }\n\n";
 		
 		out += "        return $" + tableAttr + "s;\n";
@@ -383,15 +388,15 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		
 		out += "    /**\n";
 		out += "     * Return one " + entitySufix +  
-			" Dto with his properties filled with row data.\n";
+			"Dto with his properties filled with a properly row data.\n";
 		out += "     *\n";
 		out += "     * @param array $row\n";
-		out += "     * @return " + entitySufix + "IadminGroupDto\n";
+		out += "     * @return " + entitySufix + "Dto\n";
 		out += "     */\n";
-		out += "    public function fill" + tableSufix + "( $row ){\n";
+		out += "    public function fill" + tableSufix + "( $row, $fillClass = '" + entitySufix + 
+			"Dto' ){\n";
 		
-		out += "        $" + tableAttr +  " = new " + entitySufix + 
-			"Dto();\n\n";
+		out += "        $" + tableAttr +  " = new $fillClass();\n\n";
 		
 		for( Field field : table.getFields() ) {
 			out += "        $" + tableAttr +  "->set" + 

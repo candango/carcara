@@ -1,6 +1,7 @@
 package org.candango.carcara.engine;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +10,10 @@ import org.candango.carcara.model.database.Field;
 import org.candango.carcara.model.database.Table;
 import org.candango.carcara.util.CodeHandler;
 
+/**
+ * 
+ * @author Flavio Garcia
+ */
 public abstract class AbstractDaoBuilder implements DaoBuilder {
 	
 	private String path;
