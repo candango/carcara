@@ -164,17 +164,20 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 				
 				out.close();
 				
-				if( !abstractDaoFile.exists() ) {
-					abstractDaoFile.createNewFile();
-				}
 				
-				BufferedWriter out1 = 
-					new BufferedWriter( new FileWriter( abstractDaoFile ) );
-				
-				out1.write( getMysqlAbstractDaoCode( configuration, table ) );
-				
-				out1.close();
 			}
+			
+			if( !abstractDaoFile.exists() ) {
+				abstractDaoFile.createNewFile();
+			}
+			
+			BufferedWriter out1 = 
+				new BufferedWriter( new FileWriter( abstractDaoFile ) );
+			
+			out1.write( getMysqlAbstractDaoCode( configuration, table ) );
+			
+			out1.close();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -290,6 +293,7 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 			table.getName() + "\"; \n";
 		out += "            $criteria[ 'where' ] = null;\n";
 		out += "            $criteria[ 'order_by' ] = null;\n";
+		out += "            $criteria[ 'limit' ] = null;\n";
 		out += "        }\n";
 		out += "        else {\n";
 		out += "            if( !isset( $criteria[ 'fields' ] ) ) {\n";
@@ -303,8 +307,13 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "                $criteria[ 'where' ] = null;\n";
 		out += "            }\n";
 		out += "            if( !isset( $criteria[ 'order_by' ] ) ) {\n";
-                out += "                $criteria[ 'order_by' ] = null;\n";
-                out += "            }\n";
+		out += "                $criteria[ 'order_by' ] = null;\n";
+		out += "            }\n";
+		
+		out += "            if( !isset( $criteria[ 'limit' ] ) ) {\n";
+		out += "                $criteria[ 'limit' ] = null;\n";
+		out += "            }\n";
+		
 		out += "        }\n\n";
 		
 		out += "        $sql = \"SELECT \" . $criteria[ 'fields' ] .\n";
@@ -314,9 +323,13 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "            $sql .= \" WHERE \" . $criteria[ 'where' ];\n";
 		out += "        }\n\n";
 		out += "        if( !is_null( $criteria[ 'order_by' ] ) ) {\n";
-                out += "            $sql .= \" ORDER BY \" . $criteria[ 'order_by' ];\n";
-                out += "        }\n\n";
+        out += "            $sql .= \" ORDER BY \" . $criteria[ 'order_by' ];\n";
+        out += "        }\n\n";
 		
+        out += "        if( !is_null( $criteria[ 'limit' ] ) ) {\n";
+        out += "            $sql .= \" LIMIT \" . $criteria[ 'limit' ];\n";
+        out += "        }\n\n";
+        
 		out += "        $sth = $this->getFactory()->getConnection(" + 
 			")->prepare( $sql );\n\n";
 		
