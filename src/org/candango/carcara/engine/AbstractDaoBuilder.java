@@ -263,7 +263,11 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 		String out = "<?php\n";
 		out += "interface " + entitySufix + "Dao {\n\n";
 		out += "    public function get" + tableSufix + 
-			"s( $criteria = null ); \n\n";
+			"s( $criteria = null, $fillMethod = 'fill" + tableSufix + 
+			"' ); \n\n";
+		
+		out += "    public function get" + tableSufix + 
+		"sCount( $criteria = null ); \n\n";
 		
 		out += "    public function get" + tableSufix + "ByPk( " + pks +  
 			" ); \n\n";

@@ -276,11 +276,15 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "        return $this->factory;\n";
 		out += "    }\n\n";
 		
+		
+		
+		
 		out += "    /**\n";
-		out += "     * Returns an array of by a given criteria array\n";
+		out += "     * Returns an array of " + entitySufix + 
+			"Dto's by a given criteria\n";
 		out += "     *\n";
 		out += "     * @param array $criteria\n";
-		out += "     * @returns array an array of " + entitySufix + "Dto\n";
+		out += "     * @returns array an array of " + entitySufix + "Dto's\n";
 		out += "     */\n";
 		out += "    public function get" + tableSufix + 
 			"s( $criteria = null, $fillMethod = 'fill" + tableSufix + 
@@ -346,6 +350,75 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		out += "        return $" + tableAttr + "s;\n";
 		
 		out += "    }\n\n";
+		
+		
+		
+		out += "    /**\n";
+		out += "     * Returns the count of " + entitySufix + 
+			"Dto's affected by the a given criteria\n";
+		out += "     *\n";
+		out += "     * @param array $criteria\n";
+		out += "     * @returns integer\n";
+		out += "     */\n";
+		out += "    public function get" + tableSufix + 
+			"sCount( $criteria = null ) { \n";
+		
+		out += "        if( is_null( $criteria ) ) {\n";
+		out += "            $criteria[ 'from' ] = " + 
+			"$this->getFactory()->getDbName() . \"." + 
+			table.getName() + "\"; \n";
+		out += "            $criteria[ 'where' ] = null;\n";
+		out += "            $criteria[ 'order_by' ] = null;\n";
+		out += "            $criteria[ 'limit' ] = null;\n";
+		out += "        }\n";
+		out += "        else {\n";
+		out += "            if( !isset( $criteria[ 'from' ] ) ) {\n";
+		out += "                $criteria[ 'from' ] = " + 
+			"$this->getFactory()->getDbName() . \"." + 
+			table.getName() + "\"; \n            }\n";
+		out += "            if( !isset( $criteria[ 'where' ] ) ) {\n";
+		out += "                $criteria[ 'where' ] = null;\n";
+		out += "            }\n";
+		out += "            if( !isset( $criteria[ 'order_by' ] ) ) {\n";
+		out += "                $criteria[ 'order_by' ] = null;\n";
+		out += "            }\n";
+		
+		out += "            if( !isset( $criteria[ 'limit' ] ) ) {\n";
+		out += "                $criteria[ 'limit' ] = null;\n";
+		out += "            }\n";
+		
+		out += "        }\n\n";
+		
+		out += "        $sql = \"SELECT count(*) AS count \" .\n";
+		out += "            \" FROM \" . $criteria[ 'from' ];\n\n";
+		
+		out += "        if( !is_null( $criteria[ 'where' ] ) ) {\n";
+		out += "            $sql .= \" WHERE \" . $criteria[ 'where' ];\n";
+		out += "        }\n\n";
+		out += "        if( !is_null( $criteria[ 'order_by' ] ) ) {\n";
+        out += "            $sql .= \" ORDER BY \" . $criteria[ 'order_by' ];\n";
+        out += "        }\n\n";
+		
+        out += "        if( !is_null( $criteria[ 'limit' ] ) ) {\n";
+        out += "            $sql .= \" LIMIT \" . $criteria[ 'limit' ];\n";
+        out += "        }\n\n";
+        
+		out += "        $sth = $this->getFactory()->getConnection(" + 
+			")->prepare( $sql );\n\n";
+		
+		out += "        $sth->execute( isset( $criteria[ 'bind' ] ) " + 
+			"? $criteria[ 'bind' ] :\n            null );\n\n";
+		
+		out += "        $row = $sth->fetch( PDO::FETCH_ASSOC );\n\n";
+		out += "        if( count( $row ) ) {\n";
+        out += "            return $row[ 'count' ];\n";
+        out += "        }\n\n";
+		
+		out += "        return 0;\n";
+		
+		out += "    }\n\n";
+		
+		
 		
 		out += "    public function get" + tableSufix + "ByPk( " + pks + 
 			" ){\n";
