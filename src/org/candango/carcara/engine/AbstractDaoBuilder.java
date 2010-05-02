@@ -237,18 +237,16 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 	
 	protected String getDtoCode( DatabaseConfiguration configuration, 
 			Table table ) {
-		String className = getEntitySufix( configuration, table ) + "Dto";
+		// Creating the velocity context  
+		VelocityContext context = new VelocityContext();  
 		
-		String parentName = getEntitySufix( configuration, table ) + 
-			"AbstractDto";
+		// adding variables to context 
+		context.put("identifier-name", 
+				CodeHandler.upperCaseFirst( configuration.getIdentifier() ) );
 		
-		String attrName = CodeHandler.getAttributeName( table.getName() );
+		context.put( "table", table );
 		
-		String out = "<?php\n";
-		out += "require_once \"dao/" + table.getName() + "/" + parentName + 
-			".class.php\";\n\n";
-		out += "class " + className + " extends " + parentName + " {\n\n";
-		out += "}";
+		String out = VelocityHandler.getTemplateString( context, "template/common/dao/dto.vm" );  
 		
 		return out;
 	}
