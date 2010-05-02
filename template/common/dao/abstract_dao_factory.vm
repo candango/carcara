@@ -1,21 +1,74 @@
 <?php
 /**
- * Abstract dao factory class. This class returns all dao factories found
- * by the engine. 
+ * ${identifier-name}AbstractDaoFactory - ${identifier-name}AbstractDaoFactory.class.php
  * 
+ * Abstract dao factory class. This class returns all dao factories found
+ * by the engine.
+ * 
+ * PHP version 5
+ * 
+ * Put your license here.
+ * 
+ * Contributor(s): 
+ *
+ * @category dao
  * @package lib.dao
  * @author Carcara Modeller Tool Engine
+ * @copyright Put your copyright here.
+ * @license Put your copyright here.
+ * @version    
+ */
+
+/**
+ * ${identifier-name}AbstractDaoFactory - ${identifier-name}AbstractDaoFactory.class.php
+ * 
+ * Abstract dao factory class. This class returns all dao factories found
+ * by the engine.
+ * 
+ * PHP version 5 
+ * 
+ * @category dao
+ * @package lib.dao
+ * @author Carcara Modeller Tool Engine
+ * @copyright Put your copyright here.
+ * @license Put your copyright here.
+ * @version
  */
 abstract class ${identifier-name}AbstractDaoFactory{
 
+    /**
+     * Oracle Dao constant
+     * 
+     * @var integer
+     */
     const ORACLE_DAO = 1;
 
+    /**
+     * Pgsql Dao constant
+     * 
+     * @var integer
+     */
     const PGSQL_DAO = 2;
 
+    /**
+     * Mysql Dao constant
+     * 
+     * @var integer
+     */
     const MYSQL_DAO = 3;
 
+    /**
+     * Insert Transaction constant
+     * 
+     * @var integer
+     */
     const INSERT_TRANSACTION = 1;
 
+    /**
+     * Update Transaction constant
+     * 
+     * @var integer
+     */
     const UPDATE_TRANSACTION = 2;
 
     /**

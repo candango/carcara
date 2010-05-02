@@ -1,11 +1,40 @@
 <?php
 /**
+ * ${identifier-name}${table.getEntityName()}Dao - ${identifier-name}${table.getEntityName()}Dao.class.php
+ * 
  * Interface that defines one ${identifier-name}${table.getEntityName()}Dao.
  * This interfaces have basic methods to handle CRUD operations for 
  * ${identifier-name}${table.getEntityName()}Dto's.
+ *
+ * PHP version 5
  * 
+ * Put your license here.
+ * 
+ * Contributor(s): 
+ *
+ * @category dao
  * @package lib.dao.${table.getName()}
  * @author Carcara Modeller Tool Engine
+ * @copyright Put your copyright here.
+ * @license Put your copyright here.
+ * @version    
+ */
+
+/**
+ * ${identifier-name}${table.getEntityName()}Dao - ${identifier-name}${table.getEntityName()}Dao.class.php
+ * 
+ * Interface that defines one ${identifier-name}${table.getEntityName()}Dao.
+ * This interfaces have basic methods to handle CRUD operations for 
+ * ${identifier-name}${table.getEntityName()}Dto's.
+ *
+ * PHP version 5
+ * 
+ * @category dao
+ * @package lib.dao.${table.getName()}
+ * @author Carcara Modeller Tool Engine
+ * @copyright Put your copyright here.
+ * @license Put your copyright here.
+ * @version
  */
 interface ${identifier-name}${table.getEntityName()}Dao {
     
