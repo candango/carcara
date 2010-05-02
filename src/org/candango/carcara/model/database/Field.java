@@ -52,4 +52,8 @@ public class Field {
 	public String getAttributeName() {
 		return CodeHandler.getAttributeName( getName() );
 	}
+	
+	public String getEntityName() {
+		return CodeHandler.getEntityName( getName() );
+	}
 }

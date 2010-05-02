@@ -205,15 +205,6 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 	protected String getDaoCode( DatabaseConfiguration configuration, 
 			Table table ) {
 		
-		String pks = "";
-		
-		for( Field field : table.getFields() ) {
-			if( field.isPk() ) {
-				pks += ( pks.equals( "" ) ? "" : ", " ) + "$" + 
-					CodeHandler.getAttributeName( field.getName() );
-			}
-		}
-		
 		// Creating the velocity context  
 		VelocityContext context = new VelocityContext();  
 		
@@ -223,8 +214,6 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 		
 		context.put( "table", table );
 		
-		context.put( "table-pks", pks );
-		
 		String out = VelocityHandler.getTemplateString( context, "template/common/dao/dao.vm" );  
 		
 		return out;
@@ -232,33 +221,17 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 	
 	protected String getAbstractDtoCode( DatabaseConfiguration configuration, 
 			Table table ) {
-		String out = "<?php\n";
-		out += "abstract class " + 
-			getEntitySufix( configuration, table ) + 
-			"AbstractDto {\n\n";
-		for( Field field : table.getFields() ) {
-			out += "    private $" + CodeHandler.getAttributeName( 
-					field.getName() ) + ";\n\n";
-		}
+		// Creating the velocity context  
+		VelocityContext context = new VelocityContext();  
 		
-		for( Field field : table.getFields() ) {
-			out += "    public function " + 
-				CodeHandler.getGetterName( field.getName() ) + "() {\n";
-			out += "        return $this->" + 
-				CodeHandler.getAttributeName( field.getName() )  + ";\n";
-			out += "    }\n\n";
-			
-			out += "    public function " + 
-				CodeHandler.getSetterName( field.getName() ) + "( $" + 
-					
-				CodeHandler.getAttributeName( field.getName() ) + " ) {\n";
-			out += "        $this->" + 
-				CodeHandler.getAttributeName( field.getName() )  + " = $" +
-				CodeHandler.getAttributeName( field.getName() )  + ";\n";
-			out += "    }\n\n";
-		}
+		// adding variables to context 
+		context.put("identifier-name", 
+				CodeHandler.upperCaseFirst( configuration.getIdentifier() ) );
 		
-		out += "}";
+		context.put( "table", table );
+		
+		String out = VelocityHandler.getTemplateString( context, "template/common/dao/abstract_dto.vm" );  
+		
 		return out;
 	}
 	
