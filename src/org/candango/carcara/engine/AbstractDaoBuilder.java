@@ -5,10 +5,16 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.candango.carcara.model.database.Field;
 import org.candango.carcara.model.database.Table;
 import org.candango.carcara.util.CodeHandler;
+import org.candango.carcara.util.VelocityHandler;
 
 /**
  * 
@@ -181,75 +187,23 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 	protected String getAbstractDaoFactoryCode( 
 			DatabaseConfiguration configuration, 
 			DatabaseLoader loader ) {
+		   
+		// Creating the velocity context  
+		VelocityContext context = new VelocityContext();  
 		
-		String abstractDaoClassName = 
-			CodeHandler.upperCaseFirst( configuration.getIdentifier() ) + 
-			"AbstractDaoFactory";
+		// adding variables to context 
+		context.put("identifier-name", 
+				CodeHandler.upperCaseFirst( configuration.getIdentifier() ) );
 		
-		String out = "<?php\n";
-		out += "abstract class " + abstractDaoClassName +  "{\n\n";
-		out += "    const ORACLE_DAO = 1;\n\n";
-		out += "    const PGSQL_DAO = 2;\n\n";
-		out += "    const MYSQL_DAO = 3;\n\n";
-		out += "    const INSERT_TRANSACTION = 1;\n\n";
-		out += "    const UPDATE_TRANSACTION = 2;\n\n";
-		out += "    private static $instances = array();\n\n";
-		out += "    /**\n";
-		out += "     * Return one DAO factory instance\n";
-		out += "     *\n";
-		out += "     * @param int $whichFactory\n";
-		out += "     *\n";
-		out += "     * @return " + abstractDaoClassName +  "\n";
-		out += "     */\n";
-		out += "    public static function getInstance( $whichFactory ) {\n\n";
-		out += "        $factories = array(\n";
-		out += "            self::ORACLE_DAO => \"" + 
-			CodeHandler.getEntityName( configuration.getIdentifier() )  +  
-			"OracleDaoFactory\",\n";
-		out += "            self::PGSQL_DAO => \"" + 
-			CodeHandler.getEntityName( configuration.getIdentifier() )  +  
-			"PgsqlDaoFactory\",\n";
-		out += "            self::MYSQL_DAO => \"" + 
-			CodeHandler.getEntityName( configuration.getIdentifier() )  +  
-			"MysqlDaoFactory\"\n";
-		out += "        );\n\n";
-		out += "        if( isset( $factories[ $whichFactory ] ) ) {\n";
-		out += "            if( !isset( self::$instances[ $whichFactory ] ) ) {\n";
-		out += "                require_once \"dao/\" . " + 
-			"$factories[ $whichFactory ] . \".class.php\";\n";
-		out += "                self::$instances[ $whichFactory ] = \n" + 
-			"                    new $factories[ $whichFactory ]();\n";
-		out += "    	    }\n";
-		out += "            return self::$instances[ $whichFactory ];\n";
-		out += "        }\n";
-		out += "        return null;\n";
-		out += "    }\n\n";
+		context.put( "tables", loader.getTables() );
 		
-		for( Table table : loader.getTables() ){
-			
-			String daoName = getEntitySufix( configuration, table ) + "Dao" ;
-			
-			String methodName = "get" + CodeHandler.getEntityName( 
-					table.getName() ) + "Dao" ;
-			
-			out += "    /**\n";
-			out += "     * Return a new " + daoName + "\n";
-			out += "     *\n";
-			out += "     * @return " + daoName + "\n";
-			out += "     **/\n";
-			out += "    public abstract function " + methodName + "();\n\n";
-		}
+		String out = VelocityHandler.getTemplateString( context, "template/common/dao/abstract_dao_factory.vm" );  
 		
-		out += "}";
 		return out;
 	}
 	
 	protected String getDaoCode( DatabaseConfiguration configuration, 
 			Table table ) {
-		
-		String entitySufix = getEntitySufix( configuration, table );
-		
-		String tableSufix = CodeHandler.getEntityName( table.getName() );
 		
 		String pks = "";
 		
@@ -260,27 +214,18 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 			}
 		}
 		
-		String out = "<?php\n";
-		out += "interface " + entitySufix + "Dao {\n\n";
-		out += "    public function get" + tableSufix + 
-			"s( $criteria = null, $fillMethod = 'fill" + tableSufix + 
-			"' ); \n\n";
+		// Creating the velocity context  
+		VelocityContext context = new VelocityContext();  
 		
-		out += "    public function get" + tableSufix + 
-		"sCount( $criteria = null ); \n\n";
+		// adding variables to context 
+		context.put("identifier-name", 
+				CodeHandler.upperCaseFirst( configuration.getIdentifier() ) );
 		
-		out += "    public function get" + tableSufix + "ByPk( " + pks +  
-			" ); \n\n";
+		context.put( "table", table );
 		
-		out += "    public function save" + tableSufix + "( " + 
-			entitySufix + "Dto $" + 
-			CodeHandler.getAttributeName( table.getName() ) +  
-			", $transaction ); \n\n";
+		context.put( "table-pks", pks );
 		
-		out += "    public function delete" + tableSufix + "( " + pks +  
-			" ); \n\n";
-		
-		out += "}";
+		String out = VelocityHandler.getTemplateString( context, "template/common/dao/dao.vm" );  
 		
 		return out;
 	}

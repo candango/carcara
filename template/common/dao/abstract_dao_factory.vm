@@ -1,0 +1,62 @@
+<?php
+/**
+ * Abstract dao factory class. This class returns all dao factories found
+ * by the engine. 
+ * 
+ * @package lib.dao
+ * @author Carcara Modeller Tool Engine
+ */
+abstract class ${identifier-name}AbstractDaoFactory{
+
+    const ORACLE_DAO = 1;
+
+    const PGSQL_DAO = 2;
+
+    const MYSQL_DAO = 3;
+
+    const INSERT_TRANSACTION = 1;
+
+    const UPDATE_TRANSACTION = 2;
+
+    /**
+     * Collection of instances that this factory can hold
+     *
+     * @var array An array of ${identifier-name}AbstractDaoFactory's
+     */
+    private static $instances = array();
+
+    /**
+     * Return one DAO factory instance
+     *
+     * @param int $whichFactory
+     * @return ${identifier-name}AbstractDaoFactory
+     */
+    public static function getInstance( $whichFactory ) {
+
+        $factories = array(
+            self::ORACLE_DAO => "${identifier-name}OracleDaoFactory",
+            self::PGSQL_DAO => "${identifier-name}PgsqlDaoFactory",
+            self::MYSQL_DAO => "${identifier-name}MysqlDaoFactory"
+        );
+
+        if( isset( $factories[ $whichFactory ] ) ) {
+            if( !isset( self::$instances[ $whichFactory ] ) ) {
+                require_once "dao/" . $factories[ $whichFactory ] . ".class.php";
+                self::$instances[ $whichFactory ] = 
+                    new $factories[ $whichFactory ]();
+            }
+            return self::$instances[ $whichFactory ];
+        }
+        return null;
+    }
+#foreach ($table in $tables)
+
+    /**
+     * Return a new ${identifier-name} ${table.getEntityName()} Dao
+     *
+     * @return ${identifier-name}${table.getEntityName()}Dao
+     **/
+    public abstract function get${table.getEntityName()}Dao();
+#end
+}
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */

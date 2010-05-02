@@ -1,0 +1,25 @@
+<?php
+/**
+ * Interface that defines one ${identifier-name}${table.getEntityName()}Dao.
+ * This interfaces have basic methods to handle CRUD operations for 
+ * ${identifier-name}${table.getEntityName()}Dto's.
+ * 
+ * @package lib.dao.${table.getName()}
+ * @author Carcara Modeller Tool Engine
+ */
+interface ${identifier-name}${table.getEntityName()}Dao {
+    
+    public function get${table.getEntityName()}s( 
+        $criteria = null, $fillMethod = 'fill${table.getEntityName()}' ); 
+
+    public function get${table.getEntityName()}sCount( $criteria = null ); 
+
+    public function get${table.getEntityName()}ByPk( #foreach( $field in $table.getPks())$$field.getAttributeName()#if( $velocityHasNext ),#end #end); 
+
+    public function save${table.getEntityName()}( 
+        ${identifier-name}${table.getEntityName()}Dto $${table.getAttributeName()}, $transaction ); 
+
+    public function delete${table.getEntityName()}( #foreach( $field in $table.getPks())$$field.getAttributeName()#if( $velocityHasNext ),#end #end); 
+
+}
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
