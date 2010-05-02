@@ -2,6 +2,8 @@ package org.candango.carcara.model.database;
 
 import java.util.ArrayList;
 
+import org.candango.carcara.util.CodeHandler;
+
 public class Table {
 	
 	private String name;
@@ -15,6 +17,30 @@ public class Table {
     public Field[] getFields() {
     	Field[] field = new Field[ fieldList.size() ];
     	return fieldList.toArray( field );
+    }
+    
+    public Field[] getPks() {
+    	int pkCount = 0;
+    	
+    	Field[] fields = new Field[ fieldList.size() ];
+    	
+    	for( Field field : fieldList.toArray( fields ) )  {
+    		if( field.isPk() ) {
+    			pkCount++;
+    		}
+    	}
+    	
+    	Field[] pks = new Field[ pkCount ];
+    	
+    	int i = 0;
+    	
+    	for( Field field : fieldList.toArray( fields ) )  {
+    		if( field.isPk() ) {
+    			pks[ i++ ] = field;
+    		}
+    	}
+    	
+    	return pks;
     }
     
     public String toString() {
@@ -34,4 +60,11 @@ public class Table {
 		this.name = name;
 	}
     
+	public String getEntityName() {
+		return CodeHandler.getEntityName( getName() );
+	}
+	
+	public String getAttributeName() {
+		return CodeHandler.getAttributeName( getName() );
+	}
 }

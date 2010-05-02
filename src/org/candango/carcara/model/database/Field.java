@@ -1,5 +1,7 @@
 package org.candango.carcara.model.database;
 
+import org.candango.carcara.util.CodeHandler;
+
 public class Field {
 	
 	private String name;
@@ -47,4 +49,7 @@ public class Field {
 		this.pk = pk;
 	}
 	
+	public String getAttributeName() {
+		return CodeHandler.getAttributeName( getName() );
+	}
 }
