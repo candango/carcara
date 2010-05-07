@@ -19,6 +19,30 @@ public class Table {
     	return fieldList.toArray( field );
     }
     
+    public Field[] getSerials() {
+    	int serialCount = 0;
+    	
+    	Field[] fields = new Field[ fieldList.size() ];
+    	
+    	for( Field field : fieldList.toArray( fields ) )  {
+    		if( field.isSerial() ) {
+    			serialCount++;
+    		}
+    	}
+    	
+    	Field[] serials = new Field[ serialCount ];
+    	
+    	int i = 0;
+    	
+    	for( Field field : fieldList.toArray( fields ) )  {
+    		if( field.isSerial() ) {
+    			serials[ i++ ] = field;
+    		}
+    	}
+    	
+    	return serials;
+    }
+    
     public Field[] getPks() {
     	int pkCount = 0;
     	
