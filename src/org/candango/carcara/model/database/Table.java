@@ -43,6 +43,30 @@ public class Table {
     	return serials;
     }
     
+    public Field[] getNonSerials() {
+    	int nonSerialCount = 0;
+    	
+    	Field[] fields = new Field[ fieldList.size() ];
+    	
+    	for( Field field : fieldList.toArray( fields ) )  {
+    		if( !field.isSerial() ) {
+    			nonSerialCount++;
+    		}
+    	}
+    	
+    	Field[] nonSerials = new Field[ nonSerialCount ];
+    	
+    	int i = 0;
+    	
+    	for( Field field : fieldList.toArray( fields ) )  {
+    		if( !field.isSerial() ) {
+    			nonSerials[ i++ ] = field;
+    		}
+    	}
+    	
+    	return nonSerials;
+    }
+    
     public Field[] getPks() {
     	int pkCount = 0;
     	
@@ -65,6 +89,30 @@ public class Table {
     	}
     	
     	return pks;
+    }
+    
+    public Field[] getNonPks() {
+    	int nonPkCount = 0;
+    	
+    	Field[] fields = new Field[ fieldList.size() ];
+    	
+    	for( Field field : fieldList.toArray( fields ) )  {
+    		if( !field.isPk() ) {
+    			nonPkCount++;
+    		}
+    	}
+    	
+    	Field[] nonPks = new Field[ nonPkCount ];
+    	
+    	int i = 0;
+    	
+    	for( Field field : fieldList.toArray( fields ) )  {
+    		if( !field.isPk() ) {
+    			nonPks[ i++ ] = field;
+    		}
+    	}
+    	
+    	return nonPks;
     }
     
     public String toString() {
