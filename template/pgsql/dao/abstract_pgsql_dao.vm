@@ -164,7 +164,8 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao 
 
         $values = array(
             #foreach( $field in $table.getPks())":$field.getName()" => $$field.getAttributeName()#if( $velocityHasNext ),
-            #end#end;
+            #end#end
+
         );
 
         $criteria[ 'bind' ] = $values;
