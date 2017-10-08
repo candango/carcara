@@ -600,11 +600,21 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		}
 		out += "\n        $sth = $this->getFactory()->getConnection()->" + 
 			"prepare( $sql );\n\n";
-		out += "        $sth->execute( $values );\n";
-		
+		out += "        $result = $sth->execute( $values );\n";
+		if(table.getPks().length == 1) {
+			out += "        if( $operation == " +
+					CodeHandler.getEntityName(configuration.getIdentifier()) +
+					"AbstractDaoFactory::INSERT_TRANSACTION ) {\n";
+			out += "             if($result) {\n";
+			out += "                 " + dtoVar + "->set" + table.getPks()[0].getEntityName() +
+					"($this->getFactory()->getConnection()->lastInsertId());\n";
+			out += "             }\n";
+			out += "        }\n";
+		}
+		out += "        return $result;\n";
 		out += "    }\n\n";
 		
-		out += "    public function delete" + tableSufix + "( " + pks +  
+		out += "    public function delete" + tableSufix + "( " + pks.replace("$", "") +
 			" ) { \n";
 		
 		
