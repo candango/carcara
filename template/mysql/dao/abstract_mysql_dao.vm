@@ -232,10 +232,16 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
 #end
 #end )";
         }
-
         $sth = $this->getFactory()->getConnection()->prepare( $sql );
-
-        return $sth->execute( $values );
+        $result = $sth->execute( $values );
+#if($table.getPks().size() == 1)
+        if ($operation == AcertofacilAbstractDaoFactory::INSERT_TRANSACTION){
+            if ($result){
+                $${table.getAttributeName()}->set${table.getPks()[0].getEntityName()}($this->getFactory()->getConnection()->lastInsertId());
+            }
+        }
+#end
+        return $result;
     }
 
     public function delete${table.getEntityName()}( #foreach( $field in $table.getPks())$$field.getAttributeName()#if( $velocityHasNext ),#end #end) { 
@@ -261,4 +267,3 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
     }
 
 }
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
