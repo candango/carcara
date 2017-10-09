@@ -112,4 +112,3 @@ abstract class ${identifier-name}AbstractDaoFactory{
     public abstract function get${table.getEntityName()}Dao();
 #end
 }
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */

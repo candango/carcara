@@ -11,4 +11,3 @@ require_once "dao/${table.getName()}/${identifier-name}${table.getEntityName()}A
 class ${identifier-name}${table.getEntityName()}Dto extends ${identifier-name}${table.getEntityName()}AbstractDto {
 
 }
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */

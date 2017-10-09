@@ -36,4 +36,3 @@ abstract class ${identifier-name}${table.getEntityName()}AbstractDto {
     }
 #end
 }
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
