@@ -23,11 +23,11 @@ public class TestApp {
 		
 		configuration.setHost( "localhost" );
 		
-		configuration.setDatabase( "mysql" );
+		configuration.setDatabase( "acertofacil" );
 		
 		configuration.setUser( "root" );
 		
-		configuration.setPassword( "rootpass" );
+		configuration.setPassword( "" );
 		
 		loader.connect( configuration );
 		

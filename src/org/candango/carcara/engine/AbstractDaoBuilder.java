@@ -65,7 +65,7 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 		
 		String abstractDaoFileName = getDaoPath() + "/" +
 			CodeHandler.upperCaseFirst( configuration.getIdentifier() ) + 
-			"AbstractDaoFactory.class.php";
+			"AbstractDaoFactory.php";
 		
 		File abstractDaoFile = new File( abstractDaoFileName );
 		try {
@@ -118,7 +118,7 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 			Table table ) {
 		
 		String daoFileName = getTablePath( table ) + "/" +
-			getEntitySufix( configuration, table ) + "Dao.class.php";
+			getEntitySufix( configuration, table ) + "Dao.php";
 		
 		File daoFile = new File( daoFileName );
 		
@@ -146,10 +146,10 @@ public abstract class AbstractDaoBuilder implements DaoBuilder {
 	protected void buildDto( DatabaseConfiguration configuration, Table table ) {
 		
 		String dtoFileName = getTablePath( table ) + "/" +
-			getEntitySufix( configuration, table ) + "Dto.class.php";
+			getEntitySufix( configuration, table ) + "Dto.php";
 		
 		String abstactDtoFileName = getTablePath( table ) + "/" +
-			getEntitySufix( configuration, table ) + "AbstractDto.class.php";
+			getEntitySufix( configuration, table ) + "AbstractDto.php";
 		
 		File dtoFile = new File( dtoFileName );
 		File abstractDtoFile = new File( abstactDtoFileName );

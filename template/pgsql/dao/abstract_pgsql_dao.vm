@@ -1,6 +1,6 @@
 <?php
 /**
- * ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao - ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao.class.php
+ * ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao - ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao.php
  * 
  * Abstract dao factory class. This class returns all dao factories found
  * by the engine.
@@ -19,12 +19,12 @@
  * @version    
  */
 
-require_once "dao/${table.getName()}/${identifier-name-upper}${table.getEntityName()}Dto.class.php";
+require_once "dao/${table.getName()}/${identifier-name-upper}${table.getEntityName()}Dto.php";
 
-require_once "dao/${table.getName()}/${identifier-name-upper}${table.getEntityName()}Dao.class.php";
+require_once "dao/${table.getName()}/${identifier-name-upper}${table.getEntityName()}Dao.php";
 
 /**
- * ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao - ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao.class.php
+ * ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao - ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao.php
  * 
  * Abstract dao factory class. This class returns all dao factories found
  * by the engine.
