@@ -45,10 +45,11 @@ interface ${identifier-name}${table.getEntityName()}Dao {
 
     public function get${table.getEntityName()}ByPk( #foreach( $field in $table.getPks())$$field.getAttributeName()#if( $velocityHasNext ),#end #end); 
 
+    public function update${table.getEntityName()}($criteria = null);
+
     public function save${table.getEntityName()}( 
-        ${identifier-name}${table.getEntityName()}Dto $${table.getAttributeName()}, $transaction ); 
+        ${identifier-name}${table.getEntityName()}Dto $${table.getAttributeName()}, $transaction );
 
     public function delete${table.getEntityName()}( #foreach( $field in $table.getPks())$$field.getAttributeName()#if( $velocityHasNext ),#end #end); 
 
 }
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
