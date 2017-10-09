@@ -50,91 +50,23 @@ public class MysqlDaoBuilder extends AbstractDaoBuilder {
 		}
 		
 	}
-	
-	
+
 	protected String getMysqlDaoFactoryCode( DatabaseConfiguration configuration, 
 			DatabaseLoader loader ) {
-		
-		String abstractDaoClassName = 
-			CodeHandler.upperCaseFirst( configuration.getIdentifier() ) + 
-			"AbstractDaoFactory";
-		
-		String mysqlDaoClassName = 
-			CodeHandler.upperCaseFirst( configuration.getIdentifier() ) + 
-			"MysqlDaoFactory";
-		
-		String out = "<?php\n";
-		out += "class " + mysqlDaoClassName + " extends " + 
-			abstractDaoClassName +  "{\n\n";
-		
-		out += "    /**\n";
-		out += "     * Configuration database name\n";
-		out += "     *\n";
-		out += "     * @var string\n";
-		out += "     */\n";
-		out += "    private $dbName;\n\n";
-		
-		out += "    private $connection;\n\n";
-		out += "    public function __construct() {\n";
-		out += "        $iflux = Iflux::getInstance();\n";
-		out += "        $conf = require $iflux->getApplication( \""+ 
-						configuration.getIdentifier() + "\" " + 
-						")->getPath() .\n            \"conf/" + 
-						configuration.getIdentifier() + "_conf.php\";\n";
-		out += "        $connStr = \"mysql:host=\" . $conf[ 'server' ] . " + 
-						"\";dbname=\" .\n            $conf[ 'database' ];\n";
-		out += "        $this->dbName = $conf[ 'database' ];\n";
-		
-		out += "        try {\n";
-		out += "            $this->connection = new PDO( $connStr, " + 
-							"$conf[ 'user' ],\n" + 
-							"                 $conf[ 'password' ] );\n";
-		out += "        }\n";
-		out += "        catch ( Exception $e ) {\n";
-		out += "            echo \"Failed: \" . $e->getMessage();\n";
-		out += "        }\n";
-		out += "    }\n\n";
-		
-		out += "    /**\n";
-		out += "     * Returns the configuration database name\n";
-		out += "     *\n";
-		out += "     * @returns string\n";
-		out += "     */\n";
-		out += "    public function getDbName() {\n";
-		out += "        return $this->dbName;\n";
-		out += "    }\n\n";
-		
-		out += "    /**\n";
-		out += "     * Returns the PDO connection object\n";
-		out += "     *\n";
-		out += "     * @returns PDO\n";
-		out += "     */\n";
-		out += "    public function getConnection() {\n";
-		out += "        return $this->connection;\n";
-		out += "    }\n\n";
-		
-		for( Table table : loader.getTables() ){
-			
-			String daoName = getEntitySufix( configuration, table ) + "MysqlDao";
-			
-			String attrName = CodeHandler.getAttributeName( table.getName() );
-			
-			String methodName = "get" + CodeHandler.getEntityName( 
-					table.getName() ) + "Dao" ;
-			
-			out += "    /**\n";
-			out += "     * Return a new " + daoName + "\n";
-			out += "     *\n";
-			out += "     * @return " + daoName + "\n";
-			out += "     **/\n";
-			out += "    public function " + methodName + "(){\n";
-			out += "        require_once \"dao/" + table.getName() + "/" +  
-				daoName + ".php\";\n";
-			out += "        return new " + daoName + "( $this );\n";
-			out += "    }\n\n";
-		}
-		
-		out += "}";
+		// Creating the velocity context
+		VelocityContext context = new VelocityContext();
+
+		// adding variables to context
+		context.put("identifier-name", configuration.getIdentifier() );
+
+		context.put("identifier-name-upper",
+				CodeHandler.upperCaseFirst( configuration.getIdentifier() ) );
+
+		context.put( "tables", loader.getTables() );
+
+		String out = VelocityHandler.getTemplateString( context,
+				"template/mysql/dao/mysql_dao_factory.vm" );
+
 		return out;
 	}
 
