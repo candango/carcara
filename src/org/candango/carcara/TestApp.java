@@ -37,7 +37,7 @@ public class TestApp {
 		
 		DaoBuilder builder = new MysqlDaoBuilder();
 		
-		builder.setPath( "./" );
+		builder.setPath( "/home/fpiraz/source/acertofacil/acertofacil/" );
 		
 		builder.build( configuration, loader );
 		
