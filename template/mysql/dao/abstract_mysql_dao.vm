@@ -51,10 +51,10 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
         $this->factory = $factory;
     }
 
-    public function get${table.getEntityName()}s( $criteria = null, $fillMethod = 'fill${table.getEntityName()}' ) {
+    public function get${table.getEntityName()}s( $criteria = null, $fillMethod = 'fill${table.getEntityName()}', $buildArrayMethod = 'buildArray${table.getEntityName()}s') {
         if( is_null( $criteria ) ) {
             $criteria[ 'fields' ] = "*";
-            $criteria[ 'from' ] = $this->getFactory()->getDbName() . ".${table.getName()}";
+            $criteria[ 'from' ] = $this->factory->getDbName() . ".${table.getName()}";
             $criteria[ 'where' ] = null;
             $criteria[ 'order_by' ] = null;
             $criteria[ 'limit' ] = null;
@@ -64,7 +64,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
                 $criteria[ 'fields' ] = "*";
             }
             if( !isset( $criteria[ 'from' ] ) ) {
-                $criteria[ 'from' ] = $this->getFactory()->getDbName() . ".${table.getName()}";
+                $criteria[ 'from' ] = $this->factory->getDbName() . ".${table.getName()}";
             }
             if( !isset( $criteria[ 'where' ] ) ) {
                 $criteria[ 'where' ] = null;
@@ -92,7 +92,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
             $sql .= " LIMIT " . $criteria[ 'limit' ];
         }
 
-        $sth = $this->getFactory()->getConnection()->prepare( $sql );
+        $sth = $this->factory->getConnection()->prepare( $sql );
 
         $sth->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] :
             null );
@@ -100,7 +100,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
         $${table.getAttributeName()}s = array();
 
         while( $row = $sth->fetch( PDO::FETCH_ASSOC ) ) {
-            $${table.getAttributeName()}s[] = $this->$fillMethod( $row );
+            $this->$buildArrayMethod($${table.getAttributeName()}s, $this->$fillMethod($row));
         }
 
         return $${table.getAttributeName()}s;
@@ -108,14 +108,14 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
     
     public function get${table.getEntityName()}sCount( $criteria = null ) { 
         if( is_null( $criteria ) ) {
-            $criteria[ 'from' ] = $this->getFactory()->getDbName() . ".${table.getName()}";
+            $criteria[ 'from' ] = $this->factory->getDbName() . ".${table.getName()}";
             $criteria[ 'where' ] = null;
             $criteria[ 'order_by' ] = null;
             $criteria[ 'limit' ] = null;
         }
         else {
             if( !isset( $criteria[ 'from' ] ) ) {
-                $criteria[ 'from' ] = $this->getFactory()->getDbName() . ".${table.getName()}";
+                $criteria[ 'from' ] = $this->factory->getDbName() . ".${table.getName()}";
             }
             if( !isset( $criteria[ 'where' ] ) ) {
                 $criteria[ 'where' ] = null;
@@ -143,7 +143,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
             $sql .= " LIMIT " . $criteria[ 'limit' ];
         }
 
-        $sth = $this->getFactory()->getConnection()->prepare( $sql );
+        $sth = $this->factory->getConnection()->prepare( $sql );
 
         $sth->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] :
             null );
@@ -176,8 +176,20 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
         return $${table.getAttributeName()}s[ 0 ];
     }
 
+
     /**
-     * Return one ${identifier-name-upper}${table.getEntityName()}Dto with properties filled with the row values.
+     * Add the filled row to the array of ${table.getAttributeName()}s to be returned by the
+     * get${table.getEntityName()}s method
+     *
+     * @param array $${table.getAttributeName()}s
+     * @param ${identifier-name-upper}${table.getEntityName()}Dto $item
+     */
+    public function buildArray${table.getEntityName()}s( &$${table.getAttributeName()}s, $item ){
+        $${table.getAttributeName()}s[] = $item;
+    }
+
+    /**
+     * Return one ${identifier-name-upper}${table.getEntityName()}Dto with filled by row values.
      *
      * @param array $row
      * @return ${identifier-name-upper}${table.getEntityName()}Dto
@@ -192,9 +204,33 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
         return $${table.getAttributeName()};
     }
 
+    public function update${table.getEntityName()}($criteria = null) {
+        if( is_null( $criteria ) ) {
+            $criteria[ 'fields' ] = null;
+            $criteria[ 'where' ] = null;
+        }
+        else {
+            if( !isset( $criteria[ 'fields' ] ) ) {
+                $criteria[ 'fields' ] = null;
+            }
+            if( !isset( $criteria[ 'where' ] ) ) {
+                $criteria[ 'where' ] = null;
+            }
+        }
+
+        if($criteria[ 'fields' ] != null) {
+            $sql = "UPDATE " . $this->factory->getDbName() .
+                ".${table.getName()} SET " . $criteria[ 'fields' ];
+            if($criteria[ 'where' ] != null) {
+                $sql .= " WHERE " . $criteria[ 'where' ];
+            }
+            $sth = $this->factory->getConnection()->prepare( $sql );
+            return $sth->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] : null );
+        }
+    }
+
     public function save${table.getEntityName()}( ${identifier-name-upper}${table.getEntityName()}Dto $${table.getAttributeName()},
          $transaction ){
-        $sql = "";
         $sth = null;
         $values = array(
 #foreach( $field in $table.getFields())
@@ -204,12 +240,12 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
         
         );
 
-        if( $transaction == ${identifier-name-upper}${table.getEntityName()}DaoFactory::INSERT_TRANSACTION ) {
+        if( $transaction == ${identifier-name-upper}AbstractDaoFactory::INSERT_TRANSACTION ) {
 #foreach( $field in $table.getSerials())
             unset( $values[ ':${field.getName()}' ] );
 #end
 
-            $sql = "INSERT INTO " . $this->getFactory()->getDbName() . ".${table.getName()}";  ( " .
+            $sql = "INSERT INTO " . $this->factory->getDbName() . ".${table.getName()}( " .
 #foreach( $field in $table.getNonSerials())
                        "${field.getName()}#if( $velocityHasNext ), " .
 #end
@@ -221,7 +257,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
 #end )";
         }
         else{
-            $sql = "UPDATE " . $this->getFactory()->getDbName() . ".${table.getName()} SET " .
+            $sql = "UPDATE " . $this->factory->getDbName() . ".${table.getName()} SET " .
 #foreach( $field in $table.getNonPks())
                        "${field.getName()} = :${field.getName()}#if( $velocityHasNext ), " .
 #end
@@ -232,12 +268,12 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
 #end
 #end )";
         }
-        $sth = $this->getFactory()->getConnection()->prepare( $sql );
+        $sth = $this->factory->getConnection()->prepare( $sql );
         $result = $sth->execute( $values );
 #if($table.getPks().size() == 1)
-        if ($operation == AcertofacilAbstractDaoFactory::INSERT_TRANSACTION){
+        if ($transaction == ${identifier-name-upper}AbstractDaoFactory::INSERT_TRANSACTION){
             if ($result){
-                $${table.getAttributeName()}->set${table.getPks()[0].getEntityName()}($this->getFactory()->getConnection()->lastInsertId());
+                $${table.getAttributeName()}->set${table.getPks()[0].getEntityName()}($this->factory->getConnection()->lastInsertId());
             }
         }
 #end
@@ -246,7 +282,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
 
     public function delete${table.getEntityName()}( #foreach( $field in $table.getPks())$$field.getAttributeName()#if( $velocityHasNext ),#end #end) { 
         $sql = "DELETE FROM " .
-                   $this->getFactory()->getDbName() . ".${table.getName()} " .
+                   $this->factory->getDbName() . ".${table.getName()} " .
                "WHERE " .
 #foreach( $field in $table.getPks())
                    "${field.getName()} = :${field.getName()}#if( $velocityHasNext ), " .
@@ -261,7 +297,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
         
         );
 
-        $sth = $this->getFactory()->getConnection()->prepare( $sql );
+        $sth = $this->factory->getConnection()->prepare( $sql );
 
         return $sth->execute( $values );
     }
