@@ -66,6 +66,62 @@ namespace Candango\Carcara\Model\Database
         }
 
         /**
+         *
+         * @return array
+         */
+        public function getPkFields() {
+            $pks = array();
+            foreach ($this->fields as $field) {
+                if ($field->isPk()) {
+                    $pks[] = $field;
+                }
+            }
+            return $pks;
+        }
+
+        /**
+         *
+         * @return array
+         */
+        public function getNonPkFields() {
+            $nonPks = array();
+            foreach ($this->fields as $field) {
+                if ($field->isPk()) {
+                    $nonPks[] = $field;
+                }
+            }
+            return $nonPks;
+        }
+
+        /**
+         *
+         * @return array
+         */
+        public function getSerialFields() {
+            $serials = array();
+            foreach ($this->fields as $field) {
+                if ($field->isSerial()) {
+                    $serials[] = $field;
+                }
+            }
+            return $serials;
+        }
+
+        /**
+         *
+         * @return array
+         */
+        public function getNonSerialFields() {
+            $nonSerials = array();
+            foreach ($this->fields as $field) {
+                if (!$field->isSerial()) {
+                    $nonSerials[] = $field;
+                }
+            }
+            return $nonSerials;
+        }
+
+        /**
          * Table fields setter
          *
          * @param string $fields
