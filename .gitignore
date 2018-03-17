@@ -30,3 +30,7 @@ hs_err_pid*
 # Maven
 target
 
+# Composer
+composer.phar
+composer.lock
+vendor
