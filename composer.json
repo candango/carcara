@@ -23,7 +23,10 @@
     "phpunit/phpunit": ">=6.4.0",
     "ext-mbstring": "*"
   },
+  "bin": [
+    "bin/carcara"
+  ],
   "autoload": {
-    "psr-0": {"Candango\\Carcara\\": "src"}
+    "psr-4": {"Candango\\Carcara\\": "src/Carcara/"}
   }
 }

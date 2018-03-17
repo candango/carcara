@@ -11,6 +11,16 @@ namespace Candango\Carcara
 {
     class Application
     {
+        public static function run() {
+            global $argc, $argv;
 
+            if (PHP_SAPI != "cli") {
+                exit(2);
+            }
+
+            var_dump($argv);
+            exit(0);
+        }
     }
+
 }
