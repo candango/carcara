@@ -28,8 +28,6 @@ namespace Candango\Carcara\Commands
             $logger->error('error');
 
             $input = $this->ask('Please type something');
-
-
         }
     }
 }
