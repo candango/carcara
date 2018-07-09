@@ -11,4 +11,6 @@ if (file_exists($file = __DIR__ . "/../vendor/autoload.php")) {
     $loader = require_once $file;
 }
 
-Candango\Carcara\Application::run();
+$app = new Candango\Carcara\Application;
+
+$app->run($argv);
