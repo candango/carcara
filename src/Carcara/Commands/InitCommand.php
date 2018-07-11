@@ -12,7 +12,7 @@ namespace Candango\Carcara\Commands {
     class InitCommand
     {
         public static function run($getopt) {
-            echo sprintf("Creating config structure..." .
+            echo sprintf("Creating config structure... %s" .
                 PHP_EOL, phpversion());
         }
     }
