@@ -7,7 +7,7 @@ namespace Candango\Carcara\Commands
 
         public function brief()
         {
-            return 'List something';
+            return 'List all commands';
         }
 
         function init()

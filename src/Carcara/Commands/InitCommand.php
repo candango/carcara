@@ -11,9 +11,36 @@ namespace Candango\Carcara\Commands {
 
     class InitCommand
     {
+        private static $name = null;
+
         public static function run($getopt) {
-            echo sprintf("Creating config structure... %s" .
-                PHP_EOL, phpversion());
+            echo "Checking config structure.\n";
+            $currentDir = getcwd();
+
+            $configDir = $currentDir . DIRECTORY_SEPARATOR . "config";
+
+            echo "Checking config structure.\n";
+
+            if(file_exists($configDir) && is_dir($configDir)) {
+                echo "The config directory already exits.\n";
+            }
+            else {
+                echo "Creating config directory ... ";
+                mkdir($configDir);
+                echo "[OK].\n";
+            }
+
+            if(is_null(self::$name)){
+                self::$name = "default";
+                echo "Inform the DAO name [default]:";
+                $handle = fopen("php://stdin", "r");
+                $name = fgets($handle);
+                if (trim($name) != "") {
+                    self::$name = $name;
+                }
+                echo(self::$name);
+            }
+
         }
     }
 }
