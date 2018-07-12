@@ -11,9 +11,12 @@ namespace Candango\Carcara\Commands {
 
     class InitCommand
     {
-        private static $name = null;
+        private $name = null;
 
-        public static function run($getopt) {
+        public function run($getopt)
+        {
+
+
             echo "Checking config structure.\n";
             $currentDir = getcwd();
 
@@ -21,26 +24,42 @@ namespace Candango\Carcara\Commands {
 
             echo "Checking config structure.\n";
 
-            if(file_exists($configDir) && is_dir($configDir)) {
+            if (file_exists($configDir) && is_dir($configDir)) {
                 echo "The config directory already exits.\n";
-            }
-            else {
+            } else {
                 echo "Creating config directory ... ";
                 mkdir($configDir);
-                echo "[OK].\n";
+                echo "[ OK ].\n";
             }
 
-            if(is_null(self::$name)){
-                self::$name = "default";
-                echo "Inform the DAO name [default]:";
+            if(is_null($this->name)){
+                $this->name = "default";
+                echo "Inform Data Source name: [default]";
                 $handle = fopen("php://stdin", "r");
                 $name = fgets($handle);
                 if (trim($name) != "") {
-                    self::$name = $name;
+                    $this->name = trim($name);
                 }
-                echo(self::$name);
             }
 
+            $configFile = $configDir . DIRECTORY_SEPARATOR . $this->name .
+                "_conf.php";
+
+            echo sprintf("Creating Data Source config file at %s ... ",
+                $configFile);
+
+            if (file_exists($configFile)) {
+                echo sprintf("Data Source config file %s already exists " .
+                    "use command \"edit\"", $configFile);
+                exit(1);
+            } else {
+                if (touch($configFile)) {
+                    echo "[ OK ]";
+                } else {
+                    echo "[ ERROR ]";
+                    exit(2);
+                }
+            }
         }
     }
 }
