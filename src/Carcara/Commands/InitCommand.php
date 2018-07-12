@@ -147,6 +147,8 @@ namespace Candango\Carcara\Commands {
 
                     File::write($configFile, $config);
 
+                    File::delete($smarty->getCompileDir());
+
                     echo "[ OK ]\n";
                     exit(0);
 
