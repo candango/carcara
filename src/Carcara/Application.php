@@ -17,6 +17,8 @@ namespace Candango\Carcara
 
     define('NAME', 'carcara');
     define('VERSION', '0.0.1');
+    define("Candango\\Carcara\\ROOT_PATH", realpath(dirname(__FILE__) .
+        DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".."));
 
     class Application
     {
