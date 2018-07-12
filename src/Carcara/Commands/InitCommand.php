@@ -9,6 +9,8 @@
 
 namespace Candango\Carcara\Commands {
 
+    use Candango\Carcara\Cli;
+
     class InitCommand
     {
         private $name = null;
@@ -35,10 +37,9 @@ namespace Candango\Carcara\Commands {
             if(is_null($this->name)){
                 $this->name = "default";
                 echo "Inform Data Source name: [default]";
-                $handle = fopen("php://stdin", "r");
-                $name = fgets($handle);
-                if (trim($name) != "") {
-                    $this->name = trim($name);
+                $name = Cli::read();
+                if ($name != "") {
+                    $this->name = $name;
                 }
             }
 
@@ -49,7 +50,7 @@ namespace Candango\Carcara\Commands {
                 $configFile);
 
             if (file_exists($configFile)) {
-                echo sprintf("Data Source config file %s already exists " .
+                echo sprintf("[ WARN ]\nData Source config file %s already exists " .
                     "use command \"edit\"", $configFile);
                 exit(1);
             } else {
