@@ -62,5 +62,29 @@ namespace Candango\Carcara
 
             return $fileCode;
         }
+
+        public static function delete($path)
+        {
+            if (is_dir($path)) {
+                $it = new \RecursiveDirectoryIterator($path);
+                foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
+                    $pName = "" . $child;
+                    if ($child->getBaseName() == "." ||
+                        $child->getBaseName() == "..") {
+                        continue;
+                    }
+                    if ($child->isDir() && !$child->isLink() &&
+                        file_exists($child)) {
+
+                        rmdir($pName);
+                    } else {
+                        unlink($pName);
+                    }
+                }
+                rmdir($path);
+            } else {
+                unlink($path);
+            }
+        }
     }
 }
