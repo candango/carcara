@@ -1,9 +1,8 @@
 <?php
 namespace Candango\Carcara\Commands
 {
-    use CLIFramework\Command;
 
-    class ListCommand extends Command {
+    class ListCommand {
 
         public function brief()
         {

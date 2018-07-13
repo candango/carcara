@@ -20,6 +20,9 @@ namespace Candango\Carcara
     define("Candango\\Carcara\\ROOT_PATH", realpath(dirname(__FILE__) .
         DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".."));
 
+    define("Candango\\Carcara\\TPL_DIR", ROOT_PATH . DIRECTORY_SEPARATOR .
+        "template");
+
     class Application
     {
         public static function run($argv) {

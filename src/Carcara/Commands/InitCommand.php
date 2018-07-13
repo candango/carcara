@@ -11,61 +11,18 @@ namespace Candango\Carcara\Commands {
 
     use Candango\Carcara\Cli;
     use Candango\Carcara\File;
+    use Candango\Carcara\Model\DataSource\Config;
 
     class InitCommand
     {
-        private $name = null;
-
-        private $type = null;
-
-        private $host = null;
-
-        private $database = null;
-
-        private $user = null;
-
-        private $password = null;
-
-
-        public function getName()
-        {
-            return $this->name;
-        }
-
-        public function getType()
-        {
-            return $this->type;
-        }
-
-        public function getHost()
-        {
-            return $this->host;
-        }
-
-        public function getDatabase()
-        {
-            return $this->database;
-        }
-
-        public function getUser()
-        {
-            return $this->user;
-        }
-
-        public function getPassword()
-        {
-            return $this->password;
-        }
 
         public function run($getopt)
         {
-            $configTplDir =  \Candango\Carcara\ROOT_PATH . DIRECTORY_SEPARATOR .
-                "template" . DIRECTORY_SEPARATOR . "config";
-
             echo "Checking config structure.\n";
-            $currentDir = getcwd();
 
-            $configDir = $currentDir . DIRECTORY_SEPARATOR . "config";
+            $config = new Config();
+
+            $configDir = $config->getConfigDir();
 
             if (file_exists($configDir) && is_dir($configDir)) {
                 echo "The config directory already exits.\n";
@@ -75,17 +32,14 @@ namespace Candango\Carcara\Commands {
                 echo "[ OK ].\n";
             }
 
-            if(is_null($this->name)){
-                $this->name = "default";
-                echo sprintf("Data Source name: [%s]", $this->name);
-                $name = Cli::read();
-                if ($name != "") {
-                    $this->name = $name;
-                }
+            echo sprintf("Data Source name: [%s]", $config->getName());
+            $name = Cli::read();
+            if ($name != "") {
+                $config->setName($name);
             }
 
-            $configFile = $configDir . DIRECTORY_SEPARATOR . $this->name .
-                "_conf.php";
+            $configFile = $configDir . DIRECTORY_SEPARATOR . $config->getName()
+                . "_conf.php";
 
             echo sprintf("Creating Data Source config file at %s ... ",
                 $configFile);
@@ -98,56 +52,34 @@ namespace Candango\Carcara\Commands {
                 if (touch($configFile)) {
                     echo "[ OK ]\n";
 
-                    echo sprintf("Setting Data Source %s:\n", $this->name);
+                    echo sprintf("Setting Data Source %s:\n",
+                        $config->getName());
 
-                    if(is_null($this->type)){
-                        $this->type = "mysql";
-                        echo sprintf("Type: [%s]", $this->type);
-                        $type = Cli::read();
-                        if ($type != "") {
-                            $this->type = $type;
-                        }
+
+                    echo sprintf("Type: [%s]", $config->getType());
+                    $type = Cli::read();
+                    if ($type != "") {
+                        $config->setType($type);
                     }
 
-                    if(is_null($this->host)){
-                        $this->host = "localhost";
-                        echo sprintf("Host: [%s]", $this->host);
-                        $host = Cli::read();
-                        if ($host != "") {
-                            $this->host = $host;
-                        }
+                    echo sprintf("Host: [%s]", $config->getHost());
+                    $host = Cli::read();
+                    if ($host != "") {
+                        $config->setHost($host);
                     }
 
-                    if(is_null($this->database)){
-                        $this->database = "";
-                        echo sprintf("Database: [%s]", $this->database);
-                        $this->database = Cli::read();
-                    }
+                    echo sprintf("Database: [%s]", $config->getDatabase());
+                    $config->setDatabase(Cli::read());
 
-                    if(is_null($this->user)){
-                        $this->user = "";
-                        echo sprintf("User: [%s]", $this->user);
-                        $this->user = Cli::read();
-                    }
+                    echo sprintf("User: [%s]", $config->getUser());
+                    $config->setUser(Cli::read());
 
-                    if(is_null($this->password)){
-                        $this->password = "";
-                        echo sprintf("Password: [%s]", $this->password);
-                        $this->password = Cli::read();
-                    }
-
-                    $smarty = new \Smarty();
-
-                    $smarty->assign("config", $this);
-
-                    $config = $smarty->fetch($configTplDir .
-                        DIRECTORY_SEPARATOR . "config.tpl");
+                    echo sprintf("Password: [%s]", $config->getPassword());
+                    $config->setPassword(Cli::read());
 
                     echo sprintf("Saving file %s ...", $configFile);
 
-                    File::write($configFile, $config);
-
-                    File::delete($smarty->getCompileDir());
+                    File::write($configFile, $config->fetch());
 
                     echo "[ OK ]\n";
                     exit(0);

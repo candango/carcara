@@ -12,6 +12,35 @@ namespace Candango\Carcara
     class File
     {
         /**
+         * Delete the path and all children if path is a directory
+         *
+         * @param string $path Path to be deleted
+         */
+        public static function delete($path)
+        {
+            if (is_dir($path)) {
+                $it = new \RecursiveDirectoryIterator($path);
+                foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
+                    $pName = "" . $child;
+                    if ($child->getBaseName() == "." ||
+                        $child->getBaseName() == "..") {
+                        continue;
+                    }
+                    if ($child->isDir() && !$child->isLink() &&
+                        file_exists($child)) {
+
+                        rmdir($pName);
+                    } else {
+                        unlink($pName);
+                    }
+                }
+                rmdir($path);
+            } else {
+                unlink($path);
+            }
+        }
+
+        /**
          * Write a string in a given file
          *
          * @param string $file The file name
@@ -61,30 +90,6 @@ namespace Candango\Carcara
             fclose($fp);
 
             return $fileCode;
-        }
-
-        public static function delete($path)
-        {
-            if (is_dir($path)) {
-                $it = new \RecursiveDirectoryIterator($path);
-                foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
-                    $pName = "" . $child;
-                    if ($child->getBaseName() == "." ||
-                        $child->getBaseName() == "..") {
-                        continue;
-                    }
-                    if ($child->isDir() && !$child->isLink() &&
-                        file_exists($child)) {
-
-                        rmdir($pName);
-                    } else {
-                        unlink($pName);
-                    }
-                }
-                rmdir($path);
-            } else {
-                unlink($path);
-            }
         }
     }
 }
