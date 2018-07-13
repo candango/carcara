@@ -195,7 +195,7 @@ namespace Candango\Carcara\Model\DataSource
          * @return string
          */
         public function getConfigDir($baseDir=null) {
-            if(!is_null($baseDir)){
+            if(is_null($baseDir)){
                 $baseDir = getcwd();
             }
             return $baseDir . DIRECTORY_SEPARATOR . "config";
