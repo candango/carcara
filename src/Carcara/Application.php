@@ -23,6 +23,20 @@ namespace Candango\Carcara
     define("Candango\\Carcara\\TPL_DIR", ROOT_PATH . DIRECTORY_SEPARATOR .
         "template");
 
+    function get_all_commands() {
+        $commandsNS = "Candango\\Carcara\\Commands\\";
+        $commands = array();
+        $it = new \RecursiveDirectoryIterator(realpath(dirname(__FILE__)) .
+            DIRECTORY_SEPARATOR . "Commands", \FilesystemIterator::SKIP_DOTS);
+        foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
+            $fileName = $child->getBaseName();
+            if(substr($fileName, -11) == "Command.php") {
+                $commands[] = $commandsNS . str_replace(".php", "", $fileName);
+            }
+        }
+        return $commands;
+    }
+
     class Application
     {
         public static function run($argv) {
@@ -92,28 +106,15 @@ namespace Candango\Carcara
 
 
         private static function addCommands($getopt) {
-            $cmdsNamespace = "Candango\\Carcara\\Commands\\";
-
-            $getopt->addCommand(
-                Command::create(
-                    "init",
-                    $cmdsNamespace . "InitCommand"
-                )->setDescription("Create Carcara structure.")
-            );
-
-            $getopt->addCommand(
-                Command::create(
-                    "dao",
-                    $cmdsNamespace . "DaoCommand"
-                )->setDescription("Switch to dao commands")
-            );
-
-            $getopt->addCommand(
-                Command::create(
-                    "service",
-                    $cmdsNamespace . "CreateCommand"
-                )->setDescription("Switch to service commands")
-            );
+            foreach(get_all_commands() as $commandClass) {
+                $command = new $commandClass();
+                $getopt->addCommand(
+                    Command::create(
+                        $command->name(),
+                        $commandClass
+                    )->setDescription($command->brief())
+                );
+            }
         }
 
     }
