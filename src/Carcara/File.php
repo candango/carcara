@@ -19,16 +19,12 @@ namespace Candango\Carcara
         public static function delete($path)
         {
             if (is_dir($path)) {
-                $it = new \RecursiveDirectoryIterator($path);
+                $it = new \RecursiveDirectoryIterator($path,
+                    \FilesystemIterator::SKIP_DOTS);
                 foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
                     $pName = "" . $child;
-                    if ($child->getBaseName() == "." ||
-                        $child->getBaseName() == "..") {
-                        continue;
-                    }
                     if ($child->isDir() && !$child->isLink() &&
                         file_exists($child)) {
-
                         rmdir($pName);
                     } else {
                         unlink($pName);
