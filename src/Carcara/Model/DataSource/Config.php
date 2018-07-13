@@ -194,7 +194,8 @@ namespace Candango\Carcara\Model\DataSource
          * @param null $baseDir
          * @return string
          */
-        public function getConfigDir($baseDir=null) {
+        public function getConfigDir($baseDir=null)
+        {
             if(is_null($baseDir)){
                 $baseDir = getcwd();
             }
@@ -208,7 +209,8 @@ namespace Candango\Carcara\Model\DataSource
          * @throws \Exception
          * @throws \SmartyException
          */
-        public function fetch() {
+        public function fetch()
+        {
             $smarty = new \Smarty();
             $smarty->assign("config", $this);
             $configTplDir =  \Candango\Carcara\TPL_DIR . DIRECTORY_SEPARATOR .
@@ -219,6 +221,27 @@ namespace Candango\Carcara\Model\DataSource
             File::delete($smarty->getCompileDir());
 
             return $data;
+        }
+
+        /**
+         * Returns a config from a data array.
+         *
+         * @param $name The config name
+         * @param $data The config data
+         * @return Config
+         */
+        public static function fromData($name, $data)
+        {
+            $config = new Config();
+
+            $config->setName($name);
+            $config->setType($data['type']);
+            $config->setHost($data['host']);
+            $config->setDatabase($data['database']);
+            $config->setUser($data['user']);
+            $config->setPassword($data['password']);
+
+            return $config;
         }
 
     }

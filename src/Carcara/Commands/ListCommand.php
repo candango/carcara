@@ -2,7 +2,7 @@
 namespace Candango\Carcara\Commands
 {
 
-    use function Candango\Carcara\get_all_commands;
+    use Candango\Carcara\Model\DataSource\Config;
 
     class ListCommand {
 
@@ -23,7 +23,20 @@ namespace Candango\Carcara\Commands
 
         function run()
         {
-            get_all_commands();
+            $config = new Config();
+            $it = new \RecursiveDirectoryIterator($config->getConfigDir(),
+                \FilesystemIterator::SKIP_DOTS);
+            $configs = array();
+            foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
+                $name = explode("_", $child->getBaseName())[0];
+                $filePath = "" . $child;
+                $data = include($filePath);
+                $configs[] = Config::fromData($name, $data);
+            }
+
+            foreach($configs as $item) {
+                print_r($item);
+            }
         }
     }
 }
