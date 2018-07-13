@@ -15,6 +15,15 @@ namespace Candango\Carcara\Commands {
 
     class InitCommand
     {
+        public function brief()
+        {
+            return "Create a new Data Source config.";
+        }
+
+        public function name()
+        {
+            return "init";
+        }
 
         public function run($getopt)
         {
@@ -28,8 +37,13 @@ namespace Candango\Carcara\Commands {
                 echo "The config directory already exits.\n";
             } else {
                 echo "Creating config directory ... ";
-                mkdir($configDir);
-                echo "[ OK ].\n";
+                if(mkdir($configDir)) {
+                    echo "[ OK ].\n";
+                } else {
+                    echo "[ ERROR ].\n";
+                    exit(1);
+                }
+
             }
 
             echo sprintf("Data Source name: [%s]", $config->getName());

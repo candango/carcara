@@ -2,6 +2,8 @@
 namespace Candango\Carcara\Commands
 {
 
+    use function Candango\Carcara\get_all_commands;
+
     class ListCommand {
 
         public function brief()
@@ -9,9 +11,9 @@ namespace Candango\Carcara\Commands
             return 'List all commands';
         }
 
-        function init()
+        public function name()
         {
-            // register your subcommand here ..
+            return "list";
         }
 
         function options($opts)
@@ -19,14 +21,9 @@ namespace Candango\Carcara\Commands
             // command options
         }
 
-        function execute()
+        function run()
         {
-            $logger = $this->logger;
-
-            $logger->info('execute');
-            $logger->error('error');
-
-            $input = $this->ask('Please type something');
+            get_all_commands();
         }
     }
 }
