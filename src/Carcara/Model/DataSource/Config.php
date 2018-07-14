@@ -13,6 +13,10 @@ namespace Candango\Carcara\Model\DataSource
 
     class Config
     {
+        const MYSQL = "mysql";
+
+        const PGSQL = "pgsql";
+
         /**
          * Data Source config name
          *
@@ -26,13 +30,13 @@ namespace Candango\Carcara\Model\DataSource
         /**
          * Data Source config type
          *
-         * Could be mysql or psql.
+         * Could be mysql or pgsql.
          *
          * The default value is: msyql
          *
          * @var string
          */
-        private $type = "mysql";
+        private $type = self::MYSQL;
 
 
         /**
@@ -100,10 +104,15 @@ namespace Candango\Carcara\Model\DataSource
          * Set Data Source config type
          *
          * @param $type
+         * @throws \Error
          */
         public function setType($type)
         {
-            $this->type = $type;
+            if(in_array($type, $this->getAllowedTypes())){
+                $this->type = $type;
+            } else {
+                throw new \Error("Invalid type.");
+            }
         }
 
         /**
@@ -221,6 +230,10 @@ namespace Candango\Carcara\Model\DataSource
             File::delete($smarty->getCompileDir());
 
             return $data;
+        }
+
+        public function getAllowedTypes() {
+            return array(self::MYSQL, self::PGSQL);
         }
 
         /**

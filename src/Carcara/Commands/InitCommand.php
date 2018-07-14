@@ -10,17 +10,18 @@
 namespace Candango\Carcara\Commands {
 
     use Candango\Carcara\Cli;
+    use Candango\Carcara\Command;
     use Candango\Carcara\File;
     use Candango\Carcara\Model\DataSource\Config;
 
-    class InitCommand
+    class InitCommand implements Command
     {
         public function brief()
         {
             return "Create a new Data Source config.";
         }
 
-        public function name()
+        public function getName()
         {
             return "init";
         }
@@ -73,7 +74,17 @@ namespace Candango\Carcara\Commands {
                     echo sprintf("Type: [%s]", $config->getType());
                     $type = Cli::read();
                     if ($type != "") {
-                        $config->setType($type);
+                        try {
+                            $config->setType($type);
+                        } catch (\Error $error) {
+                            echo "[ ERROR ] " . $error->getMessage() . "\n";
+                            echo sprintf("Deleting Data Source config file " .
+                                "at %s ... ", $configFile);
+                            File::delete($configFile);
+                            echo "[ OK ]\n";
+                            exit(3);
+                        }
+
                     }
 
                     echo sprintf("Host: [%s]", $config->getHost());
