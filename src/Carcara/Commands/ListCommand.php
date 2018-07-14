@@ -1,17 +1,28 @@
 <?php
+/**
+ * Carcara (http://carcara.candango.org)
+ *
+ * @link      http://github.com/candango/carcara
+ * @copyright Copyright (c) 2018 Flavio Garcia
+ * @license   https://www.apache.org/licenses/LICENSE-2.0  Apache-2.0
+ */
+
 namespace Candango\Carcara\Commands
 {
 
+    use Candango\Carcara\Command;
+    use Candango\Carcara\File;
     use Candango\Carcara\Model\DataSource\Config;
 
-    class ListCommand {
+    class ListCommand implements Command
+    {
 
         public function brief()
         {
             return 'List all commands';
         }
 
-        public function name()
+        public function getName()
         {
             return "list";
         }
@@ -21,12 +32,13 @@ namespace Candango\Carcara\Commands
             // command options
         }
 
-        function run()
+        public function run($getopt)
         {
             $config = new Config();
             $it = new \RecursiveDirectoryIterator($config->getConfigDir(),
                 \FilesystemIterator::SKIP_DOTS);
             $configs = array();
+
             foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
                 $name = explode("_", $child->getBaseName())[0];
                 $filePath = "" . $child;
@@ -34,9 +46,13 @@ namespace Candango\Carcara\Commands
                 $configs[] = Config::fromData($name, $data);
             }
 
-            foreach($configs as $item) {
-                print_r($item);
-            }
+            $smarty = new \Smarty();
+            $smarty->assign("configs", $configs);
+            $configTplDir =  \Candango\Carcara\TPL_DIR;
+            echo $smarty->fetch($configTplDir . DIRECTORY_SEPARATOR .
+                "list.tpl");
+
+            File::delete($smarty->getCompileDir());
         }
     }
 }
