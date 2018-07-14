@@ -9,6 +9,7 @@
 
 namespace Candango\Carcara
 {
+
     use GetOpt\GetOpt;
     use GetOpt\Command;
     use GetOpt\Option;
@@ -25,14 +26,24 @@ namespace Candango\Carcara
 
     function get_all_commands() {
         $commandsNS = "Candango\\Carcara\\Commands\\";
+        $unsortedCommands = array();
+        $commandNames = array();
         $commands = array();
         $it = new \RecursiveDirectoryIterator(realpath(dirname(__FILE__)) .
             DIRECTORY_SEPARATOR . "Commands", \FilesystemIterator::SKIP_DOTS);
         foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
             $fileName = $child->getBaseName();
             if(substr($fileName, -11) == "Command.php") {
-                $commands[] = $commandsNS . str_replace(".php", "", $fileName);
+                $commandClass = $commandsNS .
+                    str_replace(".php", "", $fileName);
+                $command = new $commandClass();
+                $commandNames[] = $command->getName();
+                $unsortedCommands[$command->getName()] = $command;
             }
+        }
+        natcasesort($commandNames);
+        foreach ($commandNames as $name) {
+            $commands[] = $unsortedCommands[$name];
         }
         return $commands;
     }
@@ -80,9 +91,7 @@ namespace Candango\Carcara
             }
 
             // do something with the command - example:
-            $class = $command->getHandler();
-            $command = new $class();
-            $command->run($getopt);
+            $command->getHandler()->run($getopt);
             exit;
         }
 
@@ -104,14 +113,12 @@ namespace Candango\Carcara
             ]);
         }
 
-
         private static function addCommands($getopt) {
-            foreach(get_all_commands() as $commandClass) {
-                $command = new $commandClass();
+            foreach(get_all_commands() as $command) {
                 $getopt->addCommand(
                     Command::create(
-                        $command->name(),
-                        $commandClass
+                        $command->getName(),
+                        $command
                     )->setDescription($command->brief())
                 );
             }
