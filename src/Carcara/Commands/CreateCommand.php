@@ -14,7 +14,7 @@ namespace Candango\Carcara\Commands {
     use Candango\Carcara\File;
     use Candango\Carcara\Model\DataSource\Configuration;
 
-    class InitCommand implements Command
+    class CreateCommand implements Command
     {
         public function brief()
         {
@@ -23,7 +23,7 @@ namespace Candango\Carcara\Commands {
 
         public function getName()
         {
-            return "init";
+            return "create";
         }
 
         public function run($getopt)
