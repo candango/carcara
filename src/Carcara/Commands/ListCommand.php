@@ -12,7 +12,7 @@ namespace Candango\Carcara\Commands
 
     use Candango\Carcara\Command;
     use Candango\Carcara\File;
-    use Candango\Carcara\Model\DataSource\Config;
+    use Candango\Carcara\Model\DataSource\Configuration;
 
     class ListCommand implements Command
     {
@@ -34,7 +34,7 @@ namespace Candango\Carcara\Commands
 
         public function run($getopt)
         {
-            $config = new Config();
+            $config = new Configuration();
             $it = new \RecursiveDirectoryIterator($config->getConfigDir(),
                 \FilesystemIterator::SKIP_DOTS);
             $configs = array();
@@ -43,7 +43,7 @@ namespace Candango\Carcara\Commands
                 $name = explode("_", $child->getBaseName())[0];
                 $filePath = "" . $child;
                 $data = include($filePath);
-                $configs[] = Config::fromData($name, $data);
+                $configs[] = Configuration::fromData($name, $data);
             }
 
             $smarty = new \Smarty();

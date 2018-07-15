@@ -12,7 +12,7 @@ namespace Candango\Carcara\Engine
 
 
     use Candango\Carcara\Model\Database\Table;
-    use Candango\Carcara\Model\DataSource\Config;
+    use Candango\Carcara\Model\DataSource\Configuration;
 
     class AbstractDatabaseLoader implements DatabaseLoader
     {
@@ -22,10 +22,10 @@ namespace Candango\Carcara\Engine
 
 
         /**
-         * @param Config $config
+         * @param Configuration $config
          * @return void
          */
-        public function connect(Config $config){
+        public function connect(Configuration $config){
 
         }
 
@@ -42,7 +42,7 @@ namespace Candango\Carcara\Engine
         }
 
         /**
-         * @return Config
+         * @return Configuration
          */
         public function getConfiguration(){
 
@@ -50,10 +50,10 @@ namespace Candango\Carcara\Engine
 
 
         /**
-         * @param Config $config
+         * @param Configuration $config
          * @return void
          */
-        public function doLoad(Config $config){
+        public function doLoad(Configuration $config){
 
         }
 
