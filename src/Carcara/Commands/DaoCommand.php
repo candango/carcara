@@ -81,6 +81,7 @@ namespace Candango\Carcara\Commands {
                         }
 
                         echo "[ OK ].\n";
+                        $loader->doLoad();
                         $loader->disconnect();
 
                     } else {

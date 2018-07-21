@@ -34,6 +34,7 @@ namespace Candango\Carcara\Engine
          */
         private $conf;
 
+        private $tables = array();
 
         public function __construct($conf)
         {
@@ -98,7 +99,18 @@ namespace Candango\Carcara\Engine
          */
         public function doLoad()
         {
+            $this->loadTables();
+        }
 
+        protected abstract function loadTables();
+
+        /**
+         *
+         * @param Table $table
+         */
+        protected function addTable(Table $table)
+        {
+            $this->tables[] = $table;
         }
 
         /**
@@ -106,7 +118,7 @@ namespace Candango\Carcara\Engine
          */
         public function getTables()
         {
-
+            return $this->tables;
         }
     }
 }

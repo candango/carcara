@@ -10,6 +10,7 @@
 namespace Candango\Carcara\Engine\Mysql {
 
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
+    use Candango\Carcara\Model\Database\Table;
     use Candango\Carcara\Model\DataSource\Configuration;
 
     class MysqlDatabaseLoader extends AbstractDatabaseLoader {
@@ -39,6 +40,17 @@ namespace Candango\Carcara\Engine\Mysql {
             }
             $this->setConf($conf);
             $this->setConnection($conn);
+        }
+
+
+        protected function loadTables() {
+            $sth = $this->getConnection()->prepare("SHOW TABLES;");
+            $sth->execute();
+            while ($row = $sth->fetch(\PDO::FETCH_NUM)) {
+                $table = new Table();
+                $table->setName($row[0]);
+                $this->addTable($table);
+            }
         }
     }
 }
