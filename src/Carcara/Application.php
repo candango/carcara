@@ -119,7 +119,8 @@ namespace Candango\Carcara
                     Command::create(
                         $command->getName(),
                         $command
-                    )->setDescription($command->brief())
+                    )->setDescription($command->brief()
+                    )->addOperands($command->getOperands())
                 );
             }
         }

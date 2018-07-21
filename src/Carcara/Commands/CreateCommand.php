@@ -26,6 +26,11 @@ namespace Candango\Carcara\Commands {
             return "create";
         }
 
+        function getOperands()
+        {
+            return [];
+        }
+
         public function run($getopt)
         {
             echo "Checking config structure.\n";

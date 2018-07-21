@@ -15,6 +15,7 @@ namespace Candango\Carcara
         public function brief();
         public function getName();
         public function run($getopt);
+        public function getOperands();
     }
 
 }
