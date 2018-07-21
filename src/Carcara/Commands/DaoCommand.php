@@ -32,6 +32,9 @@ namespace Candango\Carcara\Commands {
             return [
                 Operand::create('config', Operand::REQUIRED)->setDescription(
                     "Data Source configuration name"),
+                Operand::create('action', Operand::REQUIRED)->setDescription(
+                    "DAO action to executed. Allowed actions: \n" .
+                    "    - gen(erate) Generate the DAO structure"),
             ];
         }
 
@@ -39,22 +42,38 @@ namespace Candango\Carcara\Commands {
         {
             $config = new Configuration();
 
-            echo "Checking if the Data Source config exists ... ";
-
             $name = $getopt->getOperand('config');
+
+            $action = $getopt->getOperand('action');
+
+            $allowedActions = ["gen", "generate"];
+
+            if (!in_array($action, $allowedActions)) {
+                echo "[ FAIL ].\n";
+                echo sprintf("The action %s isn't allowed.\n", $action);
+                exit(1);
+            }
 
             $configFile  = $config->getConfigDir() . DIRECTORY_SEPARATOR .
                 $name . "_conf.php";
 
-            if (file_exists($configFile)) {
-                echo "[ OK ].\n";
-                $data = include($configFile);
-                $config = Configuration::fromData($name, $data);
-                echo sprintf("Creating DAO for Data Source %s:\n", $name);
-            } else {
-                echo "[ FAIL ].\n";
-                echo sprintf("File %s doesn't exists.\n", $configFile);
-                exit(1);
+            switch ($action){
+                case "gen":
+                case "generate":
+                    echo sprintf("Generating DAO for Data Source %s\n",
+                        $name);
+                    echo "Checking if the Data Source config exists ... ";
+                    if (file_exists($configFile)) {
+                        echo "[ OK ].\n";
+                        $data = include($configFile);
+                        $config = Configuration::fromData($name, $data);
+
+                    } else {
+                        echo "[ FAIL ].\n";
+                        echo sprintf("File %s doesn't exists.\n", $configFile);
+                        exit(1);
+                    }
+                    break;
             }
             exit(0);
         }
