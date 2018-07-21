@@ -16,11 +16,13 @@ namespace Candango\Carcara\Engine
 
     interface DatabaseLoader
     {
+
+
         /**
-         * @param Configuration $config
+         * @throws \PDOException
          * @return void
          */
-        public function connect(Configuration $config);
+        public function connect();
 
         public function getConnection();
 
@@ -31,14 +33,18 @@ namespace Candango\Carcara\Engine
         /**
          * @return Configuration
          */
-        public function getConfiguration();
-
+        public function getConf();
 
         /**
-         * @param Configuration $config
+         * @param Configuration $conf
+         * @return mixed
+         */
+        public function setConf(Configuration $conf);
+
+        /**
          * @return void
          */
-        public function doLoad(Configuration $config);
+        public function doLoad();
 
         /**
          * @return array of Table

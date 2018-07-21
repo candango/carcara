@@ -127,8 +127,8 @@ namespace Candango\Carcara\Model\DataSource
 
         /**
          * Set Data Source config host
-         *
-         * @return string
+         * @param $host
+         * @return void
          */
         public function setHost($host)
         {

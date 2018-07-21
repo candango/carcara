@@ -11,56 +11,101 @@ namespace Candango\Carcara\Engine
 {
 
 
+    use Candango\Carcara\Engine\Mysql\MysqlDatabaseLoader;
     use Candango\Carcara\Model\Database\Table;
     use Candango\Carcara\Model\DataSource\Configuration;
 
-    class AbstractDatabaseLoader implements DatabaseLoader
+    abstract class AbstractDatabaseLoader implements DatabaseLoader
     {
         const MYSQL = "mysql";
 
         const PGSQL = "pgsql";
 
+        /**
+         * Dao Factory Connection
+         *
+         * @var \PDO
+         */
+        private $conn;
+
 
         /**
-         * @param Configuration $config
-         * @return void
+         * @var Configuration
          */
-        public function connect(Configuration $config){
+        private $conf;
 
+
+        public function __construct($conf)
+        {
+            $this->setConf($conf);
         }
 
-        public function getConnection(){
+        /**
+         * @param Configuration $conf
+         * @return MysqlDatabaseLoader|null
+         */
+        public static function getLoader(Configuration $conf)
+        {
+            switch ($conf->getType()) {
+                case(self::MYSQL):
+                    return new MysqlDatabaseLoader($conf);
+                    break;
+                case(self::PGSQL):
+                    //return new PgsqlDatabaseLoader();
+                    break;
+            }
 
+            return null;
         }
 
-        public function setConnection($conn){
-
+        public function getConnection()
+        {
+            return $this->conn;
         }
 
-        public function disconnect(){
+        public function setConnection($conn)
+        {
+            $this->conn = $conn;
+        }
 
+        /**
+         * Set the pdo connection to null in order to get the connection closed
+         */
+        public function disconnect()
+        {
+            $this->conn = null;
         }
 
         /**
          * @return Configuration
          */
-        public function getConfiguration(){
-
+        public function getConf()
+        {
+            return $this->conf;
         }
 
+        /**
+         * @param Configuration $conf
+         */
+        public function setConf(Configuration $conf)
+        {
+            $this->conf = $conf;
+        }
 
         /**
-         * @param Configuration $config
+         *
          * @return void
          */
-        public function doLoad(Configuration $config){
+        public function doLoad()
+        {
 
         }
 
         /**
          * @return array of Table
          */
-        public function getTables(){
+        public function getTables()
+        {
 
         }
     }

@@ -11,6 +11,7 @@ namespace Candango\Carcara\Commands {
 
     use Candango\Carcara\Cli;
     use Candango\Carcara\Command;
+    use Candango\Carcara\Engine\AbstractDatabaseLoader;
     use Candango\Carcara\File;
     use Candango\Carcara\Model\DataSource\Configuration;
     use GetOpt\Operand;
@@ -67,6 +68,20 @@ namespace Candango\Carcara\Commands {
                         echo "[ OK ].\n";
                         $data = include($configFile);
                         $config = Configuration::fromData($name, $data);
+                        echo sprintf("Connecting to the database %s ... ",
+                            $config->getDatabase());
+                        $loader = AbstractDatabaseLoader::getLoader($config);
+                        try {
+                            $loader->connect();
+                        } catch (\PDOException $e) {
+                            echo "[ FAIL ].\n";
+                            echo "ERROR: " . $e->getMessage() .
+                                ".\nCheck your configuration.\n";
+                            exit(3);
+                        }
+
+                        echo "[ OK ].\n";
+                        $loader->disconnect();
 
                     } else {
                         echo "[ FAIL ].\n";
