@@ -32,19 +32,27 @@ namespace Candango\Carcara\Commands
             // command options
         }
 
+        function getOperands()
+        {
+            return [];
+        }
+
         public function run($getopt)
         {
             $config = new Configuration();
-            $it = new \RecursiveDirectoryIterator($config->getConfigDir(),
-                \FilesystemIterator::SKIP_DOTS);
             $configs = array();
 
-            foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
-                $name = explode("_", $child->getBaseName())[0];
-                $filePath = "" . $child;
-                $data = include($filePath);
-                $configs[] = Configuration::fromData($name, $data);
-            }
+            try {
+                $it = new \RecursiveDirectoryIterator($config->getConfigDir(),
+                    \FilesystemIterator::SKIP_DOTS);
+
+                foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
+                    $name = explode("_", $child->getBaseName())[0];
+                    $filePath = "" . $child;
+                    $data = include($filePath);
+                    $configs[] = Configuration::fromData($name, $data);
+                }
+            } catch (\UnexpectedValueException $e) {}
 
             $smarty = new \Smarty();
             $smarty->assign("configs", $configs);
