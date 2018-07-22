@@ -86,7 +86,7 @@ namespace Candango\Carcara\Model\Database
         public function getNonPkFields() {
             $nonPks = array();
             foreach ($this->fields as $field) {
-                if ($field->isPk()) {
+                if (!$field->isPk()) {
                     $nonPks[] = $field;
                 }
             }
