@@ -203,12 +203,12 @@ namespace Candango\Carcara\Model
          * @param null $baseDir
          * @return string
          */
-        public function getConfigDir($baseDir=null)
+        public function getConfDir($baseDir=null)
         {
             if(is_null($baseDir)){
                 $baseDir = getcwd();
             }
-            return $baseDir . DIRECTORY_SEPARATOR . "config";
+            return $baseDir . DIRECTORY_SEPARATOR . "conf";
         }
 
         /**

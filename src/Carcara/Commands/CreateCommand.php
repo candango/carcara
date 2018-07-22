@@ -33,17 +33,18 @@ namespace Candango\Carcara\Commands {
 
         public function run($getopt)
         {
-            echo "Checking config structure.\n";
+            echo "Checking conf structure.\n";
 
-            $config = new Conf();
+            $conf = new Conf();
 
-            $configDir = $config->getConfigDir();
+            $confDir = $conf->getConfDir();
 
-            if (file_exists($configDir) && is_dir($configDir)) {
-                echo "The config directory already exits.\n";
+            if (file_exists($confDir) && is_dir($confDir)) {
+                echo "The conf directory already exits.\n";
             } else {
-                echo "Creating config directory ... ";
-                if(mkdir($configDir)) {
+                echo "Creating conf directory ... ";
+                echo "Creating conf directory ... ";
+                if(mkdir($confDir)) {
                     echo "[ OK ].\n";
                 } else {
                     echo "[ ERROR ].\n";
@@ -52,64 +53,60 @@ namespace Candango\Carcara\Commands {
 
             }
 
-            echo sprintf("Data Source name: [%s]", $config->getName());
+            echo sprintf("Conf name: [%s]", $conf->getName());
             $name = Cli::read();
             if ($name != "") {
-                $config->setName($name);
+                $conf->setName($name);
             }
 
-            $configFile = $configDir . DIRECTORY_SEPARATOR . $config->getName()
+            $confFile = $confDir . DIRECTORY_SEPARATOR . $conf->getName()
                 . "_conf.php";
 
-            echo sprintf("Creating Data Source config file at %s ... ",
-                $configFile);
+            echo sprintf("Creating conf file at %s ... ", $confFile);
 
-            if (file_exists($configFile)) {
-                echo sprintf("[ WARN ]\nData Source config file %s already " .
-                    "exists use command \"edit\"", $configFile);
+            if (file_exists($confFile)) {
+                echo sprintf("[ WARN ]\nConf file %s already exists use " .
+                    "command \"edit\"", $confFile);
                 exit(1);
             } else {
-                if (touch($configFile)) {
+                if (touch($confFile)) {
                     echo "[ OK ]\n";
 
-                    echo sprintf("Setting Data Source %s:\n",
-                        $config->getName());
+                    echo sprintf("Setting conf %s:\n", $conf->getName());
 
-
-                    echo sprintf("Type: [%s]", $config->getType());
+                    echo sprintf("Type: [%s]", $conf->getType());
                     $type = Cli::read();
                     if ($type != "") {
                         try {
-                            $config->setType($type);
+                            $conf->setType($type);
                         } catch (\Error $error) {
                             echo "[ ERROR ] " . $error->getMessage() . "\n";
-                            echo sprintf("Deleting Data Source config file " .
-                                "at %s ... ", $configFile);
-                            File::delete($configFile);
+                            echo sprintf("Deleting conf file at %s ... ",
+                                $confFile);
+                            File::delete($confFile);
                             echo "[ OK ]\n";
                             exit(3);
                         }
-
                     }
 
-                    echo sprintf("Host: [%s]", $config->getHost());
+                    echo sprintf("Host: [%s]", $conf->getHost());
                     $host = Cli::read();
                     if ($host != "") {
-                        $config->setHost($host);
+                        $conf->setHost($host);
                     }
 
-                    echo sprintf("Database: [%s]", $config->getDatabase());
-                    $config->setDatabase(Cli::read());
+                    echo sprintf("Database: [%s]", $conf->getDatabase());
+                    $conf->setDatabase(Cli::read());
 
-                    echo sprintf("User: [%s]", $config->getUser());
-                    $config->setUser(Cli::read());
+                    echo sprintf("User: [%s]", $conf->getUser());
+                    $conf->setUser(Cli::read());
 
-                    echo sprintf("Password: [%s]", $config->getPassword());
-                    $config->setPassword(Cli::read());
+                    echo sprintf("Password: [%s]", $conf->getPassword());
+                    $conf->setPassword(Cli::read());
 
-                    echo sprintf("Saving file %s ...", $configFile);
+                    echo sprintf("Saving conf file %s ...", $confFile);
 
-                    File::write($configFile, $config->fetch());
+                    File::write($confFile, $conf->fetch());
 
                     echo "[ OK ]\n";
                     exit(0);

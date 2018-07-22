@@ -39,23 +39,23 @@ namespace Candango\Carcara\Commands
 
         public function run($getopt)
         {
-            $config = new Conf();
-            $configs = array();
+            $conf = new Conf();
+            $confs = array();
 
             try {
-                $it = new \RecursiveDirectoryIterator($config->getConfigDir(),
+                $it = new \RecursiveDirectoryIterator($conf->getConfDir(),
                     \FilesystemIterator::SKIP_DOTS);
 
                 foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
                     $name = explode("_", $child->getBaseName())[0];
                     $filePath = "" . $child;
                     $data = include($filePath);
-                    $configs[] = Conf::fromData($name, $data);
+                    $confs[] = Conf::fromData($name, $data);
                 }
             } catch (\UnexpectedValueException $e) {}
 
             $smarty = new \Smarty();
-            $smarty->assign("configs", $configs);
+            $smarty->assign("confs", $confs);
             $configTplDir =  \Candango\Carcara\TPL_DIR;
             echo $smarty->fetch($configTplDir . DIRECTORY_SEPARATOR .
                 "list.tpl");

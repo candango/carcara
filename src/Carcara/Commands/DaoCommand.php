@@ -55,7 +55,7 @@ namespace Candango\Carcara\Commands {
                 exit(1);
             }
 
-            $configFile  = $config->getConfigDir() . DIRECTORY_SEPARATOR .
+            $configFile  = $config->getConfDir() . DIRECTORY_SEPARATOR .
                 $name . "_conf.php";
 
             switch ($action){
@@ -88,6 +88,7 @@ namespace Candango\Carcara\Commands {
                         $loader->disconnect();
                         echo sprintf("Disconnected from the database %s.\n",
                             $config->getDatabase());
+                        $this->prepareDaoPath($config);
                     } else {
                         echo "[ FAIL ].\n";
                         echo sprintf("File %s doesn't exists.\n", $configFile);
