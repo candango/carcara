@@ -100,9 +100,15 @@ namespace Candango\Carcara\Engine
         public function doLoad()
         {
             $this->loadTables();
+
+            foreach ($this->getTables() as $table){
+                $this->loadFields($table);
+            }
         }
 
         protected abstract function loadTables();
+
+        protected abstract function loadFields(Table $table);
 
         /**
          *

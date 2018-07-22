@@ -10,6 +10,7 @@
 namespace Candango\Carcara\Engine\Mysql {
 
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
+    use Candango\Carcara\Model\Database\Field;
     use Candango\Carcara\Model\Database\Table;
     use Candango\Carcara\Model\DataSource\Configuration;
 
@@ -51,6 +52,25 @@ namespace Candango\Carcara\Engine\Mysql {
                 $table->setName($row[0]);
                 $this->addTable($table);
             }
+        }
+
+        protected function loadFields(Table $table)
+        {
+            $sql = sprintf("SHOW FIELDS FROM %s;", $table->getName());
+            $sth = $this->getConnection()->prepare($sql);
+            $sth->execute();
+            while ($row = $sth->fetch(\PDO::FETCH_ASSOC)) {
+                $field = new Field();
+                $field->setName($row['Field']);
+                $field->setType($row['Type']);
+                if ($row['Key'] == "PRI") {
+                    $field->setPk(true);
+                }
+
+                $table->addField($field);
+            }
+            print_r($table->getNonPkFields());
+            die();
         }
     }
 }
