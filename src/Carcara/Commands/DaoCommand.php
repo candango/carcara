@@ -13,7 +13,7 @@ namespace Candango\Carcara\Commands {
     use Candango\Carcara\Command;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
     use Candango\Carcara\File;
-    use Candango\Carcara\Model\Configuration;
+    use Candango\Carcara\Model\Conf;
     use GetOpt\Operand;
 
     class DaoCommand implements Command
@@ -41,7 +41,7 @@ namespace Candango\Carcara\Commands {
 
         public function run($getopt)
         {
-            $config = new Configuration();
+            $config = new Conf();
 
             $name = $getopt->getOperand('config');
 
@@ -67,7 +67,7 @@ namespace Candango\Carcara\Commands {
                     if (file_exists($configFile)) {
                         echo "[ OK ].\n";
                         $data = include($configFile);
-                        $config = Configuration::fromData($name, $data);
+                        $config = Conf::fromData($name, $data);
                         echo sprintf("Connecting to the database %s ... ",
                             $config->getDatabase());
                         $loader = AbstractDatabaseLoader::getLoader($config);
@@ -98,7 +98,7 @@ namespace Candango\Carcara\Commands {
             exit(0);
         }
 
-        private function prepareDaoPath(Configuration $conf) {
+        private function prepareDaoPath(Conf $conf) {
 
         }
     }

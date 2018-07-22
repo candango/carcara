@@ -13,7 +13,7 @@ namespace Candango\Carcara\Engine
 
     use Candango\Carcara\Engine\Mysql\MysqlDatabaseLoader;
     use Candango\Carcara\Model\Database\Table;
-    use Candango\Carcara\Model\Configuration;
+    use Candango\Carcara\Model\Conf;
 
     abstract class AbstractDatabaseLoader implements DatabaseLoader
     {
@@ -30,7 +30,7 @@ namespace Candango\Carcara\Engine
 
 
         /**
-         * @var Configuration
+         * @var Conf
          */
         private $conf;
 
@@ -42,10 +42,10 @@ namespace Candango\Carcara\Engine
         }
 
         /**
-         * @param Configuration $conf
+         * @param Conf $conf
          * @return MysqlDatabaseLoader|null
          */
-        public static function getLoader(Configuration $conf)
+        public static function getLoader(Conf $conf)
         {
             switch ($conf->getType()) {
                 case(self::MYSQL):
@@ -78,7 +78,7 @@ namespace Candango\Carcara\Engine
         }
 
         /**
-         * @return Configuration
+         * @return Conf
          */
         public function getConf()
         {
@@ -86,9 +86,9 @@ namespace Candango\Carcara\Engine
         }
 
         /**
-         * @param Configuration $conf
+         * @param Conf $conf
          */
-        public function setConf(Configuration $conf)
+        public function setConf(Conf $conf)
         {
             $this->conf = $conf;
         }

@@ -11,7 +11,7 @@ namespace Candango\Carcara\Model
 {
     use Candango\Carcara\File;
 
-    class Configuration
+    class Conf
     {
         const MYSQL = "mysql";
 
@@ -241,11 +241,11 @@ namespace Candango\Carcara\Model
          *
          * @param $name The conf name
          * @param $data The conf data
-         * @return Configuration
+         * @return Conf
          */
         public static function fromData($name, $data)
         {
-            $config = new Configuration();
+            $config = new Conf();
 
             $config->setName($name);
             $config->setType($data['type']);

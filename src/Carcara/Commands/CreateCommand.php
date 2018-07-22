@@ -12,7 +12,7 @@ namespace Candango\Carcara\Commands {
     use Candango\Carcara\Cli;
     use Candango\Carcara\Command;
     use Candango\Carcara\File;
-    use Candango\Carcara\Model\Configuration;
+    use Candango\Carcara\Model\Conf;
 
     class CreateCommand implements Command
     {
@@ -35,7 +35,7 @@ namespace Candango\Carcara\Commands {
         {
             echo "Checking config structure.\n";
 
-            $config = new Configuration();
+            $config = new Conf();
 
             $configDir = $config->getConfigDir();
 

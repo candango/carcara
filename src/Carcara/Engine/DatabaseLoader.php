@@ -12,7 +12,7 @@ namespace Candango\Carcara\Engine
 
 
     use Candango\Carcara\Model\Database\Table;
-    use Candango\Carcara\Model\Configuration;
+    use Candango\Carcara\Model\Conf;
 
     interface DatabaseLoader
     {
@@ -31,15 +31,15 @@ namespace Candango\Carcara\Engine
         public function disconnect();
 
         /**
-         * @return Configuration
+         * @return Conf
          */
         public function getConf();
 
         /**
-         * @param Configuration $conf
+         * @param Conf $conf
          * @return mixed
          */
-        public function setConf(Configuration $conf);
+        public function setConf(Conf $conf);
 
         /**
          * @return void

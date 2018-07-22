@@ -12,7 +12,7 @@ namespace Candango\Carcara\Commands
 
     use Candango\Carcara\Command;
     use Candango\Carcara\File;
-    use Candango\Carcara\Model\Configuration;
+    use Candango\Carcara\Model\Conf;
 
     class ListCommand implements Command
     {
@@ -39,7 +39,7 @@ namespace Candango\Carcara\Commands
 
         public function run($getopt)
         {
-            $config = new Configuration();
+            $config = new Conf();
             $configs = array();
 
             try {
@@ -50,7 +50,7 @@ namespace Candango\Carcara\Commands
                     $name = explode("_", $child->getBaseName())[0];
                     $filePath = "" . $child;
                     $data = include($filePath);
-                    $configs[] = Configuration::fromData($name, $data);
+                    $configs[] = Conf::fromData($name, $data);
                 }
             } catch (\UnexpectedValueException $e) {}
 
