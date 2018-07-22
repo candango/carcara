@@ -196,6 +196,18 @@ namespace Candango\Carcara\Model
         }
 
         /**
+         * Return the conf identifier
+         *
+         * #TODO: This should be handled better for PGSQL as that could be
+         * changed to schema.
+         *
+         * @return string
+         */
+        public function getIdentifier() {
+            return $this->getDatabase();
+        }
+
+        /**
          * Returns the conf directory.
          *
          * If base dir is null current dir will be use as base.

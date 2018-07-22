@@ -6,4 +6,3 @@ Carcara confs:
 {foreachelse}
     No Data Sources defined yet. Use command init to create a new one.
 {/foreach}
-
