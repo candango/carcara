@@ -81,9 +81,14 @@ namespace Candango\Carcara\Commands {
                         }
 
                         echo "[ OK ].\n";
+                        echo "Loading tables ... ";
                         $loader->doLoad();
+                        echo "[ OK ].\n";
+                        echo sprintf("%s tables loaded.\n",
+                            count($loader->getTables()));
                         $loader->disconnect();
-
+                        echo sprintf("Disconnected from the database %s.\n",
+                            $config->getDatabase());
                     } else {
                         echo "[ FAIL ].\n";
                         echo sprintf("File %s doesn't exists.\n", $configFile);

@@ -66,11 +66,8 @@ namespace Candango\Carcara\Engine\Mysql {
                 if ($row['Key'] == "PRI") {
                     $field->setPk(true);
                 }
-
                 $table->addField($field);
             }
-            print_r($table->getNonPkFields());
-            die();
         }
     }
 }
