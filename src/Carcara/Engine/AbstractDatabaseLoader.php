@@ -13,7 +13,7 @@ namespace Candango\Carcara\Engine
 
     use Candango\Carcara\Engine\Mysql\MysqlDatabaseLoader;
     use Candango\Carcara\Model\Database\Table;
-    use Candango\Carcara\Model\DataSource\Configuration;
+    use Candango\Carcara\Model\Configuration;
 
     abstract class AbstractDatabaseLoader implements DatabaseLoader
     {

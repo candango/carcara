@@ -12,7 +12,7 @@ namespace Candango\Carcara\Engine
 
 
     use Candango\Carcara\Model\Database\Table;
-    use Candango\Carcara\Model\DataSource\Configuration;
+    use Candango\Carcara\Model\Configuration;
 
     interface DatabaseLoader
     {

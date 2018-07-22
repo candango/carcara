@@ -12,7 +12,7 @@ namespace Candango\Carcara\Commands {
     use Candango\Carcara\Cli;
     use Candango\Carcara\Command;
     use Candango\Carcara\File;
-    use Candango\Carcara\Model\DataSource\Configuration;
+    use Candango\Carcara\Model\Configuration;
 
     class CreateCommand implements Command
     {

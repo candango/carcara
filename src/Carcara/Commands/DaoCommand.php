@@ -13,7 +13,7 @@ namespace Candango\Carcara\Commands {
     use Candango\Carcara\Command;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
     use Candango\Carcara\File;
-    use Candango\Carcara\Model\DataSource\Configuration;
+    use Candango\Carcara\Model\Configuration;
     use GetOpt\Operand;
 
     class DaoCommand implements Command
@@ -79,7 +79,6 @@ namespace Candango\Carcara\Commands {
                                 ".\nCheck your configuration.\n";
                             exit(3);
                         }
-
                         echo "[ OK ].\n";
                         echo "Loading tables ... ";
                         $loader->doLoad();
@@ -97,6 +96,10 @@ namespace Candango\Carcara\Commands {
                     break;
             }
             exit(0);
+        }
+
+        private function prepareDaoPath(Configuration $conf) {
+
         }
     }
 }

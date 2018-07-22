@@ -7,7 +7,7 @@
  * @license   https://www.apache.org/licenses/LICENSE-2.0  Apache-2.0
  */
 
-namespace Candango\Carcara\Model\DataSource
+namespace Candango\Carcara\Model
 {
     use Candango\Carcara\File;
 
@@ -18,7 +18,7 @@ namespace Candango\Carcara\Model\DataSource
         const PGSQL = "pgsql";
 
         /**
-         * Data Source config name
+         * Conf name
          *
          * The default value is: default
          *
@@ -28,7 +28,7 @@ namespace Candango\Carcara\Model\DataSource
 
 
         /**
-         * Data Source config type
+         * Conf type
          *
          * Could be mysql or pgsql.
          *
@@ -40,7 +40,7 @@ namespace Candango\Carcara\Model\DataSource
 
 
         /**
-         * Data Source config type
+         * Conf type
          *
          * The default value is: localhost
          *
@@ -50,28 +50,28 @@ namespace Candango\Carcara\Model\DataSource
 
 
         /**
-         * Data Source config database
+         * Config database
          *
          * @var string
          */
         private $database = "";
 
         /**
-         * Data Source config user
+         * Config user
          *
          * @var string
          */
         private $user = "";
 
         /**
-         * Data Source config password
+         * Config password
          *
          * @var string
          */
         private $password = "";
 
         /**
-         * Returns data source config name
+         * Returns conf name
          *
          * @return string
          */
@@ -81,7 +81,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Set Data Source config name
+         * Set conf name
          *
          * @param string $name
          */
@@ -91,7 +91,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Returns Data Source config type
+         * Returns conf type
          *
          * @return string
          */
@@ -101,7 +101,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Set Data Source config type
+         * Set conf type
          *
          * @param $type
          * @throws \Error
@@ -116,7 +116,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Returns Data Source config host
+         * Returns conf host
          *
          * @return string
          */
@@ -126,7 +126,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Set Data Source config host
+         * Set conf host
          * @param $host
          * @return void
          */
@@ -136,7 +136,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Returns Data Source config database
+         * Returns conf database
          *
          * @return string
          */
@@ -146,7 +146,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Set Data Source config database
+         * Set conf database
          *
          * @return string
          */
@@ -156,7 +156,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Returns Data Source config user
+         * Returns conf user
          *
          * @return string
          */
@@ -166,7 +166,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Set Data Source config user
+         * Set conf user
          *
          * @return string
          */
@@ -176,7 +176,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Returns Data Source config password
+         * Returns conf password
          *
          * @return string
          */
@@ -186,7 +186,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Set Data Source config password
+         * Set conf password
          *
          * @return string
          */
@@ -196,7 +196,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Returns the Data Source config directory.
+         * Returns the conf directory.
          *
          * If base dir is null current dir will be use as base.
          *
@@ -212,7 +212,7 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Returns the Data Source config data
+         * Returns the conf data
          *
          * @return string
          * @throws \Exception
@@ -237,10 +237,10 @@ namespace Candango\Carcara\Model\DataSource
         }
 
         /**
-         * Returns a config from a data array.
+         * Returns a conf from a data array.
          *
-         * @param $name The config name
-         * @param $data The config data
+         * @param $name The conf name
+         * @param $data The conf data
          * @return Configuration
          */
         public static function fromData($name, $data)
