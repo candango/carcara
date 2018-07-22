@@ -18,7 +18,7 @@ namespace Candango\Carcara\Commands {
     {
         public function brief()
         {
-            return "Create a new Data Source config.";
+            return "Create a new conf file.";
         }
 
         public function getName()
@@ -42,7 +42,6 @@ namespace Candango\Carcara\Commands {
             if (file_exists($confDir) && is_dir($confDir)) {
                 echo "The conf directory already exits.\n";
             } else {
-                echo "Creating conf directory ... ";
                 echo "Creating conf directory ... ";
                 if(mkdir($confDir)) {
                     echo "[ OK ].\n";

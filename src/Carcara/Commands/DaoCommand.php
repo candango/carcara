@@ -9,10 +9,8 @@
 
 namespace Candango\Carcara\Commands {
 
-    use Candango\Carcara\Cli;
     use Candango\Carcara\Command;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
-    use Candango\Carcara\File;
     use Candango\Carcara\Model\Conf;
     use GetOpt\Operand;
 
@@ -41,7 +39,7 @@ namespace Candango\Carcara\Commands {
 
         public function run($getopt)
         {
-            $config = new Conf();
+            $conf = new Conf();
 
             $name = $getopt->getOperand('config');
 
@@ -55,22 +53,22 @@ namespace Candango\Carcara\Commands {
                 exit(1);
             }
 
-            $configFile  = $config->getConfDir() . DIRECTORY_SEPARATOR .
-                $name . "_conf.php";
+            $confFile  = $conf->getConfDir() . DIRECTORY_SEPARATOR . $name .
+                "_conf.php";
 
             switch ($action){
                 case "gen":
                 case "generate":
                     echo sprintf("Generating DAO for Data Source %s\n",
                         $name);
-                    echo "Checking if the Data Source config exists ... ";
-                    if (file_exists($configFile)) {
+                    echo "Checking if the conf file exists ... ";
+                    if (file_exists($confFile)) {
                         echo "[ OK ].\n";
-                        $data = include($configFile);
-                        $config = Conf::fromData($name, $data);
+                        $data = include($confFile);
+                        $conf = Conf::fromData($name, $data);
                         echo sprintf("Connecting to the database %s ... ",
-                            $config->getDatabase());
-                        $loader = AbstractDatabaseLoader::getLoader($config);
+                            $conf->getDatabase());
+                        $loader = AbstractDatabaseLoader::getLoader($conf);
                         try {
                             $loader->connect();
                         } catch (\PDOException $e) {
@@ -87,11 +85,11 @@ namespace Candango\Carcara\Commands {
                             count($loader->getTables()));
                         $loader->disconnect();
                         echo sprintf("Disconnected from the database %s.\n",
-                            $config->getDatabase());
-                        $this->prepareDaoPath($config);
+                            $conf->getDatabase());
+                        $this->prepareDaoPath($conf);
                     } else {
                         echo "[ FAIL ].\n";
-                        echo sprintf("File %s doesn't exists.\n", $configFile);
+                        echo sprintf("File %s doesn't exists.\n", $confFile);
                         exit(1);
                     }
                     break;
@@ -100,6 +98,36 @@ namespace Candango\Carcara\Commands {
         }
 
         private function prepareDaoPath(Conf $conf) {
+            $libDir = $conf->getLibDir();
+            echo sprintf("Checking if lib dir exists at %s ... ", $libDir);
+            if (!file_exists($libDir)) {
+                echo "[ NOT FOUND ]\n";
+                echo "Creating lib directory ... ";
+                if(mkdir($libDir)) {
+                    echo "[ OK ].\n";
+                } else {
+                    echo "[ ERROR ].\n";
+                    exit(1);
+                }
+            } else {
+                echo "[ FOUND ]\n";
+            }
+
+            $daoDir = $conf->getDaoDir();
+
+            echo sprintf("Checking if DAO dir exists at %s ... ", $daoDir);
+            if (!file_exists($daoDir)) {
+                echo "[ NOT FOUND ]\n";
+                echo "Creating DAO directory ... ";
+                if(mkdir($daoDir)) {
+                    echo "[ OK ].\n";
+                } else {
+                    echo "[ ERROR ].\n";
+                    exit(1);
+                }
+            } else {
+                echo "[ FOUND ]\n";
+            }
 
         }
     }

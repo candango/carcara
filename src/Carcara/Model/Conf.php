@@ -224,6 +224,30 @@ namespace Candango\Carcara\Model
         }
 
         /**
+         * Returns the lib directory.
+         *
+         * If base dir is null current dir will be use as base.
+         *
+         * The lib dir is where dao and services will be generated.
+         *
+         * @param null $baseDir
+         * @return string
+         */
+        public function getLibDir($baseDir=null)
+        {
+            if(is_null($baseDir)){
+                $baseDir = getcwd();
+            }
+            return $baseDir . DIRECTORY_SEPARATOR . "lib";
+        }
+
+        public function getDaoDir($baseDir=null)
+        {
+            $libDir = $this->getLibDir($baseDir);
+            return $libDir . DIRECTORY_SEPARATOR . "dao";
+        }
+
+        /**
          * Returns the conf data
          *
          * @return string
