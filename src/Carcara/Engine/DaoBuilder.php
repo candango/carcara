@@ -11,7 +11,14 @@ namespace Candango\Carcara\Engine {
 
     interface DaoBuilder
     {
-        public function build(DatabaseLoader $loader);
+        public function build();
+
+        /**
+         * @return DatabaseLoader
+         */
+        public function getLoader();
+
+        public function setLoader(DatabaseLoader $loader);
     }
 
 }

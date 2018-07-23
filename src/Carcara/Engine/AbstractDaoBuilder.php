@@ -10,17 +10,42 @@
 namespace Candango\Carcara\Engine {
 
 
-    use Candango\Carcara\Model\Database\Table;
+    use Candango\Carcara\Engine\Mysql\MysqlDaoBuilder;
     use Candango\Carcara\Model\Conf;
 
     abstract class AbstractDaoBuilder implements DaoBuilder
     {
-        public function build(DatabaseLoader $loader)
+        /**
+         * @var DatabaseLoader
+         */
+        private $loader;
+
+        public function __construct(DatabaseLoader $loader)
         {
-            // TODO: Implement build() method.
+            $this->setLoader($loader);
         }
 
+        public function build()
+        {
+        }
 
+        public static function getBuilder(DatabaseLoader $loader) {
+            switch ($loader->getConf()->getType()) {
+                case Conf::MYSQL;
+                    return new MysqlDaoBuilder($loader);
+                    break;
+            }
+        }
+
+        public function getLoader()
+        {
+            // TODO: Implement getLoader() method.
+        }
+
+        public function setLoader(DatabaseLoader $loader)
+        {
+            $this->loader = $loader;
+        }
     }
 
 }

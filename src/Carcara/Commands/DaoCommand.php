@@ -10,6 +10,7 @@
 namespace Candango\Carcara\Commands {
 
     use Candango\Carcara\Command;
+    use Candango\Carcara\Engine\AbstractDaoBuilder;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
     use Candango\Carcara\Model\Conf;
     use GetOpt\Operand;
@@ -87,6 +88,8 @@ namespace Candango\Carcara\Commands {
                         echo sprintf("Disconnected from the database %s.\n",
                             $conf->getDatabase());
                         $this->prepareDaoPath($conf);
+
+                        $builder = AbstractDaoBuilder::getBuilder($loader);
                     } else {
                         echo "[ FAIL ].\n";
                         echo sprintf("File %s doesn't exists.\n", $confFile);
@@ -110,7 +113,7 @@ namespace Candango\Carcara\Commands {
                     exit(1);
                 }
             } else {
-                echo "[ FOUND ]\n";
+                echo "[ OK ]\n";
             }
 
             $daoDir = $conf->getDaoDir();
@@ -126,7 +129,7 @@ namespace Candango\Carcara\Commands {
                     exit(1);
                 }
             } else {
-                echo "[ FOUND ]\n";
+                echo "[ OK ]\n";
             }
 
         }

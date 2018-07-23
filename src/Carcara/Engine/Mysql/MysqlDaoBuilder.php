@@ -10,9 +10,6 @@
 namespace Candango\Carcara\Engine\Mysql {
 
     use Candango\Carcara\Engine\AbstractDaoBuilder;
-    use Candango\Carcara\Engine\AbstractDatabaseLoader;
-    use Candango\Carcara\Model\Database\Field;
-    use Candango\Carcara\Model\Database\Table;
 
     class MysqlDaoBuilder extends AbstractDaoBuilder
     {
