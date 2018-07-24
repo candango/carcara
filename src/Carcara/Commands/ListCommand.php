@@ -11,8 +11,8 @@ namespace Candango\Carcara\Commands
 {
 
     use Candango\Carcara\Command;
-    use Candango\Carcara\File;
     use Candango\Carcara\Model\Conf;
+    use Candango\Carcara\SmartyInABox;
 
     class ListCommand implements Command
     {
@@ -54,13 +54,10 @@ namespace Candango\Carcara\Commands
                 }
             } catch (\UnexpectedValueException $e) {}
 
-            $smarty = new \Smarty();
-            $smarty->assign("confs", $confs);
-            $configTplDir =  \Candango\Carcara\TPL_DIR;
-            echo $smarty->fetch($configTplDir . DIRECTORY_SEPARATOR .
-                "list.tpl");
+            SmartyInABox::getInstance()->assign("confs", $confs);
 
-            File::delete($smarty->getCompileDir());
+            echo SmartyInABox::fetch("list.tpl");
+
         }
     }
 }

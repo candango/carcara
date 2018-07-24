@@ -6,8 +6,8 @@
  * @copyright Copyright (c) 2018 Flavio Garcia
  * @license   https://www.apache.org/licenses/LICENSE-2.0  Apache-2.0
  */
-
-namespace Candango\Carcara {
+namespace Candango\Carcara
+{
 
     use Candango\Carcara\Model\Conf;
     use Candango\Carcara\Model\Database\Table;
@@ -30,7 +30,7 @@ namespace Candango\Carcara {
             $entityName = "";
             $entityX = explode("_", str_replace(" ", "_", $entity));
             foreach ($entityX as $part) {
-                $entityName += ucfirst(strtolower($part));
+                $entityName .= ucfirst(strtolower($part));
             }
             return $entityName;
         }

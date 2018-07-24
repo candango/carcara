@@ -10,7 +10,6 @@
 namespace Candango\Carcara\Engine
 {
 
-
     use Candango\Carcara\Engine\Mysql\MysqlDatabaseLoader;
     use Candango\Carcara\Model\Database\Table;
     use Candango\Carcara\Model\Conf;

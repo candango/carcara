@@ -9,7 +9,7 @@
 
 namespace Candango\Carcara\Model
 {
-    use Candango\Carcara\File;
+    use Candango\Carcara\SmartyInABox;
 
     class Conf
     {
@@ -203,7 +203,8 @@ namespace Candango\Carcara\Model
          *
          * @return string
          */
-        public function getIdentifier() {
+        public function getIdentifier()
+        {
             return $this->getDatabase();
         }
 
@@ -252,23 +253,17 @@ namespace Candango\Carcara\Model
          *
          * @return string
          * @throws \Exception
-         * @throws \SmartyException
          */
         public function fetch()
         {
-            $smarty = new \Smarty();
-            $smarty->assign("config", $this);
-            $configTplDir =  \Candango\Carcara\TPL_DIR . DIRECTORY_SEPARATOR .
-                "config";
-            $data = $smarty->fetch($configTplDir . DIRECTORY_SEPARATOR .
+            SmartyInABox::getInstance()->assign("config", $this);
+            $data = SmartyInABox::fetch("config" . DIRECTORY_SEPARATOR .
                 "config.tpl");
-
-            File::delete($smarty->getCompileDir());
-
             return $data;
         }
 
-        public function getAllowedTypes() {
+        public function getAllowedTypes()
+        {
             return array(self::MYSQL, self::PGSQL);
         }
 
