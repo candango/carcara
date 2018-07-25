@@ -43,8 +43,6 @@ namespace Candango\Carcara
                 $pluginsDir[] = str_replace("#", DIRECTORY_SEPARATOR,
                     sprintf("%s#plugins#smarty#", dirname(__FILE__)));
                 self::$smarty->setPluginsDir($pluginsDir);
-
-                print_r(self::$smarty->getPluginsDir());
             }
             return self::$smarty;
         }

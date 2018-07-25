@@ -14,13 +14,14 @@ namespace Candango\Carcara\Commands
     use Candango\Carcara\Engine\AbstractDaoBuilder;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
     use Candango\Carcara\Model\Conf;
+    use GetOpt\GetOpt;
     use GetOpt\Operand;
 
     class DaoCommand implements Command
     {
         public function brief()
         {
-            return "Create a new Data Source config.";
+            return "Execute actions related to DAO.";
         }
 
         public function getName()
@@ -31,27 +32,31 @@ namespace Candango\Carcara\Commands
         function getOperands()
         {
             return [
-                Operand::create('config', Operand::REQUIRED)->setDescription(
-                    "Data Source configuration name"),
                 Operand::create('action', Operand::REQUIRED)->setDescription(
                     "DAO action to executed. Allowed actions: \n" .
                     "    - gen(erate) Generate the DAO structure"),
+                Operand::create('conf', Operand::OPTIONAL)->setDescription(
+                    "Carcara conf name")
             ];
         }
 
+        /**
+         * @param $getopt GetOpt
+         */
         public function run($getopt)
         {
             $conf = new Conf();
 
-            $name = $getopt->getOperand('config');
-
             $action = $getopt->getOperand('action');
+
+            $name = $getopt->getOperand('conf') ?
+                $getopt->getOperand('conf') : "default";
 
             $allowedActions = ["gen", "generate"];
 
             if (!in_array($action, $allowedActions)) {
-                echo "[ FAIL ].\n";
-                echo sprintf("The action %s isn't allowed.\n", $action);
+                echo sprintf("The action %s is invalid.\n\n", $action);
+                echo $getopt->getHelpText();
                 exit(1);
             }
 
