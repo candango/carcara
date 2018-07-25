@@ -60,53 +60,57 @@ namespace Candango\Carcara\Commands
                 exit(1);
             }
 
-            $confFile  = $conf->getConfDir() . DIRECTORY_SEPARATOR . $name .
-                "_conf.php";
-
             switch ($action){
                 case "gen":
                 case "generate":
-                    echo sprintf("Generating DAO for Data Source %s\n",
-                        $name);
-                    echo "Checking if the conf file exists ... ";
-                    if (file_exists($confFile)) {
-                        echo "[ OK ].\n";
-                        $data = include($confFile);
-                        $conf = Conf::fromData($name, $data);
-                        echo sprintf("Connecting to the database %s ... ",
-                            $conf->getDatabase());
-                        $loader = AbstractDatabaseLoader::getLoader($conf);
-                        try {
-                            $loader->connect();
-                        } catch (\PDOException $e) {
-                            echo "[ FAIL ].\n";
-                            echo "ERROR: " . $e->getMessage() .
-                                ".\nCheck your configuration.\n";
-                            exit(3);
-                        }
-                        echo "[ OK ].\n";
-                        echo "Loading tables ... ";
-                        $loader->doLoad();
-                        echo "[ OK ].\n";
-                        echo sprintf("%s tables loaded.\n",
-                            count($loader->getTables()));
-                        $loader->disconnect();
-                        echo sprintf("Disconnected from the database %s.\n",
-                            $conf->getDatabase());
-                        $this->prepareDaoPath($conf);
-
-                        $builder = AbstractDaoBuilder::getBuilder($loader);
-                    } else {
-                        echo "[ FAIL ].\n";
-                        echo sprintf("File %s doesn't exists.\n", $confFile);
-                        exit(1);
-                    }
+                    $this->generateDaoAction($conf);
                     break;
             }
             exit(0);
         }
 
-        private function prepareDaoPath(Conf $conf) {
+        private function generateDaoAction(Conf $conf)
+        {
+            echo sprintf("Generating DAO for Data Source %s\n",
+                $conf->getName());
+            echo "Checking if the conf file exists ... ";
+            if (file_exists($this->getConfFile($conf))) {
+                echo "[ OK ].\n";
+                $data = include($this->getConfFile($conf));
+                $conf = Conf::fromData($conf->getName(), $data);
+                echo sprintf("Connecting to the database %s ... ",
+                    $conf->getDatabase());
+                $loader = AbstractDatabaseLoader::getLoader($conf);
+                try {
+                    $loader->connect();
+                } catch (\PDOException $e) {
+                    echo "[ FAIL ].\n";
+                    echo "ERROR: " . $e->getMessage() .
+                        ".\nCheck your configuration.\n";
+                    exit(3);
+                }
+                echo "[ OK ].\n";
+                echo "Loading tables ... ";
+                $loader->doLoad();
+                echo "[ OK ].\n";
+                echo sprintf("%s tables loaded.\n",
+                    count($loader->getTables()));
+                $loader->disconnect();
+                echo sprintf("Disconnected from the database %s.\n",
+                    $conf->getDatabase());
+                $this->prepareDaoPath($conf);
+
+                $builder = AbstractDaoBuilder::getBuilder($loader);
+            } else {
+                echo "[ FAIL ].\n";
+                echo sprintf("File %s doesn't exists.\n",
+                    $this->getConfFile($conf));
+                exit(1);
+            }
+        }
+
+        private function prepareDaoPath(Conf $conf)
+        {
             $libDir = $conf->getLibDir();
             echo sprintf("Checking if lib dir exists at %s ... ", $libDir);
             if (!file_exists($libDir)) {
@@ -138,6 +142,18 @@ namespace Candango\Carcara\Commands
                 echo "[ OK ]\n";
             }
 
+        }
+
+        private function generateDaos(Conf $conf)
+        {
+
+        }
+
+
+        private function getConfFile(Conf $conf)
+        {
+            return $conf->getConfDir() . DIRECTORY_SEPARATOR . $conf->getName()
+                . "_conf.php";
         }
     }
 }
