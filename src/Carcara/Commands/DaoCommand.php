@@ -11,7 +11,7 @@ namespace Candango\Carcara\Commands
 {
 
     use Candango\Carcara\Command;
-    use Candango\Carcara\Engine\AbstractDaoBuilder;
+    use Candango\Carcara\Engine\AbstractDaoGenerator;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
     use Candango\Carcara\Model\Conf;
     use GetOpt\GetOpt;
@@ -100,7 +100,8 @@ namespace Candango\Carcara\Commands
                     $conf->getDatabase());
                 $this->prepareDaoPath($conf);
 
-                $builder = AbstractDaoBuilder::getBuilder($loader);
+                $generator = AbstractDaoGenerator::getGenerator($loader);
+                $generator->generateDaoFactories();
             } else {
                 echo "[ FAIL ].\n";
                 echo sprintf("File %s doesn't exists.\n",

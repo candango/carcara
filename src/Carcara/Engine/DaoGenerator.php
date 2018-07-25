@@ -10,9 +10,9 @@
 namespace Candango\Carcara\Engine
 {
 
-    interface DaoBuilder
+    interface DaoGenerator
     {
-        public function build();
+        public function generateDaoFactories();
 
         /**
          * @return DatabaseLoader

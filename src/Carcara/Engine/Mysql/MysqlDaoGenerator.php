@@ -9,10 +9,14 @@
 
 namespace Candango\Carcara\Engine\Mysql {
 
-    use Candango\Carcara\Engine\AbstractDaoBuilder;
+    use Candango\Carcara\Engine\AbstractDaoGenerator;
 
-    class MysqlDaoBuilder extends AbstractDaoBuilder
+    class MysqlDaoGenerator extends AbstractDaoGenerator
     {
 
+        public function build()
+        {
+            // TODO: Implement build() method.
+        }
     }
 }

@@ -10,10 +10,10 @@
 namespace Candango\Carcara\Engine
 {
 
-    use Candango\Carcara\Engine\Mysql\MysqlDaoBuilder;
+    use Candango\Carcara\Engine\Mysql\MysqlDaoGenerator;
     use Candango\Carcara\Model\Conf;
 
-    abstract class AbstractDaoBuilder implements DaoBuilder
+    abstract class AbstractDaoGenerator implements DaoGenerator
     {
         /**
          * @var DatabaseLoader
@@ -25,14 +25,21 @@ namespace Candango\Carcara\Engine
             $this->setLoader($loader);
         }
 
-        public function build()
+        public function generateDaoFactories()
         {
+            $factories = array();
+
+            foreach ($this->loader->getTables() as $table) {
+                $factories = array("abstract"=>$table->getName());
+                print_r($factories);
+                die();
+            }
         }
 
-        public static function getBuilder(DatabaseLoader $loader) {
+        public static function getGenerator(DatabaseLoader $loader) {
             switch ($loader->getConf()->getType()) {
                 case Conf::MYSQL;
-                    return new MysqlDaoBuilder($loader);
+                    return new MysqlDaoGenerator($loader);
                     break;
             }
         }
