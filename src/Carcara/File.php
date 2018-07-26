@@ -41,20 +41,23 @@ namespace Candango\Carcara
          *
          * @param string $file The file name
          * @param string $string The string to be writed
-         * @throws FileOperationException
+         * @throws \Exception
          */
         public static function write($file, $string)
         {
-            $fp = fopen($file,"w");
+            if (!$fp = @fopen($file ,"w")) {
+                throw new \Exception(sprintf("Error opening the file %s to ".
+                    "write.", $file));
+            }
 
             if (!flock($fp,LOCK_EX)) {
-                throw new FileOperationException($file,
-                    FileOperationException::LOCK_EX_FILE);
+                throw new \Exception(sprintf("Error locking the file %s.",
+                    $file));
             }
 
             if (!fwrite($fp, $string)) {
-                throw new FileOperationException($file,
-                    FileOperationException::WRITE_FILE);
+                throw new \Exception(sprintf("Error writing the file %s.",
+                    $file));
             }
 
             flock($fp,LOCK_UN);
@@ -66,18 +69,18 @@ namespace Candango\Carcara
          *
          * @param string $file The file name
          * @return string The file content
-         * @throws FileOperationException
+         * @throws \Exception
          */
         public static function read($file)
         {
             if (@!$fp = fopen($file ,"r")) {
-                throw new FileOperationException($file,
-                    FileOperationException::OPEN_FILE);
+                throw new \Exception(sprintf("Error opening the file %s to ".
+                    "read.", $file));
             }
 
             if (!flock( $fp, LOCK_SH)) {
-                throw new FileOperationException($file,
-                    FileOperationException::LOCK_FILE);
+                throw new Exception(sprintf("Error locking the file %s.",
+                    $file));
             }
 
             $fileCode = fread($fp, filesize($file));
