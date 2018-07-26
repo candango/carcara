@@ -59,8 +59,7 @@ namespace Candango\Carcara
          */
         public static function getTableEntitySuffix(Conf $conf, Table $table)
         {
-            return sprintf("%s%s", self::getEntityName($conf->getIdentifier()),
-                self::getEntityName($table->getName()));
+            return self::getEntityName($table->getName());
         }
     }
 }

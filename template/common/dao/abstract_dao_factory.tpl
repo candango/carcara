@@ -1,72 +1,46 @@
 <?php
 /**
- * ${identifier-name}AbstractDaoFactory - ${identifier-name}AbstractDaoFactory.php
+ * {entity_name entity=$conf->getIdentifier()}AbstractDaoFactory - {entity_name entity=$conf->getIdentifier()}AbstractDaoFactory.php
  * 
  * Abstract dao factory class. This class returns all dao factories found
  * by the engine.
- * 
- * PHP version 5
- * 
- * Put your license here.
- * 
+ *
  * Contributor(s): 
  *
  * @category dao
  * @package lib.dao
- * @author Carcara Modeller Tool Engine
+ * @author Carcara DAO Generator
  * @copyright Put your copyright here.
  * @license Put your copyright here.
  * @version    
  */
 
-/**
- * ${identifier-name}AbstractDaoFactory - ${identifier-name}AbstractDaoFactory.php
- * 
- * Abstract dao factory class. This class returns all dao factories found
- * by the engine.
- * 
- * PHP version 5 
- * 
- * @category dao
- * @package lib.dao
- * @author Carcara Modeller Tool Engine
- * @copyright Put your copyright here.
- * @license Put your copyright here.
- * @version
- */
-abstract class ${identifier-name}AbstractDaoFactory{
-
+abstract class {entity_name entity=$conf->getIdentifier()}AbstractDaoFactory
+{
     /**
-     * Oracle Dao constant
-     * 
-     * @var integer
+     * Mysql Dao constant
+     *
+     * @var string
      */
-    const ORACLE_DAO = 1;
+    const MYSQL = "mysql";
 
     /**
      * Pgsql Dao constant
-     * 
-     * @var integer
+     *
+     * @var string
      */
-    const PGSQL_DAO = 2;
-
-    /**
-     * Mysql Dao constant
-     * 
-     * @var integer
-     */
-    const MYSQL_DAO = 3;
+    const PGSQL_DAO = "pgsql";
 
     /**
      * Insert Transaction constant
-     * 
+     *
      * @var integer
      */
     const INSERT_TRANSACTION = 1;
 
     /**
      * Update Transaction constant
-     * 
+     *
      * @var integer
      */
     const UPDATE_TRANSACTION = 2;
@@ -74,7 +48,7 @@ abstract class ${identifier-name}AbstractDaoFactory{
     /**
      * Collection of instances that this factory can hold
      *
-     * @var array An array of ${identifier-name}AbstractDaoFactory's
+     * @var array An array of {entity_name entity=$conf->getIdentifier()}AbstractDaoFactory
      */
     private static $instances = array();
 
@@ -82,33 +56,33 @@ abstract class ${identifier-name}AbstractDaoFactory{
      * Return one DAO factory instance
      *
      * @param int $whichFactory
-     * @return ${identifier-name}AbstractDaoFactory
+     * @return {entity_name entity=$conf->getIdentifier()}AbstractDaoFactory
      */
-    public static function getInstance( $whichFactory ) {
-
+    public static function getInstance($whichFactory)
+    {
         $factories = array(
-            self::ORACLE_DAO => "${identifier-name}OracleDaoFactory",
-            self::PGSQL_DAO => "${identifier-name}PgsqlDaoFactory",
-            self::MYSQL_DAO => "${identifier-name}MysqlDaoFactory"
+            self::MYSQL_DAO => "{entity_name entity=$conf->getIdentifier()}MysqlDaoFactory",
+            self::PGSQL_DAO => "{entity_name entity=$conf->getIdentifier()}PgsqlDaoFactory"
         );
 
-        if( isset( $factories[ $whichFactory ] ) ) {
-            if( !isset( self::$instances[ $whichFactory ] ) ) {
+        if (isset($factories[ $whichFactory])) {
+            if (!isset(self::$instances[$whichFactory])) {
                 require_once "dao/" . $factories[ $whichFactory ] . ".php";
-                self::$instances[ $whichFactory ] = 
-                    new $factories[ $whichFactory ]();
+                self::$instances[ $whichFactory ] =
+                new $factories[ $whichFactory ]();
             }
             return self::$instances[ $whichFactory ];
         }
         return null;
     }
-#foreach ($table in $tables)
 
+{foreach $tables as $table}
     /**
-     * Return a new ${identifier-name} ${table.getEntityName()} Dao
-     *
-     * @return ${identifier-name}${table.getEntityName()}Dao
-     **/
-    public abstract function get${table.getEntityName()}Dao();
-#end
+    * Return a new {entity_name entity=$conf->getIdentifier()} {table_entity_name table=$table} Dao
+    *
+    * @return {entity_name entity=$conf->getIdentifier()}{table_entity_name table=$table}Dao
+    **/
+    public abstract function get{table_entity_name table=$table}Dao();
+
+{/foreach}
 }

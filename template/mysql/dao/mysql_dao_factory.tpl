@@ -1,11 +1,9 @@
 <?php
 /**
- * ${identifier-name-upper}MysqlDaoFactory - ${identifier-name-upper}MysqlDaoFactory.php
+ * {entity_name entity=$conf->getIdentifier()}MysqlDaoFactory - {entity_name entity=$conf->getIdentifier()}MysqlDaoFactory.php
  * 
- * Abstract dao factory class. This class returns all dao factories found
+ * Mysql dao factory class. This class returns all dao factories found
  * by the engine.
- * 
- * PHP version 5
  * 
  * Put your license here.
  * 
@@ -13,28 +11,14 @@
  *
  * @category dao
  * @package lib.dao
- * @author Carcara Modeller Tool Engine
+ * @author Carcara DAO Generator
  * @copyright Put your copyright here.
  * @license Put your copyright here.
  * @version    
  */
 
-/**
- * ${identifier-name-upper}MysqlDaoFactory - ${identifier-name-upper}MysqlDaoFactory.php
- * 
- * Abstract dao factory class. This class returns all dao factories found
- * by the engine.
- * 
- * PHP version 5 
- * 
- * @category dao
- * @package lib.dao
- * @author Carcara Modeller Tool Engine
- * @copyright Put your copyright here.
- * @license Put your copyright here.
- * @version
- */
-class ${identifier-name-upper}MysqlDaoFactory extends ${identifier-name-upper}AbstractDaoFactory{
+class {entity_name entity=$conf->getIdentifier()}MysqlDaoFactory extends {entity_name entity=$conf->getIdentifier()}AbstractDaoFactory
+{
 
     /**
      * Configuration database name
@@ -50,18 +34,18 @@ class ${identifier-name-upper}MysqlDaoFactory extends ${identifier-name-upper}Ab
      */
     private $connection;
 
-    public function __construct() {
+    public function __construct()
+    {
         $myfuses = MyFuses::getInstance();
-        $conf = require $myfuses->getApplication( "${identifier-name}" )->getPath() .
-            "conf/${identifier-name}_conf.php";
-        $connStr = "mysql:host=" . $conf[ 'server' ] . ";dbname=" .
+        $conf = require $myfuses->getApplication("{entity_name entity=$conf->getIdentifier()}")->getPath() .
+            "conf/{entity_name entity=$conf->getIdentifier()}_conf.php";
+        $connStr = "mysql:host=" . $conf['server'] . ";dbname=" .
             $conf[ 'database' ];
-        $this->dbName = $conf[ 'database' ];
+        $this->dbName = $conf['database'];
         try {
-            $this->connection = new PDO( $connStr, $conf[ 'user' ],
-                 $conf[ 'password' ] );
-        }
-        catch ( Exception $e ) {
+            $this->connection = new PDO($connStr, $conf['user'],
+                 $conf['password']);
+        } catch (Exception $e) {
             echo "Failed: " . $e->getMessage();
         }
     }
@@ -71,7 +55,8 @@ class ${identifier-name-upper}MysqlDaoFactory extends ${identifier-name-upper}Ab
      *
      * @returns string
      */
-    public function getDbName() {
+    public function getDbName()
+    {
         return $this->dbName;
     }
 
@@ -80,19 +65,21 @@ class ${identifier-name-upper}MysqlDaoFactory extends ${identifier-name-upper}Ab
      *
      * @returns PDO
      */
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->connection;
     }
-#foreach ($table in $tables)
+{foreach $tables as $table}
 
     /**
-     * Return a new ${identifier-name-upper}${table.getEntityName()}MysqlDao
+     * Return a new {entity_name entity=$conf->getIdentifier()} {table_entity_name table=$table} MysqlDao
      *
-     * @return ${identifier-name-upper}${table.getEntityName()}MysqlDao
+     * @return {entity_name entity=$conf->getIdentifier()}{table_entity_name table=$table}MysqlDao
      **/
-    public function get${table.getEntityName()}Dao() {
-        require_once "dao/${table.getName()}/${identifier-name-upper}${table.getEntityName()}MysqlDao.php";
-        return new ${identifier-name-upper}${table.getEntityName()}MysqlDao( $this );
+    public function get{table_entity_name table=$table}Dao()
+    {
+        require_once "dao/{table_entity_name table=$table}/{entity_name entity=$conf->getIdentifier()}{table_entity_name table=$table}MysqlDao.php";
+        return new {entity_name entity=$conf->getIdentifier()}{table_entity_name table=$table}MysqlDao($this);
     }
-#end
+{/foreach}
 }
