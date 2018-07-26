@@ -13,7 +13,9 @@ namespace Candango\Carcara\Commands
     use Candango\Carcara\Command;
     use Candango\Carcara\Engine\AbstractDaoGenerator;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
+    use Candango\Carcara\Engine\DatabaseLoader;
     use Candango\Carcara\File;
+    use Candango\Carcara\Lexicon;
     use Candango\Carcara\Model\Conf;
     use Candango\Carcara\SmartyInABox;
     use GetOpt\GetOpt;
@@ -100,15 +102,25 @@ namespace Candango\Carcara\Commands
                 $loader->disconnect();
                 echo sprintf("Disconnected from the database %s.\n",
                     $conf->getDatabase());
-                $this->prepareDaoPath($conf);
+
+                $this->prepareDaoPaths($conf, $loader);
 
                 $generator = AbstractDaoGenerator::getGenerator($loader);
 
                 SmartyInABox::getInstance()->assign("conf", $conf);
 
+                echo "\nGenerating DAO factories ... ";
                 $daoFactories = $generator->generateDaoFactories();
+                echo "[ OK ].\n";
 
                 $this->storeDaoFactories($conf, $daoFactories);
+
+                echo "\nGenerating DTOs ... ";
+                $dtos = $generator->generateDtos();
+                echo "[ OK ].\n";
+
+                $this->storeDtos($conf, $dtos);
+
             } else {
                 echo "[ FAIL ].\n";
                 echo sprintf("File %s doesn't exists.\n",
@@ -117,7 +129,11 @@ namespace Candango\Carcara\Commands
             }
         }
 
-        private function prepareDaoPath(Conf $conf)
+        /**
+         * @param Conf $conf
+         * @param DatabaseLoader $loader
+         */
+        private function prepareDaoPaths(Conf $conf, DatabaseLoader $loader)
         {
             $libDir = $conf->getLibDir();
             echo sprintf("Checking if lib dir exists at %s ... ", $libDir);
@@ -150,6 +166,28 @@ namespace Candango\Carcara\Commands
                 echo "[ OK ]\n";
             }
 
+            echo "\nCreating entity dirs:\n";
+
+            foreach ($loader->getTables() as $table) {
+                $entity = Lexicon::getTableEntitySuffix($conf, $table);
+                $entityDir = sprintf("%s%s%s", $daoDir,
+                    DIRECTORY_SEPARATOR, $entity);
+                echo sprintf("Checking if %s entity dir exists at %s ... ",
+                    $entity,  $entityDir);
+                if (!file_exists($entityDir)) {
+                    echo "[ NOT FOUND ]\n";
+                    echo sprintf("Creating %s entity dir ... ", $entity);
+                    if(mkdir($entityDir)) {
+                        echo "[ OK ].\n";
+                    } else {
+                        echo "[ ERROR ].\n";
+                        exit(1);
+                    }
+                } else {
+                    echo "[ OK ]\n";
+                }
+            }
+
         }
 
         /**
@@ -176,6 +214,31 @@ namespace Candango\Carcara\Commands
             }
         }
 
+        private function storeDtos($conf, $dtos)
+        {
+            echo "Storing DTOs:\n";
+            $daoDir = sprintf("%s%sdao", $conf->getLibDir(),
+                DIRECTORY_SEPARATOR);
+            foreach ($dtos as $key => $dtoTypes) {
+                echo sprintf("Storing %s DTOs:\n", $key);
+                foreach ($dtoTypes as $type => $dto) {
+                    try {
+                        echo sprintf("    - %s DTO ... ", $type);
+                        if ($type == "concrete") {
+                            if (file_exists($daoDir . $dto['path'])) {
+                                echo "[ ALREADY EXISTS SKIPPING ]\n";
+                                continue;
+                            }
+                        }
+                        File::write($daoDir . $dto['path'], $dto['code']);
+                        echo "[ OK ]\n";
+                    } catch (\Exception $e) {
+                        echo $e->getMessage() . "\n";
+                        exit(4);
+                    }
+                }
+            }
+        }
 
         private function getConfFile(Conf $conf)
         {

@@ -36,9 +36,9 @@ namespace Candango\Carcara\Engine
             $abstractDaoFactoryPath = DIRECTORY_SEPARATOR . Lexicon::getEntityName(
                 $this->loader->getConf()->getIdentifier()) .
                 "AbstractDaoFactory.php";
-            $factories["abstract"] = array(
-                "path" => $abstractDaoFactoryPath,
-                "code" => SmartyInABox::fetch(
+            $factories['abstract'] = array(
+                'path' => $abstractDaoFactoryPath,
+                'code' => SmartyInABox::fetch(
                     "common/dao/abstract_dao_factory.tpl"
                 )
             );
@@ -46,14 +46,42 @@ namespace Candango\Carcara\Engine
             return $factories;
         }
 
-        public static function getGenerator(DatabaseLoader $loader) {
+        public function generateDtos()
+        {
+            $dtos = array();
+
+            foreach ($this->getLoader()->getTables() as $table) {
+                $identifierName = Lexicon::getEntityName(
+                    $this->loader->getConf()->getIdentifier());
+                $tableEntityName = Lexicon::getTableEntitySuffix(
+                    $this->getLoader()->getConf(), $table
+                );
+
+                SmartyInABox::getInstance()->assign("table", $table);
+                $daoPath = DIRECTORY_SEPARATOR . $tableEntityName .
+                    DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
+                    "AbstractDaoFactory.php";
+                $dtos[$table->getName()]['concrete'] = array(
+                    "path" => $daoPath,
+                    "code" => SmartyInABox::fetch("common/dao/dto.tpl")
+                );
+                /*$factories[$table->getName()]['abstract'] = array(
+                    "path" => $daoPath,
+                    "code" => SmartyInABox::fetch("common/dao/abstract_dto.tpl")
+                );*/
+            }
+
+            return $dtos;
+        }
+
+        public static function getGenerator(DatabaseLoader $loader)
+        {
             switch ($loader->getConf()->getType()) {
                 case Conf::MYSQL;
                     return new MysqlDaoGenerator($loader);
                     break;
             }
         }
-
 
         /**
          * @return DatabaseLoader

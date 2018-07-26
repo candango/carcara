@@ -12,7 +12,8 @@
  * @param $smarty Smarty
  * @return string string
  */
-function smarty_function_entity_name($params, &$smarty) {
+function smarty_function_entity_name($params, &$smarty)
+{
     $entity = $params['entity'];
     return Candango\Carcara\Lexicon::getEntityName($entity);
 }
