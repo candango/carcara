@@ -12,7 +12,7 @@
  * @param $smarty Smarty
  * @return string
  */
-function smarty_function_table_entity_suffix($params, &$smarty) {
+function smarty_function_table_entity_name($params, &$smarty) {
     $conf = $smarty->getTemplateVars("conf");
     $table = $params['table'];
     return Candango\Carcara\Lexicon::getTableEntitySuffix($conf, $table);
