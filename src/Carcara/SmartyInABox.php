@@ -37,8 +37,6 @@ namespace Candango\Carcara
                 self::$smarty->setTemplateDir(realpath(
                     str_replace("#", DIRECTORY_SEPARATOR, sprintf(
                     "%s#..#..#template", dirname(__FILE__)))));
-                echo sprintf(
-                    "%s/plugins/smarty/", dirname(__FILE__)) . "\n";
                 $pluginsDir = self::$smarty->getPluginsDir();
                 $pluginsDir[] = str_replace("#", DIRECTORY_SEPARATOR,
                     sprintf("%s#plugins#smarty#", dirname(__FILE__)));
@@ -59,7 +57,9 @@ namespace Candango\Carcara
         public static function fetch($template)
         {
             $result = self::getInstance()->fetch($template);
-            File::delete(self::getInstance()->getCompileDir());
+            if (file_exists(self::getInstance()->getCompileDir())) {
+                File::delete(self::getInstance()->getCompileDir());
+            }
             return $result;
         }
     }
