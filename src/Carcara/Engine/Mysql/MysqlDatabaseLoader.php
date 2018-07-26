@@ -38,7 +38,6 @@ namespace Candango\Carcara\Engine\Mysql {
                 throw $e;
 
             }
-            $this->setConf($conf);
             $this->setConnection($conn);
         }
 

@@ -10,13 +10,28 @@
 namespace Candango\Carcara\Engine\Mysql {
 
     use Candango\Carcara\Engine\AbstractDaoGenerator;
+    use Candango\Carcara\Lexicon;
+    use Candango\Carcara\SmartyInABox;
 
     class MysqlDaoGenerator extends AbstractDaoGenerator
     {
 
-        public function build()
+        public function generateDaoFactories()
         {
-            // TODO: Implement build() method.
+            $factories = parent::generateDaoFactories();
+
+            $abstractDaoFactoryPath = DIRECTORY_SEPARATOR .
+                Lexicon::getEntityName(
+                    $this->getLoader()->getConf()->getIdentifier()
+                ) . "MysqlDaoFactory.php";
+            $factories["mysql"] = array(
+                "path" => $abstractDaoFactoryPath,
+                "code" => SmartyInABox::fetch(
+                    "mysql/dao/mysql_dao_factory.tpl"
+                )
+            );
+
+            return $factories;
         }
     }
 }

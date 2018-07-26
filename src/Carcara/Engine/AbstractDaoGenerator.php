@@ -11,7 +11,9 @@ namespace Candango\Carcara\Engine
 {
 
     use Candango\Carcara\Engine\Mysql\MysqlDaoGenerator;
+    use Candango\Carcara\Lexicon;
     use Candango\Carcara\Model\Conf;
+    use Candango\Carcara\SmartyInABox;
 
     abstract class AbstractDaoGenerator implements DaoGenerator
     {
@@ -23,17 +25,25 @@ namespace Candango\Carcara\Engine
         public function __construct(DatabaseLoader $loader)
         {
             $this->setLoader($loader);
+            SmartyInABox::getInstance()->assign("tables",
+                $this->loader->getTables());
         }
 
         public function generateDaoFactories()
         {
             $factories = array();
 
-            foreach ($this->loader->getTables() as $table) {
-                $factories = array("abstract"=>$table->getName());
-                print_r($factories);
-                die();
-            }
+            $abstractDaoFactoryPath = DIRECTORY_SEPARATOR . Lexicon::getEntityName(
+                $this->loader->getConf()->getIdentifier()) .
+                "AbstractDaoFactory.php";
+            $factories["abstract"] = array(
+                "path" => $abstractDaoFactoryPath,
+                "code" => SmartyInABox::fetch(
+                    "common/dao/abstract_dao_factory.tpl"
+                )
+            );
+
+            return $factories;
         }
 
         public static function getGenerator(DatabaseLoader $loader) {
@@ -44,9 +54,13 @@ namespace Candango\Carcara\Engine
             }
         }
 
+
+        /**
+         * @return DatabaseLoader
+         */
         public function getLoader()
         {
-            // TODO: Implement getLoader() method.
+            return $this->loader;
         }
 
         public function setLoader(DatabaseLoader $loader)

@@ -13,7 +13,9 @@ namespace Candango\Carcara\Commands
     use Candango\Carcara\Command;
     use Candango\Carcara\Engine\AbstractDaoGenerator;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
+    use Candango\Carcara\File;
     use Candango\Carcara\Model\Conf;
+    use Candango\Carcara\SmartyInABox;
     use GetOpt\GetOpt;
     use GetOpt\Operand;
 
@@ -101,7 +103,12 @@ namespace Candango\Carcara\Commands
                 $this->prepareDaoPath($conf);
 
                 $generator = AbstractDaoGenerator::getGenerator($loader);
-                $generator->generateDaoFactories();
+
+                SmartyInABox::getInstance()->assign("conf", $conf);
+
+                $daoFactories = $generator->generateDaoFactories();
+
+                $this->storeDaoFactories($conf, $daoFactories);
             } else {
                 echo "[ FAIL ].\n";
                 echo sprintf("File %s doesn't exists.\n",
@@ -145,9 +152,28 @@ namespace Candango\Carcara\Commands
 
         }
 
-        private function generateDaos(Conf $conf)
+        /**
+         * @param $conf Conf
+         * @param $daoFactories
+         */
+        private function storeDaoFactories($conf, $daoFactories)
         {
+            echo "Storing DAO Factories:\n";
+            $daoDir = sprintf("%s%sdao", $conf->getLibDir(),
+                DIRECTORY_SEPARATOR);
+            foreach ($daoFactories as $key => $daoFactory) {
+                try {
+                    echo sprintf("Storing %s DAO Factory ... ", $key);
+                    File::write($daoDir . $daoFactory['path'],
+                        $daoFactory['code']);
+                    echo "[ OK ]\n";
+                } catch (\Exception $e) {
+                    echo $e->getMessage() . "\n";
+                    exit(4);
+                }
 
+
+            }
         }
 
 
