@@ -108,7 +108,8 @@ namespace Candango\Carcara\Commands
                 $generator = AbstractDaoGenerator::getGenerator($loader);
 
                 SmartyInABox::getInstance()->assign("conf", $conf);
-
+                SmartyInABox::getInstance()->assign("identifierName",
+                    Lexicon::getEntityName($conf->getIdentifier()));
                 echo "\nGenerating DAO factories ... ";
                 $daoFactories = $generator->generateDaoFactories();
                 echo "[ OK ].\n";
@@ -169,7 +170,7 @@ namespace Candango\Carcara\Commands
             echo "\nCreating entity dirs:\n";
 
             foreach ($loader->getTables() as $table) {
-                $entity = Lexicon::getTableEntitySuffix($conf, $table);
+                $entity = Lexicon::getTableEntityName($table);
                 $entityDir = sprintf("%s%s%s", $daoDir,
                     DIRECTORY_SEPARATOR, $entity);
                 echo sprintf("Checking if %s entity dir exists at %s ... ",

@@ -49,14 +49,10 @@ namespace Candango\Carcara\Engine
         public function generateDtos()
         {
             $dtos = array();
-
             foreach ($this->getLoader()->getTables() as $table) {
-                $identifierName = Lexicon::getEntityName(
-                    $this->loader->getConf()->getIdentifier());
-                $tableEntityName = Lexicon::getTableEntitySuffix(
-                    $this->getLoader()->getConf(), $table
-                );
-
+                $identifierName = SmartyInABox::getInstance()->getConfigVars(
+                    "identifierName");
+                $tableEntityName = Lexicon::getTableEntityName($table);
                 SmartyInABox::getInstance()->assign("table", $table);
                 $daoPath = DIRECTORY_SEPARATOR . $tableEntityName .
                     DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
@@ -70,7 +66,7 @@ namespace Candango\Carcara\Engine
                     "code" => SmartyInABox::fetch("common/dao/abstract_dto.tpl")
                 );*/
             }
-
+            SmartyInABox::getInstance()->clearAssign("table");
             return $dtos;
         }
 

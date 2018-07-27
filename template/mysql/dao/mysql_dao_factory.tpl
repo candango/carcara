@@ -1,6 +1,6 @@
 <?php
 /**
- * {entity_name entity=$conf->getIdentifier()}MysqlDaoFactory - {entity_name entity=$conf->getIdentifier()}MysqlDaoFactory.php
+ * {$identifierName}MysqlDaoFactory - {$identifierName}MysqlDaoFactory.php
  * 
  * Mysql dao factory class. This class returns all dao factories found
  * by the engine.
@@ -17,7 +17,7 @@
  * @version    
  */
 
-class {entity_name entity=$conf->getIdentifier()}MysqlDaoFactory extends {entity_name entity=$conf->getIdentifier()}AbstractDaoFactory
+class {$identifierName}MysqlDaoFactory extends {$identifierName}AbstractDaoFactory
 {
 
     /**
@@ -37,8 +37,8 @@ class {entity_name entity=$conf->getIdentifier()}MysqlDaoFactory extends {entity
     public function __construct()
     {
         $myfuses = MyFuses::getInstance();
-        $conf = require $myfuses->getApplication("{entity_name entity=$conf->getIdentifier()}")->getPath() .
-            "conf/{entity_name entity=$conf->getIdentifier()}_conf.php";
+        $conf = require $myfuses->getApplication("{$identifierName}")->getPath() .
+            "conf/{$identifierName}_conf.php";
         $connStr = "mysql:host=" . $conf['server'] . ";dbname=" .
             $conf[ 'database' ];
         $this->dbName = $conf['database'];
@@ -72,14 +72,14 @@ class {entity_name entity=$conf->getIdentifier()}MysqlDaoFactory extends {entity
 {foreach $tables as $table}
 
     /**
-     * Return a new {entity_name entity=$conf->getIdentifier()} {table_entity_name table=$table} MysqlDao
+     * Return a new {$identifierName} {table_entity_name table=$table} MysqlDao
      *
-     * @return {entity_name entity=$conf->getIdentifier()}{table_entity_name table=$table}MysqlDao
+     * @return {$identifierName}{table_entity_name table=$table}MysqlDao
      **/
     public function get{table_entity_name table=$table}Dao()
     {
-        require_once "dao/{table_entity_name table=$table}/{entity_name entity=$conf->getIdentifier()}{table_entity_name table=$table}MysqlDao.php";
-        return new {entity_name entity=$conf->getIdentifier()}{table_entity_name table=$table}MysqlDao($this);
+        require_once "dao/{table_entity_name table=$table}/{$identifierName}{table_entity_name table=$table}MysqlDao.php";
+        return new {$identifierName}{table_entity_name table=$table}MysqlDao($this);
     }
 {/foreach}
 }
