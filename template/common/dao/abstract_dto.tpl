@@ -1,38 +1,41 @@
 <?php
 /**
- * Abstract class that defines the ${identifier-name}${table.getEntityName()}Dto's.
- * This class is extended by ${identifier-name}${table.getEntityName()}Dto that is the right
- * place to customize the dto's properies and getters and setters methods.
+ * Abstract class that defines the {$identifierName}{$table->getEntityName()}Dto.
+ * This class is extended by {$identifierName}{$table->getEntityName()}Dto that
+ * is used to customized your dto structure.
  * 
- * @package lib.dao.${table.getName()}
+ * @package lib.dao.{$table->getName()}
  * @author Carcara Modeller Tool Engine
  */
-abstract class ${identifier-name}${table.getEntityName()}AbstractDto {
-#foreach ($field in $table.getFields())
+abstract class {$identifierName}{$table->getEntityName()}AbstractDto
+{
+{foreach $table->getFields() as $field}
 
     /**
-     * ${identifier-name}${table.getEntityName()}'s ${field.getAttributeName()} attribute
+     * {$identifierName}{$table->getEntityName()}'s {$field->getAttributeName()} attribute
      **/
-    private $${field.getAttributeName()};
-#end
-#foreach ($field in $table.getFields())
+    private ${$field->getAttributeName()};
+{/foreach}
+{foreach $table->getFields() as $field}
 
     /**
-     * Return ${identifier-name}${table.getEntityName()}AbstractDto's ${field.getAttributeName()} attribute
+     * Return {$identifierName}{$table->getEntityName()}AbstractDto's {$field->getAttributeName()} attribute
      *
      * @return mixed
      **/
-    public function get${field.getEntityName()}() {
-        return $this->${field.getAttributeName()};
+    public function get{$field->getEntityName()}()
+    {
+        return $this->{$field->getAttributeName()};
     }
 
     /**
-     * Set ${identifier-name}${table.getEntityName()}AbstractDto's ${field.getAttributeName()} attribute
+     * Set {$identifierName}{$table->getEntityName()}AbstractDto's {$field->getAttributeName()} attribute
      *
-     * @param mixed $${field.getAttributeName()}
+     * @param mixed ${$field->getAttributeName()}
      **/
-    public function set${field.getEntityName()}( $${field.getAttributeName()} ) {
-        $this->${field.getAttributeName()} = $${field.getAttributeName()};
+    public function set{$field->getEntityName()}(${$field->getAttributeName()})
+    {
+        $this->{$field->getAttributeName()} = ${$field->getAttributeName()};
     }
-#end
+{/foreach}
 }
