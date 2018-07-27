@@ -50,14 +50,12 @@ namespace Candango\Carcara
         }
 
         /**
-         * Returns the table entity suffix composed by the entity name of conf
-         * identifier and entity name of table name.
+         * Returns the table entity name.
          *
-         * @param Conf $conf
          * @param Table $table
          * @return string
          */
-        public static function getTableEntitySuffix(Conf $conf, Table $table)
+        public static function getTableEntityName(Table $table)
         {
             return self::getEntityName($table->getName());
         }
