@@ -9,6 +9,9 @@
 
 namespace Candango\Carcara\Model\Database
 {
+
+    use Candango\Carcara\Lexicon;
+
     class Field
     {
         /**
@@ -117,6 +120,16 @@ namespace Candango\Carcara\Model\Database
         public function setSerial($serial)
         {
             $this->serial = $serial;
+        }
+
+        public function getEntityName()
+        {
+            return Lexicon::getEntityName($this->getName());
+        }
+
+        public function getAttributeName()
+        {
+            return Lexicon::getAttributeName($this->getName());
         }
     }
 }

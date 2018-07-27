@@ -9,6 +9,9 @@
 
 namespace Candango\Carcara\Model\Database
 {
+
+    use Candango\Carcara\Lexicon;
+
     class Table
     {
         /**
@@ -60,7 +63,7 @@ namespace Candango\Carcara\Model\Database
          *
          * @return array
          */
-        public function getField()
+        public function getFields()
         {
             return $this->fields;
         }
@@ -129,6 +132,16 @@ namespace Candango\Carcara\Model\Database
         public function setFields($fields)
         {
             $this->fields = $fields;
+        }
+
+        /**
+         * Return the table entity name
+         *
+         * @return string
+         */
+        public function getEntityName()
+        {
+            return Lexicon::getEntityName($this->getName());
         }
     }
 }

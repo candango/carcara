@@ -50,21 +50,24 @@ namespace Candango\Carcara\Engine
         {
             $dtos = array();
             foreach ($this->getLoader()->getTables() as $table) {
-                $identifierName = SmartyInABox::getInstance()->getConfigVars(
+                $identifierName = SmartyInABox::getInstance()->getTemplateVars(
                     "identifierName");
                 $tableEntityName = Lexicon::getTableEntityName($table);
                 SmartyInABox::getInstance()->assign("table", $table);
-                $daoPath = DIRECTORY_SEPARATOR . $tableEntityName .
+                $concreteDtoPath = DIRECTORY_SEPARATOR . $tableEntityName .
                     DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
-                    "AbstractDaoFactory.php";
+                    "Dto.php";
+                $abstractDtoPath = DIRECTORY_SEPARATOR . $tableEntityName .
+                    DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
+                    "AbstractDto.php";
                 $dtos[$table->getName()]['concrete'] = array(
-                    "path" => $daoPath,
+                    "path" => $concreteDtoPath,
                     "code" => SmartyInABox::fetch("common/dao/dto.tpl")
                 );
-                /*$factories[$table->getName()]['abstract'] = array(
-                    "path" => $daoPath,
+                $dtos[$table->getName()]['abstract'] = array(
+                    "path" => $abstractDtoPath,
                     "code" => SmartyInABox::fetch("common/dao/abstract_dto.tpl")
-                );*/
+                );
             }
             SmartyInABox::getInstance()->clearAssign("table");
             return $dtos;
