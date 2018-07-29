@@ -79,7 +79,7 @@ namespace Candango\Carcara\Commands
                 $conf->getName());
             echo "Checking if the conf file exists ... ";
             if (file_exists($this->getConfFile($conf))) {
-                echo "[ OK ].\n";
+                echo "[ OK ]\n";
                 $data = include($this->getConfFile($conf));
                 $conf = Conf::fromData($conf->getName(), $data);
                 echo sprintf("Connecting to the database %s ... ",
@@ -88,15 +88,15 @@ namespace Candango\Carcara\Commands
                 try {
                     $loader->connect();
                 } catch (\PDOException $e) {
-                    echo "[ FAIL ].\n";
+                    echo "[ FAIL ]\n";
                     echo "ERROR: " . $e->getMessage() .
                         ".\nCheck your configuration.\n";
                     exit(3);
                 }
-                echo "[ OK ].\n";
+                echo "[ OK ]\n";
                 echo "Loading tables ... ";
                 $loader->doLoad();
-                echo "[ OK ].\n";
+                echo "[ OK ]\n";
                 echo sprintf("%s tables loaded.\n",
                     count($loader->getTables()));
                 $loader->disconnect();
@@ -112,18 +112,21 @@ namespace Candango\Carcara\Commands
                     Lexicon::getEntityName($conf->getIdentifier()));
                 echo "\nGenerating DAO factories ... ";
                 $daoFactories = $generator->generateDaoFactories();
-                echo "[ OK ].\n";
+                echo "[ OK ]\n";
 
                 $this->storeDaoFactories($conf, $daoFactories);
 
                 echo "\nGenerating DTOs ... ";
                 $dtos = $generator->generateDtos();
-                echo "[ OK ].\n";
-
+                echo "[ OK ]\n";
                 $this->storeDtos($conf, $dtos);
 
+                echo "\nGenerating DAOs ... ";
+                $daos = $generator->generateDaos();
+                echo "[ OK ]\n";
+                $this->storeDaos($conf, $daos);
             } else {
-                echo "[ FAIL ].\n";
+                echo "[ FAIL ]\n";
                 echo sprintf("File %s doesn't exists.\n",
                     $this->getConfFile($conf));
                 exit(1);
@@ -224,14 +227,40 @@ namespace Candango\Carcara\Commands
                 echo sprintf("Storing %s DTOs:\n", $key);
                 foreach ($dtoTypes as $type => $dto) {
                     try {
-                        echo sprintf("    - %s DTO ... ", $type);
-                        if ($type == "concrete") {
+                        echo sprintf("    - %s ... ", $type);
+                        if (!$dto['always']) {
                             if (file_exists($daoDir . $dto['path'])) {
                                 echo "[ ALREADY EXISTS SKIPPING ]\n";
                                 continue;
                             }
                         }
                         File::write($daoDir . $dto['path'], $dto['code']);
+                        echo "[ OK ]\n";
+                    } catch (\Exception $e) {
+                        echo $e->getMessage() . "\n";
+                        exit(4);
+                    }
+                }
+            }
+        }
+
+        private function storeDaos($conf, $daos)
+        {
+            echo "Storing DAOs:\n";
+            $daoDir = sprintf("%s%sdao", $conf->getLibDir(),
+                DIRECTORY_SEPARATOR);
+            foreach ($daos as $key => $daoTypes) {
+                echo sprintf("Storing %s DAOs:\n", $key);
+                foreach ($daoTypes as $type => $dao) {
+                    try {
+                        echo sprintf("    - %s ... ", $type);
+                        if (!$dao['always']) {
+                            if (file_exists($daoDir . $dao['path'])) {
+                                echo "[ ALREADY EXISTS SKIPPING ]\n";
+                                continue;
+                            }
+                        }
+                        File::write($daoDir . $dao['path'], $dao['code']);
                         echo "[ OK ]\n";
                     } catch (\Exception $e) {
                         echo $e->getMessage() . "\n";

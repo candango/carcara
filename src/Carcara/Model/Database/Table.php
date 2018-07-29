@@ -83,6 +83,14 @@ namespace Candango\Carcara\Model\Database
         }
 
         /**
+         * @return Field
+         */
+        public function getFirstPkField() {
+            return $this->getPkFields()[0];
+        }
+
+
+        /**
          *
          * @return array
          */
@@ -142,6 +150,11 @@ namespace Candango\Carcara\Model\Database
         public function getEntityName()
         {
             return Lexicon::getEntityName($this->getName());
+        }
+
+        public function getAttributeName()
+        {
+            return Lexicon::getAttributeName($this->getName());
         }
     }
 }

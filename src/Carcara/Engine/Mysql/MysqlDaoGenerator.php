@@ -33,5 +33,27 @@ namespace Candango\Carcara\Engine\Mysql {
 
             return $factories;
         }
+
+        public function generateDaos()
+        {
+            $daos = parent::generateDaos();
+            foreach ($this->getLoader()->getTables() as $table) {
+                $identifierName = SmartyInABox::getInstance()->getTemplateVars(
+                    "identifierName");
+                $tableEntityName = Lexicon::getTableEntityName($table);
+                SmartyInABox::getInstance()->assign("table", $table);
+                $mysqlDtoPath = DIRECTORY_SEPARATOR . $tableEntityName .
+                    DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
+                    "AbstractMysqlDao.php";
+                $daos[$table->getName()]['abstract mysql DAO'] = array(
+                    "path" => $mysqlDtoPath,
+                    "code" => SmartyInABox::fetch(
+                        "mysql/dao/abstract_mysql_dao.tpl"),
+                    "always" => true
+                );
+            }
+            SmartyInABox::getInstance()->clearAssign("table");
+            return $daos;
+        }
     }
 }

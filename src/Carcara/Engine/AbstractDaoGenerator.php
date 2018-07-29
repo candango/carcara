@@ -60,17 +60,44 @@ namespace Candango\Carcara\Engine
                 $abstractDtoPath = DIRECTORY_SEPARATOR . $tableEntityName .
                     DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
                     "AbstractDto.php";
-                $dtos[$table->getName()]['concrete'] = array(
-                    "path" => $concreteDtoPath,
-                    "code" => SmartyInABox::fetch("common/dao/dto.tpl")
-                );
-                $dtos[$table->getName()]['abstract'] = array(
+                $dtos[$table->getName()]['abstract DTO'] = array(
                     "path" => $abstractDtoPath,
-                    "code" => SmartyInABox::fetch("common/dao/abstract_dto.tpl")
+                    "code" => SmartyInABox::fetch(
+                        "common/dao/abstract_dto.tpl"),
+                    "always" => true
+                );
+                $dtos[$table->getName()]['DTO'] = array(
+                    "path" => $concreteDtoPath,
+                    "code" => SmartyInABox::fetch("common/dao/dto.tpl"),
+                    "always" => false
                 );
             }
             SmartyInABox::getInstance()->clearAssign("table");
             return $dtos;
+        }
+
+        public function generateDaos()
+        {
+            $daos = array();
+            foreach ($this->getLoader()->getTables() as $table) {
+                $identifierName = SmartyInABox::getInstance()->getTemplateVars(
+                    "identifierName");
+                $tableEntityName = Lexicon::getTableEntityName($table);
+                SmartyInABox::getInstance()->assign("table", $table);
+                $concreteDaoPath = DIRECTORY_SEPARATOR . $tableEntityName .
+                    DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
+                    "Dao.php";
+                $abstractDtoPath = DIRECTORY_SEPARATOR . $tableEntityName .
+                    DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
+                    "AbstractDao.php";
+                $daos[$table->getName()]['DAO'] = array(
+                    "path" => $concreteDaoPath,
+                    "code" => SmartyInABox::fetch("common/dao/dao.tpl"),
+                    "always" => false
+                );
+            }
+            SmartyInABox::getInstance()->clearAssign("table");
+            return $daos;
         }
 
         public static function getGenerator(DatabaseLoader $loader)
