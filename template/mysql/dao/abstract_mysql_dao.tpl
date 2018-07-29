@@ -52,8 +52,11 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         $this->factory = $factory;
     }
 
-    public function get{$table->getEntityName()}s($criteria = null, $fillMethod = 'fill{$table->getEntityName()}', $buildArrayMethod = 'buildArray{$table->getEntityName()}s')
-    {
+    public function get{$table->getEntityName()}s(
+        $criteria = null,
+        $fillMethod = 'fill{$table->getEntityName()}',
+        $buildArrayMethod = 'buildArray{$table->getEntityName()}s'
+    ) {
         if (is_null($criteria)) {
             $criteria['fields'] = "*";
             $criteria['from'] = $this->factory->getDbName() .
@@ -271,7 +274,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
 {if count($table->getPkFields()) eq  1}
         if ($transaction == {$identifierName}AbstractDaoFactory::INSERT_TRANSACTION) {
             if ($result) {
-                ${$table->getAttributeName()}->set${$table->getFirstPkField()->getEntityName()}($this->factory->getConnection()->lastInsertId());
+                ${$table->getAttributeName()}->set{$table->getFirstPkField()->getEntityName()}($this->factory->getConnection()->lastInsertId());
             }
         }
 {/if}
