@@ -1,7 +1,6 @@
-#set ( $dollarSign = "$")
 <?php
 /**
- * ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao - ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao.php
+ * {$identifierName}{$table->getEntityName()}AbstractMysqlDao - {$identifierName}{$table->getEntityName()}AbstractMysqlDao.php
  * 
  * Abstract dao factory class. This class returns all dao factories found
  * by the engine.
@@ -13,19 +12,19 @@
  * Contributor(s): 
  *
  * @category dao
- * @package lib.dao.${table.getName()}
+ * @package lib.dao.{$table->getName()}
  * @author Carcara Modeller Tool Engine
  * @copyright Put your copyright here.
  * @license Put your copyright here.
  * @version    
  */
 
-require_once "dao/${table.getName()}/${identifier-name-upper}${table.getEntityName()}Dto.php";
+require_once "dao/{$table->getName()}/{$identifierName}{$table->getEntityName()}Dto.php";
 
-require_once "dao/${table.getName()}/${identifier-name-upper}${table.getEntityName()}Dao.php";
+require_once "dao/{$table->getName()}/{$identifierName}{$table->getEntityName()}Dao.php";
 
 /**
- * ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao - ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao.php
+ * {$identifierName}{$table->getEntityName()}AbstractMysqlDao - {$identifierName}{$table->getEntityName()}AbstractMysqlDao.php
  * 
  * Abstract dao factory class. This class returns all dao factories found
  * by the engine.
@@ -33,89 +32,91 @@ require_once "dao/${table.getName()}/${identifier-name-upper}${table.getEntityNa
  * PHP version 5 
  * 
  * @category dao
- * @package lib.dao.${table.getName()}
+ * @package lib.dao.{$table->getName()}
  * @author Carcara Modeller Tool Engine
  * @copyright Put your copyright here.
  * @license Put your copyright here.
  * @version
  */
-abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao implements ${identifier-name-upper}${table.getEntityName()}Dao {
+abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implements {$identifierName}{$table->getEntityName()}Dao
+{
 
     /**
      *
-     * @var ${identifier-name-upper}MysqlDaoFactory
+     * @var {$identifierName}MysqlDaoFactory
      */
     protected $factory;
 
-    public function __construct( ${identifier-name-upper}MysqlDaoFactory $factory = null ) {
+    public function __construct({$identifierName}MysqlDaoFactory $factory = null)
+    {
         $this->factory = $factory;
     }
 
-    public function get${table.getEntityName()}s( $criteria = null, $fillMethod = 'fill${table.getEntityName()}', $buildArrayMethod = 'buildArray${table.getEntityName()}s') {
-        if( is_null( $criteria ) ) {
-            $criteria[ 'fields' ] = "*";
-            $criteria[ 'from' ] = $this->factory->getDbName() . ".${table.getName()}";
-            $criteria[ 'where' ] = null;
-            $criteria[ 'order_by' ] = null;
-            $criteria[ 'limit' ] = null;
-        }
-        else {
-            if( !isset( $criteria[ 'fields' ] ) ) {
-                $criteria[ 'fields' ] = "*";
+    public function get{$table->getEntityName()}s($criteria = null, $fillMethod = 'fill{$table->getEntityName()}', $buildArrayMethod = 'buildArray{$table->getEntityName()}s')
+    {
+        if (is_null($criteria)) {
+            $criteria['fields'] = "*";
+            $criteria['from'] = $this->factory->getDbName() .
+                ".{$table->getName()}";
+            $criteria['where'] = null;
+            $criteria['order_by'] = null;
+            $criteria['limit'] = null;
+        } else {
+            if (!isset($criteria['fields'])) {
+                $criteria['fields'] = "*";
             }
-            if( !isset( $criteria[ 'from' ] ) ) {
-                $criteria[ 'from' ] = $this->factory->getDbName() . ".${table.getName()}";
+            if (!isset($criteria['from'])) {
+                $criteria['from'] = $this->factory->getDbName() .
+                    ".{$table->getName()}";
             }
-            if( !isset( $criteria[ 'where' ] ) ) {
-                $criteria[ 'where' ] = null;
+            if (!isset($criteria['where'])) {
+                $criteria['where'] = null;
             }
-            if( !isset( $criteria[ 'order_by' ] ) ) {
-                $criteria[ 'order_by' ] = null;
+            if (!isset($criteria['order_by'])) {
+                $criteria['order_by'] = null;
             }
-            if( !isset( $criteria[ 'limit' ] ) ) {
-                $criteria[ 'limit' ] = null;
+            if (!isset($criteria['limit'])) {
+                $criteria['limit'] = null;
             }
         }
 
-        $sql = "SELECT " . $criteria[ 'fields' ] .
-            " FROM " . $criteria[ 'from' ];
+        $sql = "SELECT " . $criteria['fields'] . " FROM " . $criteria['from'];
 
-        if( !is_null( $criteria[ 'where' ] ) ) {
-            $sql .= " WHERE " . $criteria[ 'where' ];
+        if (!is_null($criteria['where'])) {
+            $sql .= " WHERE " . $criteria['where'];
         }
 
-        if( !is_null( $criteria[ 'order_by' ] ) ) {
-            $sql .= " ORDER BY " . $criteria[ 'order_by' ];
+        if (!is_null($criteria['order_by'])) {
+            $sql .= " ORDER BY " . $criteria['order_by'];
         }
 
-        if( !is_null( $criteria[ 'limit' ] ) ) {
-            $sql .= " LIMIT " . $criteria[ 'limit' ];
+        if (!is_null($criteria['limit'])) {
+            $sql .= " LIMIT " . $criteria['limit'];
         }
 
-        $sth = $this->factory->getConnection()->prepare( $sql );
+        $sth = $this->factory->getConnection()->prepare($sql);
 
-        $sth->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] :
-            null );
+        $sth->execute(isset($criteria['bind']) ? $criteria['bind'] : null);
 
-        $${table.getAttributeName()}s = array();
+        ${$table->getAttributeName()}s = array();
 
-        while( $row = $sth->fetch( PDO::FETCH_ASSOC ) ) {
-            $this->$buildArrayMethod($${table.getAttributeName()}s, $this->$fillMethod($row));
+        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+            $this->$buildArrayMethod(${$table->getAttributeName()}s, $this->$fillMethod($row));
         }
 
-        return $${table.getAttributeName()}s;
+        return ${$table->getAttributeName()}s;
     }
-    
-    public function get${table.getEntityName()}sCount( $criteria = null ) { 
-        if( is_null( $criteria ) ) {
-            $criteria[ 'from' ] = $this->factory->getDbName() . ".${table.getName()}";
+
+    public function get{$table->getEntityName()}sCount($criteria = null)
+    {
+        if (is_null($criteria)) {
+            $criteria[ 'from' ] = $this->factory->getDbName() . ".{$table->getName()}";
             $criteria[ 'where' ] = null;
             $criteria[ 'order_by' ] = null;
             $criteria[ 'limit' ] = null;
-        }
-        else {
+        } else {
             if( !isset( $criteria[ 'from' ] ) ) {
-                $criteria[ 'from' ] = $this->factory->getDbName() . ".${table.getName()}";
+                $criteria[ 'from' ] = $this->factory->getDbName() . ".{$table->getName()}";
             }
             if( !isset( $criteria[ 'where' ] ) ) {
                 $criteria[ 'where' ] = null;
@@ -157,54 +158,49 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
         return 0;
     }
     
-    public function get${table.getEntityName()}ByPk( #foreach( $field in $table.getPks())$$field.getAttributeName()#if( $velocityHasNext ),#end #end){
+    public function get{$table->getEntityName()}ByPk({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach})
+    {
         $criteria = null;
-
-        $criteria[ 'where' ] = #foreach( $field in $table.getPks())" $field.getName() = :$field.getName()#if( $velocityHasNext ) AND" .
-                               #else"#end#end;
-
+        $criteria[ 'where' ] = {foreach $table->getPkFields() as $field}" {$field->getName()} = :{$field->getName()}{if !$field@last} AND" .
+                               {else}"{/if}{/foreach};
         $values = array(
-            #foreach( $field in $table.getPks())":$field.getName()" => $$field.getAttributeName()#if( $velocityHasNext ),
-            #end#end
+            {foreach $table->getPkFields() as $field}":{$field->getName()}" =>  ${$field->getAttributeName()}{if !$field@last},
+            {/if}{/foreach}
 
         );
-
         $criteria[ 'bind' ] = $values;
-
-        $${table.getAttributeName()}s = $this->get${table.getEntityName()}s( $criteria );
-
-        return $${table.getAttributeName()}s[ 0 ];
+        ${$table->getAttributeName()}s = $this->get{$table->getEntityName()}s($criteria);
+        return ${$table->getAttributeName()}s[ 0 ];
     }
 
-
     /**
-     * Add the filled row to the array of ${table.getAttributeName()}s to be returned by the
-     * get${table.getEntityName()}s method
+     * Add the filled row to the array of {$table->getAttributeName()}s to be returned by the
+     * get{$table->getEntityName()}s method
      *
-     * @param array $${table.getAttributeName()}s
-     * @param ${identifier-name-upper}${table.getEntityName()}Dto $item
+     * @param array ${$table->getAttributeName()}s
+     * @param {$identifierName}{$table->getEntityName()}Dto $item
      */
-    public function buildArray${table.getEntityName()}s( &$${table.getAttributeName()}s, $item ){
-        $${table.getAttributeName()}s[] = $item;
+    public function buildArray{$table->getEntityName()}s( &${$table->getAttributeName()}s, $item ){
+        ${$table->getAttributeName()}s[] = $item;
     }
 
     /**
-     * Return one ${identifier-name-upper}${table.getEntityName()}Dto with filled by row values.
+     * Return one {$identifierName}{$table->getEntityName()}Dto with filled by row values.
      *
      * @param array $row
-     * @return ${identifier-name-upper}${table.getEntityName()}Dto
+     * @return {$identifierName}{$table->getEntityName()}Dto
      */
-    public function fill${table.getEntityName()}( $row, $fillClass = '${identifier-name-upper}${table.getEntityName()}Dto' ){
-        $${table.getAttributeName()} = new $fillClass();
+    public function fill{$table->getEntityName()}( $row, $fillClass = '{$identifierName}{$table->getEntityName()}Dto' ){
+        ${$table->getAttributeName()} = new $fillClass();
 
-#foreach( $field in $table.getFields())
-        $${table.getAttributeName()}->set${field.getEntityName()}( ${dollarSign}row[ '${field.getName()}' ] );
-#end
+{foreach $table->getFields() as $field}
+        ${$table->getAttributeName()}->set{$field->getEntityName()}($row[ '{$field->getName()}']);
+{/foreach}
 
-        return $${table.getAttributeName()};
+        return ${$table->getAttributeName()};
     }
 
-    public function update${table.getEntityName()}($criteria = null) {
+    public function update{$table->getEntityName()}($criteria = null) {
         if( is_null( $criteria ) ) {
             $criteria[ 'fields' ] = null;
             $criteria[ 'where' ] = null;
@@ -220,7 +216,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
 
         if($criteria[ 'fields' ] != null) {
             $sql = "UPDATE " . $this->factory->getDbName() .
-                ".${table.getName()} SET " . $criteria[ 'fields' ];
+                ".{$table->getName()} SET " . $criteria[ 'fields' ];
             if($criteria[ 'where' ] != null) {
                 $sql .= " WHERE " . $criteria[ 'where' ];
             }
@@ -229,77 +225,77 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
         }
     }
 
-    public function save${table.getEntityName()}( ${identifier-name-upper}${table.getEntityName()}Dto $${table.getAttributeName()},
-         $transaction ){
+    public function save{$table->getEntityName()}(
+        {$identifierName}{$table->getEntityName()}Dto ${$table->getAttributeName()},
+        $transaction
+    ) {
         $sth = null;
         $values = array(
-#foreach( $field in $table.getFields())
-            ":${field.getName()}" => $${table.getAttributeName()}->get${field.getEntityName()}()#if( $velocityHasNext ),
-#end
-#end
+{foreach $table->getFields() as $field}
+            ":{$field->getName()}" => ${$table->getAttributeName()}->get{$field->getEntityName()}(){if !$field@last},
+{/if}
+{/foreach}
         
         );
 
-        if( $transaction == ${identifier-name-upper}AbstractDaoFactory::INSERT_TRANSACTION ) {
-#foreach( $field in $table.getSerials())
-            unset( $values[ ':${field.getName()}' ] );
-#end
+        if( $transaction == {$identifierName}AbstractDaoFactory::INSERT_TRANSACTION ) {
+{foreach $table->getSerialFields() as $field}
+            unset( $values[ ':{$field->getName()}' ] );
+{/foreach}
 
-            $sql = "INSERT INTO " . $this->factory->getDbName() . ".${table.getName()}( " .
-#foreach( $field in $table.getNonSerials())
-                       "${field.getName()}#if( $velocityHasNext ), " .
-#end
-#end )" .
+            $sql = "INSERT INTO " . $this->factory->getDbName() . ".{$table->getName()}( " .
+{foreach $table->getNonSerialFields() as $field}
+                       "{$field->getName()}{if !$field@last}, " .
+{/if}
+{/foreach} )" .
                    "VALUES ( " .
-#foreach( $field in $table.getNonSerials())
-                       ":${field.getName()}#if( $velocityHasNext ), " .
-#end
-#end )";
+{foreach $table->getNonSerialFields() as $field}
+                       ":{$field->getName()}{if !$field@last}, " .
+{/if}
+{/foreach} )";
         }
         else{
-            $sql = "UPDATE " . $this->factory->getDbName() . ".${table.getName()} SET " .
-#foreach( $field in $table.getNonPks())
-                       "${field.getName()} = :${field.getName()}#if( $velocityHasNext ), " .
-#end
-#end )" .
+            $sql = "UPDATE " . $this->factory->getDbName() . ".{$table->getName()} SET " .
+{foreach $table->getNonPkFields() as $field}
+                       "{$field->getName()} = :{$field->getName()}{if !$field@last}, " .
+{/if}
+{/foreach} )" .
                    "WHERE " .
-#foreach( $field in $table.getPks())
-                       "${field.getName()} = :${field.getName()}#if( $velocityHasNext ), " .
-#end
-#end )";
+{foreach $table->getPkFields() as $field}
+                       "{$field->getName()} = :{$field->getName()}{if !$field@last}, " .
+{/if}
+{/foreach} )";
         }
         $sth = $this->factory->getConnection()->prepare( $sql );
         $result = $sth->execute( $values );
-#if($table.getPks().size() == 1)
-        if ($transaction == ${identifier-name-upper}AbstractDaoFactory::INSERT_TRANSACTION){
-            if ($result){
-                $${table.getAttributeName()}->set${table.getPks()[0].getEntityName()}($this->factory->getConnection()->lastInsertId());
+{if count($table->getPkFields()) eq  1}
+        if ($transaction == {$identifierName}AbstractDaoFactory::INSERT_TRANSACTION) {
+            if ($result) {
+                ${$table->getAttributeName()}->set${$table->getFirstPkField()->getEntityName()}($this->factory->getConnection()->lastInsertId());
             }
         }
-#end
+{/if}
         return $result;
     }
 
-    public function delete${table.getEntityName()}( #foreach( $field in $table.getPks())$$field.getAttributeName()#if( $velocityHasNext ),#end #end) { 
+    public function delete{$table->getEntityName()}({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach})
+    {
         $sql = "DELETE FROM " .
-                   $this->factory->getDbName() . ".${table.getName()} " .
+                   $this->factory->getDbName() . ".{$table->getName()} " .
                "WHERE " .
-#foreach( $field in $table.getPks())
-                   "${field.getName()} = :${field.getName()}#if( $velocityHasNext ), " .
-#end
-#end )";
+{foreach $table->getPkFields() as $field}
+                   "{$field->getName()} = :{$field->getName()}{if !$field@last}, " .
+{/if}
+{/foreach} )";
 
         $values = array(
-#foreach( $field in $table.getPks())
-            ":${field.getName()}" => $${field.getAttributeName()}#if( $velocityHasNext ),
-#end
-#end
-        
+{foreach $table->getPkFields() as $field}
+            ":{$field->getName()}" => ${$field->getAttributeName()}{if !$field@last},
+{/if}
+{/foreach}
         );
-
-        $sth = $this->factory->getConnection()->prepare( $sql );
-
-        return $sth->execute( $values );
+        $sth = $this->factory->getConnection()->prepare($sql);
+        return $sth->execute($values);
     }
 
 }
