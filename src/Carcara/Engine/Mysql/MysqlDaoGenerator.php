@@ -42,14 +42,23 @@ namespace Candango\Carcara\Engine\Mysql {
                     "identifierName");
                 $tableEntityName = Lexicon::getTableEntityName($table);
                 SmartyInABox::getInstance()->assign("table", $table);
-                $mysqlDtoPath = DIRECTORY_SEPARATOR . $tableEntityName .
+                $abstractMysqlDtoPath = DIRECTORY_SEPARATOR . $tableEntityName .
                     DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
                     "AbstractMysqlDao.php";
+                $mysqlDtoPath = DIRECTORY_SEPARATOR . $tableEntityName .
+                    DIRECTORY_SEPARATOR . $identifierName .  $tableEntityName .
+                    "MysqlDao.php";
                 $daos[$table->getName()]['abstract mysql DAO'] = array(
-                    "path" => $mysqlDtoPath,
+                    "path" => $abstractMysqlDtoPath,
                     "code" => SmartyInABox::fetch(
                         "mysql/dao/abstract_mysql_dao.tpl"),
                     "always" => true
+                );
+                $daos[$table->getName()]['mysql DAO'] = array(
+                    "path" => $mysqlDtoPath,
+                    "code" => SmartyInABox::fetch(
+                        "mysql/dao/mysql_dao.tpl"),
+                    "always" => false
                 );
             }
             SmartyInABox::getInstance()->clearAssign("table");
