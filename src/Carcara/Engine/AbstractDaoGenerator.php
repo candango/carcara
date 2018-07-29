@@ -93,7 +93,7 @@ namespace Candango\Carcara\Engine
                 $daos[$table->getName()]['DAO'] = array(
                     "path" => $concreteDaoPath,
                     "code" => SmartyInABox::fetch("common/dao/dao.tpl"),
-                    "always" => false
+                    "always" => true
                 );
             }
             SmartyInABox::getInstance()->clearAssign("table");
