@@ -9,7 +9,6 @@
 namespace Candango\Carcara
 {
 
-    use Candango\Carcara\Model\Conf;
     use Candango\Carcara\Model\Database\Table;
 
     class Lexicon
