@@ -9,6 +9,8 @@
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR .
     "../../src/Carcara/Lexicon.php";
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR .
+    "../../src/Carcara/Model\Database\Table.php";
 
 use PHPUnit\Framework\TestCase;
 use Candango\Carcara\Lexicon;
