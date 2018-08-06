@@ -12,6 +12,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR .
 
 use PHPUnit\Framework\TestCase;
 use Candango\Carcara\Lexicon;
+use Candango\Carcara\Model\Database\Table;
 
 /**
  * LexiconTest - LexiconTest.php
@@ -21,13 +22,15 @@ use Candango\Carcara\Lexicon;
  * @category   tests
  * @package    tests.carcara
  * @author     Flavio Garcia <piraz at candango.org>
- * @since
+ * @since      7723d9f7387f84ba21d64a8d6cba7412cbf8989e
  * @covers     \Candango\Carcara\Lexicon
  */
 final class LexiconTest extends TestCase
 {
 
     /**
+     * Tests the lexicon get entity name method.
+     *
      * The entity name is a camel case name where the parts of name are any
      * string separated by underscore or space.
      *
@@ -45,9 +48,38 @@ final class LexiconTest extends TestCase
         $this->assertEquals($entityName, Lexicon::getEntityName($tableName));
 
         $tableNameWithSpace = "a_table name";
-        $entityNameWithSpace = "ATableName";
-        $this->assertEquals($entityNameWithSpace,
+        $this->assertEquals($entityName,
             Lexicon::getEntityName($tableNameWithSpace));
     }
 
+    /**
+     * Tests the lexicon get attribute name method.
+     *
+     * Same as get entity name but the first letter or the first part from the
+     * table or field will be returned with a lower case.
+     *
+     * A table name as "a_table_name" or "a_table name" will be returned as
+     * aTableName.
+     */
+    public function testGetAttributeName()
+    {
+        $tableName = "a_table_name";
+        $attributeName = "aTableName";
+        $this->assertEquals($attributeName,
+            Lexicon::getAttributeName($tableName));
+
+        $tableNameWithSpace = "a_table_name";
+        $this->assertEquals($attributeName,
+            Lexicon::getAttributeName($tableNameWithSpace));
+    }
+
+    public function testGetTableEntityName()
+    {
+        $table = new Table();
+        $table->setName("a_table_name");
+
+        $entityName = "ATableName";
+
+        $this->assertEquals($entityName, Lexicon::getTableEntityName($table));
+    }
 }
