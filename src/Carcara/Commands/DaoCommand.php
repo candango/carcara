@@ -35,11 +35,11 @@ namespace Candango\Carcara\Commands
 
         function getOperands()
         {
+            $actionOperandTpl = "commands/dao/action_operand.tpl";
             return [
-                Operand::create('action', Operand::REQUIRED)->setDescription(
-                    "DAO action to executed. Allowed actions: \n" .
-                    "    - gen(erate) Generate the DAO structure"),
-                Operand::create('conf', Operand::OPTIONAL)->setDescription(
+                Operand::create("action", Operand::REQUIRED)->setDescription(
+                    SmartyInABox::fetch($actionOperandTpl)),
+                Operand::create("conf", Operand::OPTIONAL)->setDescription(
                     "Carcara conf name")
             ];
         }
@@ -78,10 +78,10 @@ namespace Candango\Carcara\Commands
             echo sprintf("Generating DAO for Data Source %s\n",
                 $conf->getName());
             echo "Checking if the conf file exists ... ";
-            if (file_exists($this->getConfFile($conf))) {
+            if (file_exists($conf->getFilePath())) {
                 echo "[ OK ]\n";
-                $data = include($this->getConfFile($conf));
-                $conf = Conf::fromData($conf->getName(), $data);
+                $data = include($conf->getFilePath());
+                $conf->setData($data);
                 echo sprintf("Connecting to the database %s ... ",
                     $conf->getDatabase());
                 $loader = AbstractDatabaseLoader::getLoader($conf);
@@ -128,7 +128,7 @@ namespace Candango\Carcara\Commands
             } else {
                 echo "[ FAIL ]\n";
                 echo sprintf("File %s doesn't exists.\n",
-                    $this->getConfFile($conf));
+                    $conf->getFilePath());
                 exit(1);
             }
         }
@@ -268,12 +268,6 @@ namespace Candango\Carcara\Commands
                     }
                 }
             }
-        }
-
-        private function getConfFile(Conf $conf)
-        {
-            return $conf->getConfDir() . DIRECTORY_SEPARATOR . $conf->getName()
-                . "_conf.php";
         }
     }
 }

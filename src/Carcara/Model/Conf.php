@@ -20,12 +20,9 @@ namespace Candango\Carcara\Model
         /**
          * Conf name
          *
-         * The default value is: default
-         *
          * @var string
          */
-        private $name = "default";
-
+        private $name;
 
         /**
          * Conf type
@@ -38,7 +35,6 @@ namespace Candango\Carcara\Model
          */
         private $type = self::MYSQL;
 
-
         /**
          * Conf type
          *
@@ -47,7 +43,6 @@ namespace Candango\Carcara\Model
          * @var string
          */
         private $host = "localhost";
-
 
         /**
          * Config database
@@ -70,6 +65,11 @@ namespace Candango\Carcara\Model
          */
         private $password = "";
 
+        public function __construct($name="default")
+        {
+            $this->setName($name);
+        }
+
         /**
          * Returns conf name
          *
@@ -84,6 +84,7 @@ namespace Candango\Carcara\Model
          * Set conf name
          *
          * @param string $name
+         * @return void
          */
         public function setName($name)
         {
@@ -103,7 +104,8 @@ namespace Candango\Carcara\Model
         /**
          * Set conf type
          *
-         * @param $type
+         * @param string $type
+         * @return void
          * @throws \Error
          */
         public function setType($type)
@@ -148,7 +150,8 @@ namespace Candango\Carcara\Model
         /**
          * Set conf database
          *
-         * @return string
+         * @param string $database
+         * @return void
          */
         public function setDatabase($database)
         {
@@ -168,7 +171,8 @@ namespace Candango\Carcara\Model
         /**
          * Set conf user
          *
-         * @return string
+         * @param string $user
+         * @return void
          */
         public function setUser($user)
         {
@@ -188,7 +192,8 @@ namespace Candango\Carcara\Model
         /**
          * Set conf password
          *
-         * @return string
+         * @param string $password
+         * @return void
          */
         public function setPassword($password)
         {
@@ -222,6 +227,17 @@ namespace Candango\Carcara\Model
                 $baseDir = getcwd();
             }
             return $baseDir . DIRECTORY_SEPARATOR . "conf";
+        }
+
+        /**
+         * Return where the conf file is located at.
+         *
+         * @return string
+         */
+        public function getFilePath()
+        {
+            return $this->getConfDir() . DIRECTORY_SEPARATOR . $this->getName()
+                . "_conf.php";
         }
 
         /**
@@ -270,6 +286,21 @@ namespace Candango\Carcara\Model
         /**
          * Returns a conf from a data array.
          *
+         * @param $data The conf data
+         * @return Conf
+         */
+        public function setData($data)
+        {
+            $this->setType($data['type']);
+            $this->setHost($data['host']);
+            $this->setDatabase($data['database']);
+            $this->setUser($data['user']);
+            $this->setPassword($data['password']);
+        }
+
+        /**
+         * Returns a conf from a data array.
+         *
          * @param $name The conf name
          * @param $data The conf data
          * @return Conf
@@ -277,14 +308,12 @@ namespace Candango\Carcara\Model
         public static function fromData($name, $data)
         {
             $config = new Conf();
-
             $config->setName($name);
             $config->setType($data['type']);
             $config->setHost($data['host']);
             $config->setDatabase($data['database']);
             $config->setUser($data['user']);
             $config->setPassword($data['password']);
-
             return $config;
         }
 

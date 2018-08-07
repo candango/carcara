@@ -71,7 +71,8 @@ namespace Candango\Carcara
                     }
                 }
             } catch (ArgumentException $exception) {
-                file_put_contents('php://stderr', $exception->getMessage() . PHP_EOL);
+                file_put_contents('php://stderr', $exception->getMessage() .
+                    PHP_EOL);
                 echo PHP_EOL . $getopt->getHelpText();
                 exit;
             }
