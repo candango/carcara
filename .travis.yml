@@ -4,4 +4,4 @@ php:
   - '7.1'
 script:
   - "composer install"
-  - "phpunit --testdox --configuration=phpunit.xml"
+  - "phpunit --testdox --configuration=candango/carcara/phpunit.xml"
