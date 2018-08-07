@@ -1,0 +1,10 @@
+<phpunit bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="carcara">
+            <file>tests/ApplicationTest.php</file>
+            <file>tests/FactoryTest.php</file>
+            <file>tests/LexiconTest.php</file>
+            <file>tests/SmartyInABoxTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

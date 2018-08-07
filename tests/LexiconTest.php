@@ -26,7 +26,7 @@ final class LexiconTest extends TestCase
 {
 
     /**
-     * Tests the lexicon get entity name method.
+     * Test getEntityName method.
      *
      * The entity name is a camel case name where the parts of name are any
      * string separated by underscore or space.
@@ -50,9 +50,9 @@ final class LexiconTest extends TestCase
     }
 
     /**
-     * Tests the lexicon get attribute name method.
+     * Test getAttributeName method.
      *
-     * Same as get entity name but the first letter or the first part from the
+     * Same as getEntityName but the first letter or the first part from the
      * table or field will be returned with a lower case.
      *
      * A table name as "a_table_name" or "a_table name" will be returned as
@@ -70,6 +70,11 @@ final class LexiconTest extends TestCase
             Lexicon::getAttributeName($tableNameWithSpace));
     }
 
+    /**
+     * Test getTableEntityName method.
+     *
+     * Will return getEntityName from the a Table name.
+     */
     public function testGetTableEntityName()
     {
         $table = new Table();
