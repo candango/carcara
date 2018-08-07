@@ -7,12 +7,6 @@
  * @license   https://www.apache.org/licenses/LICENSE-2.0  Apache-2.0
  */
 
-
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR .
-    "../../src/Carcara/Model/Database/Table.php";
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR .
-    "../../src/Carcara/Lexicon.php";
-
 use PHPUnit\Framework\TestCase;
 use Candango\Carcara\Lexicon;
 use Candango\Carcara\Model\Database\Table;
