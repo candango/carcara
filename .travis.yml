@@ -3,5 +3,5 @@ php:
   - '5.6'
   - '7.1'
 script:
-  - "composer install"
+  - "cd ../../ && ls -lah"
   - "phpunit --testdox --configuration phpunit.xml"
