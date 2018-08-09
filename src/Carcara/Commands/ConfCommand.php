@@ -26,7 +26,7 @@ namespace Candango\Carcara\Commands
 
         function getOperands()
         {
-            $actionOperandTpl = "commands/dao/action_operand.tpl";
+            $actionOperandTpl = "commands/conf/action_operand.tpl";
             return [
                 Operand::create("action", Operand::REQUIRED)->setDescription(
                     SmartyInABox::fetch($actionOperandTpl))
@@ -34,6 +34,29 @@ namespace Candango\Carcara\Commands
         }
 
         public function run($getopt)
+        {
+            $action = $getopt->getOperand('action');
+
+            $allowedActions = ["create", "list"];
+
+            if (!in_array($action, $allowedActions)) {
+                echo sprintf("The action %s is invalid.\n\n", $action);
+                echo $getopt->getHelpText();
+                exit(1);
+            }
+
+            switch ($action){
+                case "create":
+                    $this->createConf();
+                    break;
+                case "list":
+                    $this->listConfs();
+                    break;
+            }
+            exit(0);
+        }
+
+        private function createConf()
         {
             echo "Checking conf structure.\n";
 
@@ -116,6 +139,28 @@ namespace Candango\Carcara\Commands
                     exit(2);
                 }
             }
+        }
+
+        private function listConfs()
+        {
+            $conf = new Conf();
+            $confs = array();
+
+            try {
+                $it = new \RecursiveDirectoryIterator($conf->getConfDir(),
+                    \FilesystemIterator::SKIP_DOTS);
+
+                foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
+                    $name = explode("_", $child->getBaseName())[0];
+                    $filePath = "" . $child;
+                    $data = include($filePath);
+                    $confs[] = Conf::fromData($name, $data);
+                }
+            } catch (\UnexpectedValueException $e) {}
+
+            SmartyInABox::getInstance()->assign("confs", $confs);
+
+            echo SmartyInABox::fetch("commands/conf/list.tpl");
         }
     }
 }

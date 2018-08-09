@@ -14,7 +14,7 @@ namespace Candango\Carcara\Commands
     use Candango\Carcara\Model\Conf;
     use Candango\Carcara\SmartyInABox;
 
-    class ListCommand extends AbstractCommand
+    class ServiceCommand extends AbstractCommand
     {
 
         public function brief()
