@@ -3,7 +3,7 @@ php:
   - '5.6'
   - '7.1'
 script:
-  - "CUR_DIR = `pwd`"
+  - "CUR_DIR=`pwd`"
   - "composer install && cd $CUR_DIR"
   - "ls -lah"
   - "phpunit --testdox --configuration phpunit.xml"
