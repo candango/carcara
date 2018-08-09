@@ -10,26 +10,27 @@
 namespace Candango\Carcara\Commands
 {
 
+    use Candango\Carcara\AbstractCommand;
     use Candango\Carcara\Cli;
-    use Candango\Carcara\Command;
     use Candango\Carcara\File;
     use Candango\Carcara\Model\Conf;
+    use Candango\Carcara\SmartyInABox;
+    use GetOpt\Operand;
 
-    class CreateCommand implements Command
+    class ConfCommand extends AbstractCommand
     {
         public function brief()
         {
-            return "Create a new conf file.";
-        }
-
-        public function getName()
-        {
-            return "create";
+            return "Execute actions related to Conf.";
         }
 
         function getOperands()
         {
-            return [];
+            $actionOperandTpl = "commands/dao/action_operand.tpl";
+            return [
+                Operand::create("action", Operand::REQUIRED)->setDescription(
+                    SmartyInABox::fetch($actionOperandTpl))
+            ];
         }
 
         public function run($getopt)
@@ -110,7 +111,6 @@ namespace Candango\Carcara\Commands
 
                     echo "[ OK ]\n";
                     exit(0);
-
                 } else {
                     echo "[ ERROR ]";
                     exit(2);

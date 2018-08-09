@@ -10,7 +10,7 @@
 namespace Candango\Carcara\Commands
 {
 
-    use Candango\Carcara\Command;
+    use Candango\Carcara\AbstractCommand;
     use Candango\Carcara\Engine\AbstractDaoGenerator;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
     use Candango\Carcara\Engine\DatabaseLoader;
@@ -21,16 +21,11 @@ namespace Candango\Carcara\Commands
     use GetOpt\GetOpt;
     use GetOpt\Operand;
 
-    class DaoCommand implements Command
+    class DaoCommand extends AbstractCommand
     {
         public function brief()
         {
             return "Execute actions related to DAO.";
-        }
-
-        public function getName()
-        {
-            return "dao";
         }
 
         function getOperands()

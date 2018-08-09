@@ -10,31 +10,21 @@
 namespace Candango\Carcara\Commands
 {
 
-    use Candango\Carcara\Command;
+    use Candango\Carcara\AbstractCommand;
     use Candango\Carcara\Model\Conf;
     use Candango\Carcara\SmartyInABox;
 
-    class ListCommand implements Command
+    class ListCommand extends AbstractCommand
     {
 
         public function brief()
         {
-            return 'List all commands';
-        }
-
-        public function getName()
-        {
-            return "list";
+            return 'List all commands.';
         }
 
         function options($opts)
         {
             // command options
-        }
-
-        function getOperands()
-        {
-            return [];
         }
 
         public function run($getopt)
