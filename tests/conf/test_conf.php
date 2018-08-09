@@ -1,4 +1,5 @@
 <?php return array (
+    "name" => "test",
     "type" => "mysql",
     "host" => "localhost",
     "database" => "test",

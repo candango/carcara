@@ -160,7 +160,7 @@ namespace Candango\Carcara\Commands
 
             SmartyInABox::getInstance()->assign("confs", $confs);
 
-            echo SmartyInABox::fetch("commands/conf/list.tpl");
+            echo SmartyInABox::fetch("commands/conf/dlist.tpl");
         }
     }
 }
