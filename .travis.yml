@@ -5,4 +5,4 @@ php:
 script:
   - "CUR_DIR=`pwd`"
   - "composer install"
-  - "phpunit --testdox --configuration $CUR_DIR\phpunit.xml"
+  - "phpunit --testdox --configuration $CUR_DIR\\phpunit.xml"
