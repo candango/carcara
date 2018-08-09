@@ -43,9 +43,14 @@ namespace Candango\Carcara
          * @param string $attribute
          * @return string
          */
-        public static function getAttributeName($attribute)
-        {
-            return lcfirst(self::getEntityName($attribute));
+        public static function getAttributeName(
+            $attribute,
+            $entityBefore = true
+        ) {
+            if($entityBefore) {
+                $attribute = self::getEntityName($attribute);
+            }
+            return lcfirst($attribute);
         }
 
         /**

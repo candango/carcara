@@ -14,6 +14,10 @@ namespace Candango\Carcara\Engine
     {
         public function generateDaoFactories();
 
+        public function generateDtos();
+
+        public function generateDaos();
+
         /**
          * @return DatabaseLoader
          */

@@ -45,11 +45,20 @@ namespace Candango\Carcara\Model
         private $host = "localhost";
 
         /**
-         * Config database
+         * Conf database
          *
          * @var string
          */
         private $database = "";
+
+        /**
+         * Conf schema
+         *
+         * Some databases will not use the schema.
+         *
+         * @var string
+         */
+        private $schema = "";
 
         /**
          * Config user
@@ -156,6 +165,27 @@ namespace Candango\Carcara\Model
         public function setDatabase($database)
         {
             $this->database = $database;
+        }
+
+        /**
+         * Returns conf schema
+         *
+         * @return string
+         */
+        public function getSchema()
+        {
+            return $this->schema;
+        }
+
+        /**
+         * Set conf schema
+         *
+         * @param string $schema
+         * @return void
+         */
+        public function setSchema($schema)
+        {
+            $this->schema = $schema;
         }
 
         /**
@@ -291,9 +321,13 @@ namespace Candango\Carcara\Model
          */
         public function setData($data)
         {
+            $this->setName($data['name']);
             $this->setType($data['type']);
             $this->setHost($data['host']);
             $this->setDatabase($data['database']);
+            if($this->getType()==self::PGSQL) {
+                $this->setSchema($data['schema']);
+            }
             $this->setUser($data['user']);
             $this->setPassword($data['password']);
         }
@@ -312,6 +346,9 @@ namespace Candango\Carcara\Model
             $config->setType($data['type']);
             $config->setHost($data['host']);
             $config->setDatabase($data['database']);
+            if($config->getType()==self::PGSQL) {
+                $config->setSchema($data['schema']);
+            }
             $config->setUser($data['user']);
             $config->setPassword($data['password']);
             return $config;
