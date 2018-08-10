@@ -316,8 +316,9 @@ namespace Candango\Carcara\Model
         /**
          * Returns a conf from a data array.
          *
-         * @param $data The conf data
-         * @return Conf
+         * @param array $data The conf data
+         * @return void
+         * @throws \Error
          */
         public function setData($data)
         {
@@ -338,19 +339,15 @@ namespace Candango\Carcara\Model
          * @param $name The conf name
          * @param $data The conf data
          * @return Conf
+         * @throws \Error
          */
         public static function fromData($name, $data)
         {
             $config = new Conf();
-            $config->setName($name);
-            $config->setType($data['type']);
-            $config->setHost($data['host']);
-            $config->setDatabase($data['database']);
-            if($config->getType()==self::PGSQL) {
-                $config->setSchema($data['schema']);
+            if (!array_key_exists("name", $data)) {
+                $data['name'] = $name;
             }
-            $config->setUser($data['user']);
-            $config->setPassword($data['password']);
+            $config->setData($data);
             return $config;
         }
 
