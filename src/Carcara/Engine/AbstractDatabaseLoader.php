@@ -11,6 +11,7 @@ namespace Candango\Carcara\Engine
 {
 
     use Candango\Carcara\Engine\Mysql\MysqlDatabaseLoader;
+    use Candango\Carcara\Engine\Pgsql\PgsqlDatabaseLoader;
     use Candango\Carcara\Model\Database\Table;
     use Candango\Carcara\Model\Conf;
 
@@ -51,7 +52,7 @@ namespace Candango\Carcara\Engine
                     return new MysqlDatabaseLoader($conf);
                     break;
                 case(self::PGSQL):
-                    //return new PgsqlDatabaseLoader();
+                    return new PgsqlDatabaseLoader($conf);
                     break;
             }
 

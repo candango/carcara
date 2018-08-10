@@ -29,21 +29,21 @@ abstract class {$identifierName}AbstractDaoFactory
      *
      * @var string
      */
-    const PGSQL_DAO = "pgsql";
+    const PGSQL = "pgsql";
 
     /**
      * Insert Transaction constant
      *
      * @var integer
      */
-    const INSERT_TRANSACTION = 1;
+    const INSERT = "insert";
 
     /**
      * Update Transaction constant
      *
      * @var integer
      */
-    const UPDATE_TRANSACTION = 2;
+    const UPDATE = "update";
 
     /**
      * Collection of instances that this factory can hold

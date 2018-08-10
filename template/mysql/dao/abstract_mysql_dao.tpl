@@ -241,7 +241,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         
         );
 
-        if( $transaction == {$identifierName}AbstractDaoFactory::INSERT_TRANSACTION ) {
+        if( $transaction == {$identifierName}AbstractDaoFactory::INSERT) {
 {foreach $table->getSerialFields() as $field}
             unset( $values[ ':{$field->getName()}' ] );
 {/foreach}
@@ -256,8 +256,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
                        ":{$field->getName()}{if !$field@last}, " .
 {/if}
 {/foreach} )";
-        }
-        else{
+        } else {
             $sql = "UPDATE " . $this->factory->getDbName() . ".{$table->getName()} SET " .
 {foreach $table->getNonPkFields() as $field}
                        "{$field->getName()} = :{$field->getName()}{if !$field@last}, " .
@@ -272,7 +271,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         $sth = $this->factory->getConnection()->prepare( $sql );
         $result = $sth->execute( $values );
 {if count($table->getPkFields()) eq  1}
-        if ($transaction == {$identifierName}AbstractDaoFactory::INSERT_TRANSACTION) {
+        if ($transaction == {$identifierName}AbstractDaoFactory::INSERT) {
             if ($result) {
                 ${$table->getAttributeName()}->set{$table->getFirstPkField()->getEntityName()}($this->factory->getConnection()->lastInsertId());
             }

@@ -22,6 +22,13 @@ namespace Candango\Carcara\Model\Database
         private $name;
 
         /**
+         * Table schema
+         *
+         * @var string
+         */
+        private $schema;
+
+        /**
          * Table fields
          *
          * @var array
@@ -46,6 +53,26 @@ namespace Candango\Carcara\Model\Database
         public function setName($name)
         {
             $this->name = $name;
+        }
+
+        /**
+         * Return the table schema
+         *
+         * @return string
+         */
+        public function getSchema()
+        {
+            return $this->schema;
+        }
+
+        /**
+         * Set the table schema
+         *
+         * @param string $schema
+         */
+        public function setSchema($schema)
+        {
+            $this->schema = $schema;
         }
 
         /**
@@ -88,7 +115,6 @@ namespace Candango\Carcara\Model\Database
         public function getFirstPkField() {
             return $this->getPkFields()[0];
         }
-
 
         /**
          *
