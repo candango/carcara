@@ -116,7 +116,7 @@ namespace Candango\Carcara\Commands
                     if ($type != "") {
                         try {
                             $conf->setType($type);
-                        } catch (\Error $error) {
+                        } catch (\Exception $error) {
                             echo "[ ERROR ] " . $error->getMessage() . "\n";
                             echo sprintf("Deleting conf file at %s ... ",
                                 $confFile);

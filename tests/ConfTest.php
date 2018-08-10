@@ -69,7 +69,7 @@ final class ConfTest extends TestCase
             $conf->setType("invalid");
             # Failing the test if invalid is correct
             $this->assertEquals("no valid", $conf->getType());
-        } catch (\Error $e) {
+        } catch (\Exception $e) {
             $this->assertEquals("Invalid type.", $e->getMessage());
         }
 

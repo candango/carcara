@@ -115,14 +115,14 @@ namespace Candango\Carcara\Model
          *
          * @param string $type
          * @return void
-         * @throws \Error
+         * @throws \Exception
          */
         public function setType($type)
         {
             if(in_array($type, $this->getAllowedTypes())){
                 $this->type = $type;
             } else {
-                throw new \Error("Invalid type.");
+                throw new \Exception("Invalid type.");
             }
         }
 
@@ -318,7 +318,7 @@ namespace Candango\Carcara\Model
          *
          * @param array $data The conf data
          * @return void
-         * @throws \Error
+         * @throws \Exception
          */
         public function setData($data)
         {
@@ -339,7 +339,7 @@ namespace Candango\Carcara\Model
          * @param $name The conf name
          * @param $data The conf data
          * @return Conf
-         * @throws \Error
+         * @throws \Exception
          */
         public static function fromData($name, $data)
         {
