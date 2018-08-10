@@ -34,12 +34,13 @@ final class FactoryTest extends TestCase
      */
     public function testGetConf()
     {
-        $conf = Factory::getConf("test");
+        $conf = Factory::getConf("mysql");
 
-        $this->assertEquals("test", $conf->getName());
-        $this->assertEquals("test", $conf->getName());
-        $this->assertEquals("test", $conf->getName());
-        $this->assertEquals("test", $conf->getName());
-        $this->assertEquals("test", $conf->getName());
+        $this->assertEquals("mysql", $conf->getName());
+        $this->assertEquals("mysql", $conf->getType());
+        $this->assertEquals("localhost", $conf->getHost());
+        $this->assertEquals("test", $conf->getDatabase());
+        $this->assertEquals("testuser", $conf->getUser());
+        $this->assertEquals("testpass", $conf->getPassword());
     }
 }

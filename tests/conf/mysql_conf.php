@@ -1,8 +1,8 @@
 <?php return array (
-    "name" => "test",
+    "name" => "mysql",
     "type" => "mysql",
     "host" => "localhost",
     "database" => "test",
-    "user" => "test",
+    "user" => "testuser",
     "password" => "testpass"
 );
