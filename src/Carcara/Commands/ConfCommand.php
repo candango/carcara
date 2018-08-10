@@ -12,16 +12,18 @@ namespace Candango\Carcara\Commands
 
     use Candango\Carcara\AbstractCommand;
     use Candango\Carcara\Cli;
+    use Candango\Carcara\Factory;
     use Candango\Carcara\File;
     use Candango\Carcara\Model\Conf;
     use Candango\Carcara\SmartyInABox;
+    use GetOpt\GetOpt;
     use GetOpt\Operand;
 
     class ConfCommand extends AbstractCommand
     {
         public function brief()
         {
-            return "Execute actions related to Conf.";
+            return "Execute actions related to Configurations.";
         }
 
         function getOperands()
@@ -29,7 +31,9 @@ namespace Candango\Carcara\Commands
             $actionOperandTpl = "commands/conf/action_operand.tpl";
             return [
                 Operand::create("action", Operand::REQUIRED)->setDescription(
-                    SmartyInABox::fetch($actionOperandTpl))
+                    SmartyInABox::fetch($actionOperandTpl)),
+                Operand::create("name", Operand::OPTIONAL)->setDescription(
+                    "Configuration name")
             ];
         }
 
@@ -37,7 +41,7 @@ namespace Candango\Carcara\Commands
         {
             $action = $getopt->getOperand('action');
 
-            $allowedActions = ["create", "list"];
+            $allowedActions = ["create", "list", "show"];
 
             if (!in_array($action, $allowedActions)) {
                 echo sprintf("The action %s is invalid.\n\n", $action);
@@ -45,18 +49,27 @@ namespace Candango\Carcara\Commands
                 exit(1);
             }
 
-            switch ($action){
+            switch ($action) {
                 case "create":
-                    $this->createConf();
+                    $this->createConf($getopt);
                     break;
                 case "list":
-                    $this->listConfs();
+                    $this->listConfs($getopt);
+                    break;
+                case "show":
+                    $this->showConf($getopt);
                     break;
             }
             exit(0);
         }
 
-        private function createConf()
+        /**
+         * Creates a new conf
+         *
+         * @param $getopt
+         * @throws \Exception
+         */
+        private function createConf($getopt)
         {
             echo "Checking conf structure.\n";
 
@@ -141,7 +154,14 @@ namespace Candango\Carcara\Commands
             }
         }
 
-        private function listConfs()
+        /**
+         * List existing confs
+         *
+         * @param GetOpt $getopt
+         * @throws \Exception
+         * @throws \SmartyException
+         */
+        private function listConfs($getopt)
         {
             $conf = new Conf();
             $confs = array();
@@ -152,15 +172,39 @@ namespace Candango\Carcara\Commands
 
                 foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
                     $name = explode("_", $child->getBaseName())[0];
-                    $filePath = "" . $child;
-                    $data = include($filePath);
-                    $confs[] = Conf::fromData($name, $data);
+                    $confs[] = Factory::getConf($name);
                 }
             } catch (\UnexpectedValueException $e) {}
 
             SmartyInABox::getInstance()->assign("confs", $confs);
 
-            echo SmartyInABox::fetch("commands/conf/dlist.tpl");
+            echo SmartyInABox::fetch("commands/conf/list.tpl");
+        }
+
+        /**
+         * Show a conf
+         *
+         * @param GetOpt $getopt
+         * @throws \Exception
+         * @throws \SmartyException
+         */
+        private function showConf($getopt)
+        {
+
+            $name = $getopt->getOperand('name');
+
+            if ($name) {
+                $conf = Factory::getConf($name);
+
+                SmartyInABox::getInstance()->assign("conf", $conf);
+
+                echo SmartyInABox::fetch("commands/conf/show.tpl");
+            } else {
+                echo "Please inform the configuration name.\n";
+                echo SmartyInABox::fetch("commands/conf/show_usage.tpl");
+                exit(2);
+            }
+
         }
     }
 }

@@ -1,0 +1,1 @@
+Usage: conf show <name>
