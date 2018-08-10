@@ -15,14 +15,21 @@ namespace Candango\Carcara
 
         public static function fetchDao($name)
         {
-            $conf = Conf::fromData();
+            $conf = self::getConf($name);
         }
 
+        /**
+         * Return a configuration by it's name
+         *
+         * @param $name
+         * @return Conf
+         * @throws \Error
+         */
         public static function getConf($name)
         {
             $conf = new Conf($name);
             $data = include $conf->getFilePath();
-            $conf->setData($data);
+            $conf = Conf::fromData($name, $data);
             return $conf;
         }
 

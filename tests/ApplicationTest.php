@@ -38,8 +38,9 @@ final class ApplicationTest extends TestCase
 
         $this->assertEquals(3, count($commands));
 
-        $this->assertEquals($baseNS . "ConfCommand",get_class($commands[0]));
-        $this->assertEquals($baseNS . "DaoCommand",get_class($commands[1]));
-        $this->assertEquals($baseNS . "ServiceCommand",get_class($commands[2]));
+        $this->assertEquals($baseNS . "ConfCommand", get_class($commands[0]));
+        $this->assertEquals($baseNS . "DaoCommand", get_class($commands[1]));
+        $this->assertEquals($baseNS . "ServiceCommand",
+            get_class($commands[2]));
     }
 }
