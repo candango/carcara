@@ -11,6 +11,7 @@ namespace Candango\Carcara\Engine
 {
 
     use Candango\Carcara\Engine\Mysql\MysqlDaoGenerator;
+    use Candango\Carcara\Engine\Pgsql\PgsqlDaoGenerator;
     use Candango\Carcara\Lexicon;
     use Candango\Carcara\Model\Conf;
     use Candango\Carcara\SmartyInABox;
@@ -33,8 +34,9 @@ namespace Candango\Carcara\Engine
         {
             $factories = array();
 
-            $abstractDaoFactoryPath = DIRECTORY_SEPARATOR . Lexicon::getEntityName(
-                $this->loader->getConf()->getIdentifier()) .
+            $abstractDaoFactoryPath = DIRECTORY_SEPARATOR .
+                Lexicon::getEntityName(
+                    $this->loader->getConf()->getIdentifier()) .
                 "AbstractDaoFactory.php";
             $factories['abstract'] = array(
                 'path' => $abstractDaoFactoryPath,
@@ -105,6 +107,9 @@ namespace Candango\Carcara\Engine
             switch ($loader->getConf()->getType()) {
                 case Conf::MYSQL;
                     return new MysqlDaoGenerator($loader);
+                    break;
+                case Conf::PGSQL;
+                    return new PgsqlDaoGenerator($loader);
                     break;
             }
         }

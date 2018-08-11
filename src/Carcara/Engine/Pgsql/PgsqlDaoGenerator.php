@@ -7,7 +7,7 @@
  * @license   https://www.apache.org/licenses/LICENSE-2.0  Apache-2.0
  */
 
-namespace Candango\Carcara\Engine\Mysql {
+namespace Candango\Carcara\Engine\Pgsql {
 
     use Candango\Carcara\Engine\AbstractDaoGenerator;
     use Candango\Carcara\Lexicon;
@@ -19,6 +19,9 @@ namespace Candango\Carcara\Engine\Mysql {
         public function generateDaoFactories()
         {
             $factories = parent::generateDaoFactories();
+
+            echo "\n\n**** Not implemented yet ****\n\n";
+
             die();
             $abstractDaoFactoryPath = DIRECTORY_SEPARATOR .
                 Lexicon::getEntityName(
