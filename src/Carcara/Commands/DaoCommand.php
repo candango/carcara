@@ -78,8 +78,7 @@ namespace Candango\Carcara\Commands
             echo "Checking if the conf file exists ... ";
             if (file_exists($conf->getFilePath())) {
                 echo "[ OK ]\n";
-                $data = include($conf->getFilePath());
-                $conf->setData($data);
+                $conf = Factory::getConf($conf->getName());
                 echo sprintf("Connecting to the database %s ... ",
                     $conf->getDatabase());
                 $loader = AbstractDatabaseLoader::getLoader($conf);
@@ -153,6 +152,7 @@ namespace Candango\Carcara\Commands
             }
 
             $daoDir = $conf->getDaoDir();
+            $currentDaoDir = $conf->getCurrentDaoDir();
 
             echo sprintf("Checking if DAO dir exists at %s ... ", $daoDir);
             if (!file_exists($daoDir)) {
@@ -168,11 +168,26 @@ namespace Candango\Carcara\Commands
                 echo "[ OK ]\n";
             }
 
+            echo sprintf("Checking if Current DAO dir exists at %s ... ",
+                $currentDaoDir);
+            if (!file_exists($currentDaoDir)) {
+                echo "[ NOT FOUND ]\n";
+                echo "Creating Current DAO directory ... ";
+                if(mkdir($currentDaoDir)) {
+                    echo "[ OK ].\n";
+                } else {
+                    echo "[ ERROR ].\n";
+                    exit(1);
+                }
+            } else {
+                echo "[ OK ]\n";
+            }
+
             echo "\nCreating entity dirs:\n";
 
             foreach ($loader->getTables() as $table) {
                 $entity = Lexicon::getTableEntityName($table);
-                $entityDir = sprintf("%s%s%s", $daoDir,
+                $entityDir = sprintf("%s%s%s", $currentDaoDir,
                     DIRECTORY_SEPARATOR, $entity);
                 echo sprintf("Checking if %s entity dir exists at %s ... ",
                     $entity,  $entityDir);
@@ -199,12 +214,12 @@ namespace Candango\Carcara\Commands
         private function storeDaoFactories($conf, $daoFactories)
         {
             echo "Storing DAO Factories:\n";
-            $daoDir = sprintf("%s%sdao", $conf->getLibDir(),
+            $currentDaoDir = sprintf("%s%s", $conf->getCurrentDaoDir(),
                 DIRECTORY_SEPARATOR);
             foreach ($daoFactories as $key => $daoFactory) {
                 try {
                     echo sprintf("Storing %s DAO Factory ... ", $key);
-                    File::write($daoDir . $daoFactory['path'],
+                    File::write($currentDaoDir . $daoFactory['path'],
                         $daoFactory['code']);
                     echo "[ OK ]\n";
                 } catch (\Exception $e) {
@@ -219,7 +234,7 @@ namespace Candango\Carcara\Commands
         private function storeDtos($conf, $dtos)
         {
             echo "Storing DTOs:\n";
-            $daoDir = sprintf("%s%sdao", $conf->getLibDir(),
+            $currentDaoDir = sprintf("%s%s", $conf->getCurrentDaoDir(),
                 DIRECTORY_SEPARATOR);
             foreach ($dtos as $key => $dtoTypes) {
                 echo sprintf("Storing %s DTOs:\n", $key);
@@ -227,12 +242,13 @@ namespace Candango\Carcara\Commands
                     try {
                         echo sprintf("    - %s ... ", $type);
                         if (!$dto['always']) {
-                            if (file_exists($daoDir . $dto['path'])) {
+                            if (file_exists($currentDaoDir . $dto['path'])) {
                                 echo "[ ALREADY EXISTS SKIPPING ]\n";
                                 continue;
                             }
                         }
-                        File::write($daoDir . $dto['path'], $dto['code']);
+                        File::write($currentDaoDir . $dto['path'],
+                            $dto['code']);
                         echo "[ OK ]\n";
                     } catch (\Exception $e) {
                         echo $e->getMessage() . "\n";
@@ -245,7 +261,7 @@ namespace Candango\Carcara\Commands
         private function storeDaos($conf, $daos)
         {
             echo "Storing DAOs:\n";
-            $daoDir = sprintf("%s%sdao", $conf->getLibDir(),
+            $currentDaoDir = sprintf("%s%s", $conf->getCurrentDaoDir(),
                 DIRECTORY_SEPARATOR);
             foreach ($daos as $key => $daoTypes) {
                 echo sprintf("Storing %s DAOs:\n", $key);
@@ -253,12 +269,13 @@ namespace Candango\Carcara\Commands
                     try {
                         echo sprintf("    - %s ... ", $type);
                         if (!$dao['always']) {
-                            if (file_exists($daoDir . $dao['path'])) {
+                            if (file_exists($currentDaoDir . $dao['path'])) {
                                 echo "[ ALREADY EXISTS SKIPPING ]\n";
                                 continue;
                             }
                         }
-                        File::write($daoDir . $dao['path'], $dao['code']);
+                        File::write($currentDaoDir . $dao['path'],
+                            $dao['code']);
                         echo "[ OK ]\n";
                     } catch (\Exception $e) {
                         echo $e->getMessage() . "\n";

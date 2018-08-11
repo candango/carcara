@@ -294,6 +294,12 @@ namespace Candango\Carcara\Model
             return $libDir . DIRECTORY_SEPARATOR . "dao";
         }
 
+        public function getCurrentDaoDir($baseDir=null)
+        {
+            return $this->getDaoDir($baseDir). DIRECTORY_SEPARATOR .
+                $this->getName();
+        }
+
         /**
          * Returns the conf data
          *
