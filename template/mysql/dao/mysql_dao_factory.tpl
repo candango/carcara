@@ -1,4 +1,6 @@
 <?php
+use Candango\Carcara\Model\Conf;
+
 /**
  * {$identifierName}MysqlDaoFactory - {$identifierName}MysqlDaoFactory.php
  * 
@@ -16,17 +18,8 @@
  * @license Put your copyright here.
  * @version    
  */
-
 class {$identifierName}MysqlDaoFactory extends {$identifierName}AbstractDaoFactory
 {
-
-    /**
-     * Configuration database name
-     *
-     * @var string
-     */
-    private $dbName;
-
     /**
      * Dao Factory Connection
      *
@@ -34,11 +27,11 @@ class {$identifierName}MysqlDaoFactory extends {$identifierName}AbstractDaoFacto
      */
     private $connection;
 
+    /**
+     * {$identifierName}MysqlDaoFactory constructor.
+     */
     public function __construct()
     {
-        $myfuses = MyFuses::getInstance();
-        $conf = require $myfuses->getApplication("{$identifierName}")->getPath() .
-            "conf/{$identifierName}_conf.php";
         $connStr = "mysql:host=" . $conf['server'] . ";dbname=" .
             $conf[ 'database' ];
         $this->dbName = $conf['database'];
@@ -48,16 +41,6 @@ class {$identifierName}MysqlDaoFactory extends {$identifierName}AbstractDaoFacto
         } catch (Exception $e) {
             echo "Failed: " . $e->getMessage();
         }
-    }
-
-    /**
-     * Returns the configuration database name
-     *
-     * @returns string
-     */
-    public function getDbName()
-    {
-        return $this->dbName;
     }
 
     /**

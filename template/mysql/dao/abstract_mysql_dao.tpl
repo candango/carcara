@@ -23,6 +23,8 @@ require_once "dao/{$table->getName()}/{$identifierName}{$table->getEntityName()}
 
 require_once "dao/{$table->getName()}/{$identifierName}{$table->getEntityName()}Dao.php";
 
+use Candango\Carcara\Model\Conf;
+
 /**
  * {$identifierName}{$table->getEntityName()}AbstractMysqlDao - {$identifierName}{$table->getEntityName()}AbstractMysqlDao.php
  * 
@@ -52,14 +54,34 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         $this->factory = $factory;
     }
 
-    public function get{$table->getEntityName()}s(
+    /**
+     * Return the factory connection
+     *
+     * @return PDO
+     */
+    protected function getConnection()
+    {
+        return $this->factory->getConnection();
+    }
+
+    /**
+     * Return the factory configuration
+     *
+     * @return Conf
+     */
+    protected function getConf()
+    {
+        return $this->factory->getConf();
+    }
+
+    public function getByCriteria(
         $criteria = null,
-        $fillMethod = 'fill{$table->getEntityName()}',
-        $buildArrayMethod = 'buildArray{$table->getEntityName()}s'
+        $fillMethod = 'fillEntity',
+        $buildArrayMethod = 'buildArray'
     ) {
         if (is_null($criteria)) {
             $criteria['fields'] = "*";
-            $criteria['from'] = $this->factory->getDbName() .
+            $criteria['from'] = $this->getConf()->getDatabase() .
                 ".{$table->getName()}";
             $criteria['where'] = null;
             $criteria['order_by'] = null;
@@ -69,7 +91,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
                 $criteria['fields'] = "*";
             }
             if (!isset($criteria['from'])) {
-                $criteria['from'] = $this->factory->getDbName() .
+                $criteria['from'] = $this->getConf()->getDatabase() .
                     ".{$table->getName()}";
             }
             if (!isset($criteria['where'])) {
@@ -84,84 +106,71 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         }
 
         $sql = "SELECT " . $criteria['fields'] . " FROM " . $criteria['from'];
-
         if (!is_null($criteria['where'])) {
             $sql .= " WHERE " . $criteria['where'];
         }
-
         if (!is_null($criteria['order_by'])) {
             $sql .= " ORDER BY " . $criteria['order_by'];
         }
-
         if (!is_null($criteria['limit'])) {
             $sql .= " LIMIT " . $criteria['limit'];
         }
 
-        $sth = $this->factory->getConnection()->prepare($sql);
-
+        $sth = $this->getConnection()->prepare($sql);
         $sth->execute(isset($criteria['bind']) ? $criteria['bind'] : null);
 
-        ${$table->getAttributeName()}s = array();
-
+        ${$table->getAttributeName()}Array = array();
         while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-            $this->$buildArrayMethod(${$table->getAttributeName()}s, $this->$fillMethod($row));
+            $this->$buildArrayMethod(${$table->getAttributeName()}Array, $this->$fillMethod($row));
         }
-
-        return ${$table->getAttributeName()}s;
+        return ${$table->getAttributeName()}Array;
     }
 
-    public function get{$table->getEntityName()}sCount($criteria = null)
+    public function getCount($criteria = null)
     {
         if (is_null($criteria)) {
-            $criteria[ 'from' ] = $this->factory->getDbName() . ".{$table->getName()}";
+            $criteria[ 'from' ] = $this->getConf()->getDatabase() .
+                ".{$table->getName()}";
             $criteria[ 'where' ] = null;
             $criteria[ 'order_by' ] = null;
             $criteria[ 'limit' ] = null;
         } else {
-            if( !isset( $criteria[ 'from' ] ) ) {
-                $criteria[ 'from' ] = $this->factory->getDbName() . ".{$table->getName()}";
+            if (!isset($criteria['from'])) {
+                $criteria['from'] = $this->getConf()->getDatabase() .
+                    ".{$table->getName()}";
             }
-            if( !isset( $criteria[ 'where' ] ) ) {
-                $criteria[ 'where' ] = null;
+            if (!isset($criteria['where'])) {
+                $criteria['where'] = null;
             }
-            if( !isset( $criteria[ 'order_by' ] ) ) {
-                $criteria[ 'order_by' ] = null;
+            if (!isset($criteria['order_by'])) {
+                $criteria['order_by'] = null;
             }
-            if( !isset( $criteria[ 'limit' ] ) ) {
-                $criteria[ 'limit' ] = null;
+            if (!isset($criteria['limit'])) {
+                $criteria['limit'] = null;
             }
         }
 
-        $sql = "SELECT count(*) AS count " .
-            " FROM " . $criteria[ 'from' ];
-
-        if( !is_null( $criteria[ 'where' ] ) ) {
-            $sql .= " WHERE " . $criteria[ 'where' ];
+        $sql = "SELECT count(*) AS count FROM " . $criteria['from'];
+        if (!is_null($criteria['where'])) {
+            $sql .= " WHERE " . $criteria['where'];
+        }
+        if (!is_null($criteria['order_by'])) {
+            $sql .= " ORDER BY " . $criteria['order_by'];
+        }
+        if (!is_null($criteria['limit'])) {
+            $sql .= " LIMIT " . $criteria['limit'];
         }
 
-        if( !is_null( $criteria[ 'order_by' ] ) ) {
-            $sql .= " ORDER BY " . $criteria[ 'order_by' ];
+        $sth = $this->getConnection()->prepare($sql);
+        $sth->execute(isset($criteria['bind']) ? $criteria['bind'] : null);
+        $row = $sth->fetch(PDO::FETCH_ASSOC);
+        if (count($row)) {
+            return $row['count'];
         }
-
-        if( !is_null( $criteria[ 'limit' ] ) ) {
-            $sql .= " LIMIT " . $criteria[ 'limit' ];
-        }
-
-        $sth = $this->factory->getConnection()->prepare( $sql );
-
-        $sth->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] :
-            null );
-
-        $row = $sth->fetch( PDO::FETCH_ASSOC );
-
-        if( count( $row ) ) {
-            return $row[ 'count' ];
-        }
-
         return 0;
     }
     
-    public function get{$table->getEntityName()}ByPk({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach})
+    public function getByPk({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach})
     {
         $criteria = null;
         $criteria[ 'where' ] = {foreach $table->getPkFields() as $field}" {$field->getName()} = :{$field->getName()}{if !$field@last} AND" .
@@ -172,81 +181,84 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
 
         );
         $criteria[ 'bind' ] = $values;
-        ${$table->getAttributeName()}s = $this->get{$table->getEntityName()}s($criteria);
-        return ${$table->getAttributeName()}s[ 0 ];
+        ${$table->getAttributeName()}Array = $this->getByCriteria($criteria);
+        return ${$table->getAttributeName()}Array[0];
     }
 
     /**
-     * Add the filled row to the array of {$table->getAttributeName()}s to be returned by the
-     * get{$table->getEntityName()}s method
+     * Add the filled row to the array of {$table->getAttributeName()}s returned by the
+     * getByCriteria method
      *
-     * @param array ${$table->getAttributeName()}s
+     * @param array ${$table->getAttributeName()}Array
      * @param {$identifierName}{$table->getEntityName()}Dto $item
      */
-    public function buildArray{$table->getEntityName()}s( &${$table->getAttributeName()}s, $item ){
-        ${$table->getAttributeName()}s[] = $item;
+    public function buildArray(&${$table->getAttributeName()}Array, $item)
+    {
+        ${$table->getAttributeName()}Array[] = $item;
     }
 
     /**
      * Return one {$identifierName}{$table->getEntityName()}Dto with filled by row values.
      *
      * @param array $row
+     * @param string $fillClass
      * @return {$identifierName}{$table->getEntityName()}Dto
      */
-    public function fill{$table->getEntityName()}( $row, $fillClass = '{$identifierName}{$table->getEntityName()}Dto' ){
+    public function fillEntity($row, $fillClass = "{$identifierName}{$table->getEntityName()}Dto")
+    {
         ${$table->getAttributeName()} = new $fillClass();
-
 {foreach $table->getFields() as $field}
-        ${$table->getAttributeName()}->set{$field->getEntityName()}($row[ '{$field->getName()}']);
+        ${$table->getAttributeName()}->set{$field->getEntityName()}($row['{$field->getName()}']);
 {/foreach}
-
         return ${$table->getAttributeName()};
     }
 
-    public function update{$table->getEntityName()}($criteria = null) {
-        if( is_null( $criteria ) ) {
-            $criteria[ 'fields' ] = null;
-            $criteria[ 'where' ] = null;
-        }
-        else {
-            if( !isset( $criteria[ 'fields' ] ) ) {
-                $criteria[ 'fields' ] = null;
+    public function update($criteria = null)
+    {
+        if (is_null($criteria)) {
+            $criteria['fields'] = null;
+            $criteria['where'] = null;
+        } else {
+            if (!isset($criteria['fields'])) {
+                $criteria['fields'] = null;
             }
-            if( !isset( $criteria[ 'where' ] ) ) {
-                $criteria[ 'where' ] = null;
+            if (!isset($criteria['where'])) {
+                $criteria['where'] = null;
             }
         }
 
-        if($criteria[ 'fields' ] != null) {
-            $sql = "UPDATE " . $this->factory->getDbName() .
-                ".{$table->getName()} SET " . $criteria[ 'fields' ];
-            if($criteria[ 'where' ] != null) {
-                $sql .= " WHERE " . $criteria[ 'where' ];
+        if ($criteria['fields'] != null) {
+            $sql = "UPDATE " . $this->getConf()->getDatabase() .
+                ".{$table->getName()} SET " . $criteria['fields'];
+            if ($criteria['where'] != null) {
+                $sql .= " WHERE " . $criteria['where'];
             }
-            $sth = $this->factory->getConnection()->prepare( $sql );
-            return $sth->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] : null );
+            $sth = $this->getConnection()->prepare($sql);
+            return $sth->execute(
+                isset($criteria['bind']) ? $criteria['bind'] : null);
         }
     }
 
-    public function save{$table->getEntityName()}(
+    public function save(
         {$identifierName}{$table->getEntityName()}Dto ${$table->getAttributeName()},
         $transaction
     ) {
         $sth = null;
         $values = array(
 {foreach $table->getFields() as $field}
-            ":{$field->getName()}" => ${$table->getAttributeName()}->get{$field->getEntityName()}(){if !$field@last},
+            ':{$field->getName()}' => ${$table->getAttributeName()}->get{$field->getEntityName()}(){if !$field@last},
 {/if}
 {/foreach}
         
         );
 
-        if( $transaction == {$identifierName}AbstractDaoFactory::INSERT) {
+        if ($transaction == {$identifierName}AbstractDaoFactory::INSERT) {
 {foreach $table->getSerialFields() as $field}
-            unset( $values[ ':{$field->getName()}' ] );
+            unset($values[':{$field->getName()}']);
 {/foreach}
 
-            $sql = "INSERT INTO " . $this->factory->getDbName() . ".{$table->getName()}( " .
+            $sql = "INSERT INTO " . $this->getConf()->getDatabase() .
+                   ".{$table->getName()}( " .
 {foreach $table->getNonSerialFields() as $field}
                        "{$field->getName()}{if !$field@last}, " .
 {/if}
@@ -257,7 +269,8 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
 {/if}
 {/foreach} )";
         } else {
-            $sql = "UPDATE " . $this->factory->getDbName() . ".{$table->getName()} SET " .
+            $sql = "UPDATE " . $this->getConf()->getDatabase() .
+                   ".{$table->getName()} SET " .
 {foreach $table->getNonPkFields() as $field}
                        "{$field->getName()} = :{$field->getName()}{if !$field@last}, " .
 {/if}
@@ -268,35 +281,35 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
 {/if}
 {/foreach} )";
         }
-        $sth = $this->factory->getConnection()->prepare( $sql );
-        $result = $sth->execute( $values );
+        $sth = $this->getConnection()->prepare($sql);
+        $result = $sth->execute($values);
 {if count($table->getPkFields()) eq  1}
         if ($transaction == {$identifierName}AbstractDaoFactory::INSERT) {
             if ($result) {
-                ${$table->getAttributeName()}->set{$table->getFirstPkField()->getEntityName()}($this->factory->getConnection()->lastInsertId());
+                ${$table->getAttributeName()}->set{$table->getFirstPkField()->getEntityName()}($this->getConnection()->lastInsertId());
             }
         }
 {/if}
         return $result;
     }
 
-    public function delete{$table->getEntityName()}({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach})
+    public function delete({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach})
     {
         $sql = "DELETE FROM " .
-                   $this->factory->getDbName() . ".{$table->getName()} " .
+                   $this->getConf()->getDatabase() . ".{$table->getName()} " .
                "WHERE " .
 {foreach $table->getPkFields() as $field}
                    "{$field->getName()} = :{$field->getName()}{if !$field@last}, " .
 {/if}
 {/foreach} )";
-
         $values = array(
 {foreach $table->getPkFields() as $field}
             ":{$field->getName()}" => ${$field->getAttributeName()}{if !$field@last},
 {/if}
 {/foreach}
+
         );
-        $sth = $this->factory->getConnection()->prepare($sql);
+        $sth = $this->getConnection()->prepare($sql);
         return $sth->execute($values);
     }
 

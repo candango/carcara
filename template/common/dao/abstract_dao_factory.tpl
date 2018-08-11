@@ -1,4 +1,6 @@
 <?php
+use Candango\Carcara\Model\Conf;
+
 /**
  * {$identifierName}AbstractDaoFactory - {$identifierName}AbstractDaoFactory.php
  * 
@@ -12,9 +14,8 @@
  * @author Carcara DAO Generator
  * @copyright Put your copyright here.
  * @license Put your copyright here.
- * @version    
+ * @version
  */
-
 abstract class {$identifierName}AbstractDaoFactory
 {
     /**
@@ -46,6 +47,13 @@ abstract class {$identifierName}AbstractDaoFactory
     const UPDATE = "update";
 
     /**
+     * Factory configuration
+     *
+     * @var Conf
+     */
+    private $conf;
+
+    /**
      * Collection of instances that this factory can hold
      *
      * @var array An array of {{$identifierName}}AbstractDaoFactory
@@ -56,9 +64,10 @@ abstract class {$identifierName}AbstractDaoFactory
      * Return one DAO factory instance
      *
      * @param int $whichFactory
+     * @param Conf $conf
      * @return {$identifierName}AbstractDaoFactory
      */
-    public static function getInstance($whichFactory)
+    public static function getInstance($whichFactory, Conf $conf)
     {
         $factories = array(
             self::MYSQL_DAO => "{$identifierName}MysqlDaoFactory",
@@ -67,21 +76,42 @@ abstract class {$identifierName}AbstractDaoFactory
 
         if (isset($factories[ $whichFactory])) {
             if (!isset(self::$instances[$whichFactory])) {
-                require_once "dao/" . $factories[ $whichFactory ] . ".php";
+                require_once "dao/" . $factories[$whichFactory] . ".php";
                 self::$instances[ $whichFactory ] =
                 new $factories[ $whichFactory ]();
+                self::$instances[$whichFactory]->setConf($conf);
             }
-            return self::$instances[ $whichFactory ];
+            return self::$instances[$whichFactory];
         }
         return null;
+    }
+
+    /**
+     * Return the factory configuration
+     *
+     * @returns Conf
+     */
+    public function getConf()
+    {
+        return $this->conf;
+    }
+
+    /**
+     * Set the factory configuration
+     *
+     * @returns Conf
+     */
+    public function getConnection(Conf $conf)
+    {
+        return $this->conf = $conf;
     }
 {foreach $tables as $table}
 
     /**
-    * Return a new {$identifierName} {table_entity_name table=$table} Dao
-    *
-    * @return {$identifierName}{table_entity_name table=$table}Dao
-    **/
+     * Return a new {$identifierName} {table_entity_name table=$table} Dao
+     *
+     * @return {$identifierName}{table_entity_name table=$table}Dao
+     **/
     public abstract function get{table_entity_name table=$table}Dao();
 {/foreach}
 }

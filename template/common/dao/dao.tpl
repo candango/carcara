@@ -39,16 +39,20 @@
 interface {$identifierName}{$table->getEntityName()}Dao
 {
 
-    public function get{$table->getEntityName()}s($criteria = null, $fillMethod = 'fill{$table->getEntityName()}');
+    public function getByCriteria(
+        $criteria = null,
+        $fillMethod = "fillEntity",
+        $buildArrayMethod = "buildArray"
+    );
 
-    public function get{$table->getEntityName()}sCount( $criteria = null);
+    public function getCount($criteria = null);
 
-    public function get{$table->getEntityName()}ByPk({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach});
+    public function getByPk({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach});
 
-    public function update{$table->getEntityName()}($criteria = null);
+    public function update($criteria = null);
 
-    public function save{$table->getEntityName()}({$identifierName}{$table->getEntityName()}Dto ${$table->getAttributeName()}, $transaction);
+    public function save({$identifierName}{$table->getEntityName()}Dto ${$table->getAttributeName()}, $transaction);
 
-    public function delete{$table->getEntityName()}({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach});
+    public function delete({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach});
 
 }
