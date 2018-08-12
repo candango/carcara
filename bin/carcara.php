@@ -7,7 +7,13 @@
  * @license   https://www.apache.org/licenses/LICENSE-2.0  Apache-2.0
  */
 
-if (file_exists($file = __DIR__ . "/../vendor/autoload.php")) {
+$devPath = "/../vendor/autoload.php";
+$fromVendorPath = "/../../../autoload.php";
+
+if (file_exists($file = __DIR__ . $devPath)) {
+    $loader = require_once $file;
+}
+if (file_exists($file = __DIR__ . $fromVendorPath)) {
     $loader = require_once $file;
 }
 
