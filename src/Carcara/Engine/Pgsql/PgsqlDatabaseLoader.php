@@ -23,12 +23,9 @@ namespace Candango\Carcara\Engine\Pgsql
         public function connect()
         {
             $conf = $this->getConf();
-            $dsn = "pgsql:host=" . $conf->getHost() . ";dbname=" .
-                $conf->getDatabase();
             try {
-                $options = [];
-                $conn = new \PDO($dsn, $conf->getUser(), $conf->getPassword(),
-                    $options);
+                $conn = new \PDO($conf->getDsn(), $conf->getUser(),
+                    $conf->getPassword(), $conf->getPdoOptions());
             }
             catch (\PDOException $e)
             {

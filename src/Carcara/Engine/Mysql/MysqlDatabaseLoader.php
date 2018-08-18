@@ -22,27 +22,19 @@ namespace Candango\Carcara\Engine\Mysql {
         public function connect()
         {
             $conf = $this->getConf();
-            $dsn = "mysql:host=" . $conf->getHost() . ";dbname=" .
-                $conf->getDatabase();
             try {
-
-                $option = array(
-                    \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8',
-                    \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-                $conn = new \PDO($dsn, $conf->getUser(), $conf->getPassword(),
-                    $option);
+                $conn = new \PDO($conf->getDsn(), $conf->getUser(),
+                    $conf->getPassword(), $conf->getPdoOptions());
             }
             catch (\PDOException $e)
             {
                 throw $e;
-
             }
             $this->setConnection($conn);
         }
 
-
-        protected function loadTables() {
+        protected function loadTables()
+        {
             $sth = $this->getConnection()->prepare("SHOW TABLES;");
             $sth->execute();
             while ($row = $sth->fetch(\PDO::FETCH_NUM)) {
