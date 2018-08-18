@@ -56,15 +56,20 @@ final class ConfTest extends TestCase
     }
 
     /**
+     * Test valid and invalid conf types.
      *
+     * Valid types are mysql and pgsql by now.
+     *
+     * Anything outside from valid types will throw an exception with the
+     * message as "Invalid type".
      */
     public function testValidAndInvalidTypes()
     {
         $conf = new Conf();
         try {
-            $conf->setType("mysql");
+            $conf->setType(Conf::MYSQL);
             $this->assertEquals("mysql", $conf->getType());
-            $conf->setType("pgsql");
+            $conf->setType(Conf::PGSQL);
             $this->assertEquals("pgsql", $conf->getType());
             $conf->setType("invalid");
             # Failing the test if invalid is correct
@@ -73,5 +78,26 @@ final class ConfTest extends TestCase
             $this->assertEquals("Invalid type.", $e->getMessage());
         }
 
+    }
+
+    /**
+     * Test getDsn method.
+     *
+     * The dsn string returned will vary according the type set in the
+     * configuration object.
+     */
+    public function testGetDsn()
+    {
+        $mysqlDsn = "mysql:host=localhost;dbname=database_name";
+        $pgsqlDsn = "pgsql:host=localhost;dbname=database_name";
+
+        $conf = new Conf();
+        $conf->setType(Conf::MYSQL);
+        $conf->setHost("localhost");
+        $conf->setDatabase("database_name");
+        $this->assertEquals($mysqlDsn, $conf->getDsn());
+
+        $conf->setType(Conf::PGSQL);
+        $this->assertEquals($pgsqlDsn, $conf->getDsn());
     }
 }

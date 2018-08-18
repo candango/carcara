@@ -74,6 +74,13 @@ namespace Candango\Carcara\Model
          */
         private $password = "";
 
+        /**
+         * Options used while connecting to the PDO driver
+         *
+         * @var array
+         */
+        private $pdoOptions = [];
+
         public function __construct($name="default")
         {
             $this->setName($name);
@@ -123,6 +130,15 @@ namespace Candango\Carcara\Model
                 $this->type = $type;
             } else {
                 throw new \Exception("Invalid type.");
+            }
+            if ($this->getType() == self::MYSQL) {
+                $this->setPdoOptions(array(
+                    \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8",
+                    \PDO::ATTR_ERRMODE,
+                    \PDO::ERRMODE_EXCEPTION
+                ));
+            } else {
+                $this->pdoOptions = [];
             }
         }
 
@@ -231,6 +247,27 @@ namespace Candango\Carcara\Model
         }
 
         /**
+         * Return the pdo options array
+         *
+         * @return array
+         */
+        public function getPdoOptions()
+        {
+            return $this->pdoOptions;
+        }
+
+        /**
+         * Set PDO options array
+         *
+         * @param array $options
+         * @return void
+         */
+        public function setPdoOptions($options=[])
+        {
+            $this->pdoOptions = $options;
+        }
+
+        /**
          * Return the conf identifier
          *
          * #TODO: This should be handled better for PGSQL as that could be
@@ -298,6 +335,12 @@ namespace Candango\Carcara\Model
         {
             return $this->getDaoDir($baseDir). DIRECTORY_SEPARATOR .
                 $this->getName();
+        }
+
+        public function getDsn() {
+            $dsn = sprintf("%s:host=%s;dbname=%s",
+                $this->getType(), $this->getHost(), $this->getDatabase());
+            return $dsn;
         }
 
         /**
