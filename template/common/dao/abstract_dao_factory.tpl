@@ -54,6 +54,27 @@ abstract class {$identifierName}AbstractDaoFactory
     private $conf;
 
     /**
+     * Dao Factory Connection
+     *
+     * @var PDO
+     */
+    private $connection;
+
+    /**
+     * {$identifierName}AbstractDaoFactory constructor.
+     */
+    public function __construct()
+    {
+        $conf = $this->getConf();
+        try {
+            $this->connection = new PDO($conf->getDsn(), $conf->getUser(),
+                $conf->getPassword(), $conf->getPdoOptions());
+        } catch (Exception $e) {
+            echo "Failed: " . $e->getMessage();
+        }
+    }
+
+    /**
      * Collection of instances that this factory can hold
      *
      * @var array An array of {{$identifierName}}AbstractDaoFactory
@@ -101,17 +122,27 @@ abstract class {$identifierName}AbstractDaoFactory
      *
      * @returns Conf
      */
-    public function getConnection(Conf $conf)
+    public function setConf(Conf $conf)
     {
         return $this->conf = $conf;
+    }
+
+    /**
+     * Returns the PDO connection object
+     *
+     * @returns \PDO
+     */
+    public function getConnection()
+    {
+        return $this->connection;
     }
 {foreach $tables as $table}
 
     /**
-     * Return a new {$identifierName} {table_entity_name table=$table} Dao
+     * Return a new {$identifierName} {$table->getEntityName()} Dao
      *
-     * @return {$identifierName}{table_entity_name table=$table}Dao
+     * @return {$identifierName}{$table->getEntityName()}Dao
      **/
-    public abstract function get{table_entity_name table=$table}Dao();
+    public abstract function get{$table->getEntityName()}Dao();
 {/foreach}
 }

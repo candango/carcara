@@ -49,10 +49,24 @@ interface {$identifierName}{$table->getEntityName()}Dao
 
     public function getByPk({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach});
 
+    /**
+     * Update the {$table->getName()} table based on a given criteria.
+     *
+     * @param array|null $criteria
+     * @return bool
+     */
     public function update($criteria = null);
 
+    /**
+     * Save (insert or update) the {$identifierName}{$table->getEntityName()}Dto
+     * into the {$table->getName()} table based on the transaction type
+     * informed.
+     *
+     * @param {$identifierName}{$table->getEntityName()}Dto ${$table->getAttributeName()}
+     * @param string $transaction
+     * @return bool
+     */
     public function save({$identifierName}{$table->getEntityName()}Dto ${$table->getAttributeName()}, $transaction);
 
     public function delete({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach});
-
 }

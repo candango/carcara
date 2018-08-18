@@ -12,7 +12,7 @@ abstract class ${identifier-name}${table.getEntityName()}AbstractDto {
 
     /**
      * ${identifier-name}${table.getEntityName()}'s ${field.getAttributeName()} attribute
-     **/
+     */
     private $${field.getAttributeName()};
 #end
 #foreach ($field in $table.getFields())
@@ -21,7 +21,7 @@ abstract class ${identifier-name}${table.getEntityName()}AbstractDto {
      * Return ${identifier-name}${table.getEntityName()}AbstractDto's ${field.getAttributeName()} attribute
      *
      * @return mixed
-     **/
+     */
     public function get${field.getEntityName()}() {
         return $this->${field.getAttributeName()};
     }
@@ -30,7 +30,7 @@ abstract class ${identifier-name}${table.getEntityName()}AbstractDto {
      * Set ${identifier-name}${table.getEntityName()}AbstractDto's ${field.getAttributeName()} attribute
      *
      * @param mixed $${field.getAttributeName()}
-     **/
+     */
     public function set${field.getEntityName()}( $${field.getAttributeName()} ) {
         $this->${field.getAttributeName()} = $${field.getAttributeName()};
     }

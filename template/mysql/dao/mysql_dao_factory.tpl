@@ -20,49 +20,17 @@ use Candango\Carcara\Model\Conf;
  */
 class {$identifierName}MysqlDaoFactory extends {$identifierName}AbstractDaoFactory
 {
-    /**
-     * Dao Factory Connection
-     *
-     * @var PDO
-     */
-    private $connection;
-
-    /**
-     * {$identifierName}MysqlDaoFactory constructor.
-     */
-    public function __construct()
-    {
-        $connStr = "mysql:host=" . $conf['server'] . ";dbname=" .
-            $conf[ 'database' ];
-        $this->dbName = $conf['database'];
-        try {
-            $this->connection = new PDO($connStr, $conf['user'],
-                 $conf['password']);
-        } catch (Exception $e) {
-            echo "Failed: " . $e->getMessage();
-        }
-    }
-
-    /**
-     * Returns the PDO connection object
-     *
-     * @returns PDO
-     */
-    public function getConnection()
-    {
-        return $this->connection;
-    }
 {foreach $tables as $table}
 
     /**
-     * Return a new {$identifierName} {table_entity_name table=$table} MysqlDao
+     * Return a new {$identifierName} {$table->getEntityName()} MysqlDao
      *
-     * @return {$identifierName}{table_entity_name table=$table}MysqlDao
+     * @return {$identifierName}{$table->getEntityName()}MysqlDao
      **/
-    public function get{table_entity_name table=$table}Dao()
+    public function get{$table->getEntityName()}Dao()
     {
-        require_once "dao/{table_entity_name table=$table}/{$identifierName}{table_entity_name table=$table}MysqlDao.php";
-        return new {$identifierName}{table_entity_name table=$table}MysqlDao($this);
+        require_once "dao/{$table->getEntityName()}/{$identifierName}{table_entity_name table=$table}MysqlDao.php";
+        return new {$identifierName}{$table->getEntityName()}MysqlDao($this);
     }
 {/foreach}
 }

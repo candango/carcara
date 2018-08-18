@@ -13,7 +13,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractDto
 
     /**
      * {$identifierName}{$table->getEntityName()}'s {$field->getAttributeName()} attribute
-     **/
+     */
     private ${$field->getAttributeName()};
 {/foreach}
 {foreach $table->getFields() as $field}
@@ -22,7 +22,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractDto
      * Return {$identifierName}{$table->getEntityName()}AbstractDto's {$field->getAttributeName()} attribute
      *
      * @return mixed
-     **/
+     */
     public function get{$field->getEntityName()}()
     {
         return $this->{$field->getAttributeName()};
@@ -32,7 +32,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractDto
      * Set {$identifierName}{$table->getEntityName()}AbstractDto's {$field->getAttributeName()} attribute
      *
      * @param mixed ${$field->getAttributeName()}
-     **/
+     */
     public function set{$field->getEntityName()}(${$field->getAttributeName()})
     {
         $this->{$field->getAttributeName()} = ${$field->getAttributeName()};

@@ -74,6 +74,23 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         return $this->factory->getConf();
     }
 
+    /**
+     * Get an array of {$identifierName}{$table->getEntityName()}Dto based on a given
+     * criteria.
+     *
+     * If you want to implement a custom logic to fill the entity to be
+     * returned pass it in the fillMethod variable.
+     *
+     * If a custom logic to build the array pass it in the buildArrayMethod.
+     *
+     * Implement custom login at the {$identifierName}{$table->getEntityName()}MysqlDao instead
+     * of this class.
+     *
+     * @param array|null $criteria
+     * @param string $fillMethod
+     * @param string $buildArrayMethod
+     * @return array of {$identifierName}{$table->getEntityName()}Dto
+     */
     public function getByCriteria(
         $criteria = null,
         $fillMethod = 'fillEntity',
@@ -213,6 +230,12 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         return ${$table->getAttributeName()};
     }
 
+    /**
+     * Update the {$table->getName()} table based on a given criteria.
+     *
+     * @param array|null $criteria
+     * @return bool
+     */
     public function update($criteria = null)
     {
         if (is_null($criteria)) {
@@ -237,12 +260,23 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
             return $sth->execute(
                 isset($criteria['bind']) ? $criteria['bind'] : null);
         }
+        return false;
     }
 
+    /**
+     * Save (insert or update) the {$identifierName}{$table->getEntityName()}Dto
+     * into the {$table->getName()} table based on the transaction type
+     * informed.
+     *
+     * @param {$identifierName}{$table->getEntityName()}Dto ${$table->getAttributeName()}
+     * @param string $transaction
+     * @return bool
+     */
     public function save(
         {$identifierName}{$table->getEntityName()}Dto ${$table->getAttributeName()},
         $transaction
     ) {
+        $sql = null;
         $sth = null;
         $values = array(
 {foreach $table->getFields() as $field}
@@ -256,7 +290,6 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
 {foreach $table->getSerialFields() as $field}
             unset($values[':{$field->getName()}']);
 {/foreach}
-
             $sql = "INSERT INTO " . $this->getConf()->getDatabase() .
                    ".{$table->getName()}( " .
 {foreach $table->getNonSerialFields() as $field}
@@ -268,19 +301,22 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
                        ":{$field->getName()}{if !$field@last}, " .
 {/if}
 {/foreach} )";
-        } else {
+        }{if count($table->getNonPkFields()) gt  0} elseif ($transaction == {$identifierName}AbstractDaoFactory::UPDATE) {
             $sql = "UPDATE " . $this->getConf()->getDatabase() .
                    ".{$table->getName()} SET " .
 {foreach $table->getNonPkFields() as $field}
                        "{$field->getName()} = :{$field->getName()}{if !$field@last}, " .
 {/if}
-{/foreach} )" .
+{/foreach} " .
                    "WHERE " .
 {foreach $table->getPkFields() as $field}
                        "{$field->getName()} = :{$field->getName()}{if !$field@last}, " .
 {/if}
-{/foreach} )";
+{/foreach} ";
+        }{/if} else {
+            return false;
         }
+
         $sth = $this->getConnection()->prepare($sql);
         $result = $sth->execute($values);
 {if count($table->getPkFields()) eq  1}
@@ -301,7 +337,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
 {foreach $table->getPkFields() as $field}
                    "{$field->getName()} = :{$field->getName()}{if !$field@last}, " .
 {/if}
-{/foreach} )";
+{/foreach} ";
         $values = array(
 {foreach $table->getPkFields() as $field}
             ":{$field->getName()}" => ${$field->getAttributeName()}{if !$field@last},
@@ -312,5 +348,4 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         $sth = $this->getConnection()->prepare($sql);
         return $sth->execute($values);
     }
-
 }
