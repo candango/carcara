@@ -56,6 +56,9 @@ namespace Candango\Carcara\Engine\Mysql {
                 if ($row['Key'] == "PRI") {
                     $field->setPk(true);
                 }
+                if ($row['Extra']=="auto_increment") {
+                    $field->setSerial(true);
+                }
                 $table->addField($field);
             }
         }
