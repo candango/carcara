@@ -1,5 +1,5 @@
 <?php
-require_once "dao/{$table->getEntityName()}/{$identifierName}{table_entity_name table=$table}AbstractDto.php";
+require_once "dao/{$table->getEntityName()}/{$identifierName}{$table->getEntityName()}AbstractDto.php";
 
 /**
  * This class extends {$identifierName}{$table->getEntityName()}AbstractDto
@@ -12,7 +12,7 @@ require_once "dao/{$table->getEntityName()}/{$identifierName}{table_entity_name 
  * @package lib.dao.{$table->getEntityName()}
  * @author Carcara Modeller Tool Engine
  */
-class {$identifierName}{$table->getEntityName()}Dto extends {$identifierName}{table_entity_name table=$table}AbstractDto
+class {$identifierName}{$table->getEntityName()}Dto extends {$identifierName}{$table->getEntityName()}AbstractDto
 {
 
 }

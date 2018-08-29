@@ -29,7 +29,7 @@ class {$identifierName}MysqlDaoFactory extends {$identifierName}AbstractDaoFacto
      **/
     public function get{$table->getEntityName()}Dao()
     {
-        require_once "dao/{$table->getEntityName()}/{$identifierName}{table_entity_name table=$table}MysqlDao.php";
+        require_once "dao/{$table->getEntityName()}/{$identifierName}{$table->getEntityName()}MysqlDao.php";
         return new {$identifierName}{$table->getEntityName()}MysqlDao($this);
     }
 {/foreach}
