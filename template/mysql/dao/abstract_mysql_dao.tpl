@@ -225,7 +225,9 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
     {
         ${$table->getAttributeName()} = new $fillClass();
 {foreach $table->getFields() as $field}
-        ${$table->getAttributeName()}->set{$field->getEntityName()}($row['{$field->getName()}']);
+        if (array_key_exists("{$field->getName()}", $row)) {
+            ${$table->getAttributeName()}->set{$field->getEntityName()}($row['{$field->getName()}']);
+        }
 {/foreach}
         return ${$table->getAttributeName()};
     }
