@@ -172,7 +172,9 @@ namespace Candango\Carcara\Commands
 
                 foreach (new \RecursiveIteratorIterator($it, 1) as $child) {
                     $name = explode("_", $child->getBaseName())[0];
-                    $confs[] = Factory::getConf($name);
+                    if ($conf = Factory::getConf($name)) {
+                        $confs[] = $conf;
+                    }
                 }
             } catch (\UnexpectedValueException $e) {}
 

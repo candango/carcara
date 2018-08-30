@@ -24,13 +24,17 @@ namespace Candango\Carcara
          * @param $name
          * @return Conf
          * @throws \Error
+         * @throws \Exception
          */
         public static function getConf($name)
         {
             $conf = new Conf($name);
-            $data = include $conf->getFilePath();
-            $conf = Conf::fromData($name, $data);
-            return $conf;
+            if (file_exists($conf->getFilePath())) {
+                $data = include $conf->getFilePath();
+                $conf = Conf::fromData($name, $data);
+                return $conf;
+            }
+            return false;
         }
 
         /**
