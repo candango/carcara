@@ -18,11 +18,11 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "ext-xml": "*",
-    "smarty/smarty" : ">=3.1.30",
-    "ulrichsg/getopt-php": "^3.2.0"
+    "smarty/smarty" : ">=3.1.33",
+    "ulrichsg/getopt-php": "^3.2.2"
   },
   "require-dev": {
-    "phpunit/phpunit": ">=5.0.10",
+    "phpunit/phpunit": ">=8.0.5",
     "ext-mbstring": "*"
   },
   "bin": [
