@@ -10,8 +10,7 @@
 namespace Candango\Carcara\Engine
 {
 
-    use Candango\Carcara\Model\Database\Table;
-    use Candango\Carcara\Model\Conf;
+    use Candango\Carcara\Conf;
 
     interface DatabaseLoader
     {

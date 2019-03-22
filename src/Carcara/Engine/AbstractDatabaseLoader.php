@@ -10,10 +10,10 @@
 namespace Candango\Carcara\Engine
 {
 
+    use Candango\Carcara\Conf;
     use Candango\Carcara\Engine\Mysql\MysqlDatabaseLoader;
     use Candango\Carcara\Engine\Pgsql\PgsqlDatabaseLoader;
     use Candango\Carcara\Model\Database\Table;
-    use Candango\Carcara\Model\Conf;
 
     abstract class AbstractDatabaseLoader implements DatabaseLoader
     {

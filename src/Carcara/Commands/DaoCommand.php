@@ -11,13 +11,13 @@ namespace Candango\Carcara\Commands
 {
 
     use Candango\Carcara\AbstractCommand;
+    use Candango\Carcara\Conf;
     use Candango\Carcara\Engine\AbstractDaoGenerator;
     use Candango\Carcara\Engine\AbstractDatabaseLoader;
     use Candango\Carcara\Engine\DatabaseLoader;
     use Candango\Carcara\Factory;
     use Candango\Carcara\File;
     use Candango\Carcara\Lexicon;
-    use Candango\Carcara\Model\Conf;
     use Candango\Carcara\SmartyInABox;
     use GetOpt\GetOpt;
     use GetOpt\Operand;

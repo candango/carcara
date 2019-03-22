@@ -11,7 +11,7 @@ namespace Candango\Carcara\Commands
 {
 
     use Candango\Carcara\AbstractCommand;
-    use Candango\Carcara\Model\Conf;
+    use Candango\Carcara\Conf;
     use Candango\Carcara\SmartyInABox;
 
     class ServiceCommand extends AbstractCommand
