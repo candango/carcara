@@ -10,10 +10,10 @@
 namespace Candango\Carcara\Engine
 {
 
+    use Candango\Carcara\Conf;
     use Candango\Carcara\Engine\Mysql\MysqlDaoGenerator;
     use Candango\Carcara\Engine\Pgsql\PgsqlDaoGenerator;
     use Candango\Carcara\Lexicon;
-    use Candango\Carcara\Model\Conf;
     use Candango\Carcara\SmartyInABox;
 
     abstract class AbstractDaoGenerator implements DaoGenerator
@@ -37,7 +37,7 @@ namespace Candango\Carcara\Engine
             $abstractDaoFactoryPath = DIRECTORY_SEPARATOR .
                 Lexicon::getEntityName(
                     $this->loader->getConf()->getIdentifier()) .
-                "AbstractDaoFactory.php";
+                "DaoFactory.php";
             $factories['abstract'] = array(
                 'path' => $abstractDaoFactoryPath,
                 'code' => SmartyInABox::fetch(

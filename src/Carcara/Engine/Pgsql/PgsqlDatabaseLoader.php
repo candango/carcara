@@ -3,7 +3,7 @@
  * Carcara (http://carcara.candango.org)
  *
  * @link      http://github.com/candango/carcara
- * @copyright Copyright (c) 2018 Flavio Garcia
+ * @copyright Copyright (c) 2008-2019 Flavio Garcia
  * @license   https://www.apache.org/licenses/LICENSE-2.0  Apache-2.0
  */
 
@@ -24,8 +24,13 @@ namespace Candango\Carcara\Engine\Pgsql
         {
             $conf = $this->getConf();
             try {
-                $conn = new \PDO($conf->getDsn(), $conf->getUser(),
-                    $conf->getPassword(), $conf->getPdoOptions());
+                if ($conf->getPassword() == ""){
+                    $conn = new \PDO($conf->getDsn(), $conf->getUser(),
+                        $conf->getPdoOptions());
+                } else {
+                    $conn = new \PDO($conf->getDsn(), $conf->getUser(),
+                        $conf->getPassword(), $conf->getPdoOptions());
+                }
             }
             catch (\PDOException $e)
             {
@@ -51,12 +56,12 @@ namespace Candango\Carcara\Engine\Pgsql
 
         protected function loadFields(Table $table)
         {
-            $sql = sprintf("SELECT c.column_name, c.data_type, " .
+            $sqlColumns = sprintf("SELECT c.column_name, c.data_type, " .
                 "c.column_default  " .
                 " FROM information_schema.columns c " .
                 " WHERE c.table_schema='%s' and  c.table_name='%s';",
                 $table->getSchema(), $table->getName());
-            $sth = $this->getConnection()->prepare($sql);
+            $sth = $this->getConnection()->prepare($sqlColumns);
             $sth->execute();
             while ($row = $sth->fetch(\PDO::FETCH_ASSOC)) {
                 $field = new Field();
@@ -69,7 +74,7 @@ namespace Candango\Carcara\Engine\Pgsql
                     }
                 }
 
-                $sql1 = sprintf("SELECT tc.constraint_name," .
+                $sqlConstraints = sprintf("SELECT tc.constraint_name," .
                     " tc.constraint_type" .
                     " FROM information_schema.table_constraints tc" .
                     " INNER JOIN information_schema.constraint_column_usage" .
@@ -80,7 +85,7 @@ namespace Candango\Carcara\Engine\Pgsql
                     " tc.constraint_type='PRIMARY KEY';", $table->getSchema(),
                     $table->getName(), $field->getName());
 
-                $sth1 = $this->getConnection()->prepare($sql1);
+                $sth1 = $this->getConnection()->prepare($sqlConstraints);
                 $sth1->execute();
 
                 while ($row = $sth1->fetch(\PDO::FETCH_ASSOC)) {
