@@ -3,7 +3,7 @@
  * Carcara (http://carcara.candango.org)
  *
  * @link      http://github.com/candango/carcara
- * @copyright Copyright (c) 2018 Flavio Garcia
+ * @copyright Copyright (c) 2008-2019 Flavio Garcia
  * @license   https://www.apache.org/licenses/LICENSE-2.0  Apache-2.0
  */
 namespace Candango\Carcara
@@ -29,7 +29,7 @@ namespace Candango\Carcara
             $entityName = "";
             $entityX = explode("_", str_replace(" ", "_", $entity));
             foreach ($entityX as $part) {
-                $entityName .= ucfirst(strtolower($part));
+                $entityName .= ucfirst($part);
             }
             return $entityName;
         }
@@ -41,6 +41,7 @@ namespace Candango\Carcara
          * lower case.
          *
          * @param string $attribute
+         * @param boolean $entityBefore
          * @return string
          */
         public static function getAttributeName(
