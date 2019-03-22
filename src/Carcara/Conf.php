@@ -7,9 +7,8 @@
  * @license   https://www.apache.org/licenses/LICENSE-2.0  Apache-2.0
  */
 
-namespace Candango\Carcara\Model
+namespace Candango\Carcara
 {
-    use Candango\Carcara\SmartyInABox;
 
     class Conf
     {
@@ -297,7 +296,7 @@ namespace Candango\Carcara\Model
         }
 
         /**
-         * Return where the conf file is located at.
+         * Returns where the conf file is located at.
          *
          * @return string
          */

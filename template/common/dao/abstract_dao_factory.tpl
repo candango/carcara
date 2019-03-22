@@ -1,8 +1,8 @@
 <?php
-use Candango\Carcara\Model\Conf;
+use Candango\Carcara\Conf;
 
 /**
- * {$identifierName}AbstractDaoFactory - {$identifierName}AbstractDaoFactory.php
+ * {$identifierName}DaoFactory - {$identifierName}DaoFactory.php
  * 
  * Abstract dao factory class. This class returns all dao factories found
  * by the engine.
@@ -16,22 +16,8 @@ use Candango\Carcara\Model\Conf;
  * @license Put your copyright here.
  * @version
  */
-abstract class {$identifierName}AbstractDaoFactory
+abstract class {$identifierName}DaoFactory
 {
-    /**
-     * Mysql Dao constant
-     *
-     * @var string
-     */
-    const MYSQL = "mysql";
-
-    /**
-     * Pgsql Dao constant
-     *
-     * @var string
-     */
-    const PGSQL = "pgsql";
-
     /**
      * Insert Transaction constant
      *
@@ -61,11 +47,11 @@ abstract class {$identifierName}AbstractDaoFactory
     private $connection;
 
     /**
-     * {$identifierName}AbstractDaoFactory constructor.
+     * {$identifierName}DaoFactory constructor.
      */
-    public function __construct()
+    public function __construct(Conf $conf)
     {
-        $conf = $this->getConf();
+        $this->setConf($conf);
         try {
             $this->connection = new PDO($conf->getDsn(), $conf->getUser(),
                 $conf->getPassword(), $conf->getPdoOptions());
@@ -77,7 +63,7 @@ abstract class {$identifierName}AbstractDaoFactory
     /**
      * Collection of instances that this factory can hold
      *
-     * @var array An array of {{$identifierName}}AbstractDaoFactory
+     * @var array An array of {{$identifierName}}DaoFactory
      */
     private static $instances = array();
 
@@ -86,21 +72,21 @@ abstract class {$identifierName}AbstractDaoFactory
      *
      * @param int $whichFactory
      * @param Conf $conf
-     * @return {$identifierName}AbstractDaoFactory
+     * @return {$identifierName}DaoFactory
      */
     public static function getInstance($whichFactory, Conf $conf)
     {
         $factories = array(
-            self::MYSQL_DAO => "{$identifierName}MysqlDaoFactory",
-            self::PGSQL_DAO => "{$identifierName}PgsqlDaoFactory"
+            Conf::MYSQL => "{$identifierName}MysqlDaoFactory",
+            Conf::PGSQL => "{$identifierName}PgsqlDaoFactory"
         );
 
         if (isset($factories[ $whichFactory])) {
             if (!isset(self::$instances[$whichFactory])) {
-                require_once "dao/" . $factories[$whichFactory] . ".php";
+                require_once $conf->getCurrentDaoDir() . DIRECTORY_SEPARATOR .
+                    $factories[$whichFactory] . ".php";
                 self::$instances[ $whichFactory ] =
-                new $factories[ $whichFactory ]();
-                self::$instances[$whichFactory]->setConf($conf);
+                    new $factories[ $whichFactory ]($conf);
             }
             return self::$instances[$whichFactory];
         }
