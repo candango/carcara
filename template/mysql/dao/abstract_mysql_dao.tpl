@@ -19,11 +19,12 @@
  * @version    
  */
 
-require_once "dao/{$table->getName()}/{$identifierName}{$table->getEntityName()}Dto.php";
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR .
+    "{$identifierName}{$table->getEntityName()}Dto.php";
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR .
+    "{$identifierName}{$table->getEntityName()}Dao.php";
 
-require_once "dao/{$table->getName()}/{$identifierName}{$table->getEntityName()}Dao.php";
-
-use Candango\Carcara\Model\Conf;
+use Candango\Carcara\Conf;
 
 /**
  * {$identifierName}{$table->getEntityName()}AbstractMysqlDao - {$identifierName}{$table->getEntityName()}AbstractMysqlDao.php
@@ -199,7 +200,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         );
         $criteria[ 'bind' ] = $values;
         ${$table->getAttributeName()}Array = $this->getByCriteria($criteria);
-        return ${$table->getAttributeName()}Array[0];
+        return count(${$table->getAttributeName()}Array) ? ${$table->getAttributeName()}Array[0] : null;
     }
 
     /**

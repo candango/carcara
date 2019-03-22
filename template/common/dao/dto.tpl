@@ -1,5 +1,5 @@
 <?php
-require_once "dao/{$table->getEntityName()}/{$identifierName}{$table->getEntityName()}AbstractDto.php";
+require_once "{$identifierName}{$table->getEntityName()}AbstractDto.php";
 
 /**
  * This class extends {$identifierName}{$table->getEntityName()}AbstractDto

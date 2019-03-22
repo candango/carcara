@@ -1,5 +1,5 @@
 <?php
-use Candango\Carcara\Model\Conf;
+use Candango\Carcara\Conf;
 
 /**
  * {$identifierName}MysqlDaoFactory - {$identifierName}MysqlDaoFactory.php
@@ -18,7 +18,7 @@ use Candango\Carcara\Model\Conf;
  * @license Put your copyright here.
  * @version    
  */
-class {$identifierName}MysqlDaoFactory extends {$identifierName}AbstractDaoFactory
+class {$identifierName}MysqlDaoFactory extends {$identifierName}DaoFactory
 {
 {foreach $tables as $table}
 
@@ -29,7 +29,8 @@ class {$identifierName}MysqlDaoFactory extends {$identifierName}AbstractDaoFacto
      **/
     public function get{$table->getEntityName()}Dao()
     {
-        require_once "dao/{$table->getEntityName()}/{$identifierName}{$table->getEntityName()}MysqlDao.php";
+        require_once $this->getConf()->getCurrentDaoDir() . DIRECTORY_SEPARATOR
+            . "{$table->getEntityName()}/{$identifierName}{$table->getEntityName()}MysqlDao.php";
         return new {$identifierName}{$table->getEntityName()}MysqlDao($this);
     }
 {/foreach}
