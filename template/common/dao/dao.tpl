@@ -69,4 +69,11 @@ interface {$identifierName}{$table->getEntityName()}Dao
     public function save({$identifierName}{$table->getEntityName()}Dto ${$table->getAttributeName()}, $transaction);
 
     public function delete({foreach $table->getPkFields() as $field}${$field->getAttributeName()}{if !$field@last}, {/if}{/foreach});
+
+    /**
+     * Return the latest statement executed.
+     *
+     * @return PDOStatement
+     */
+    public function getLatestStatement();
 }

@@ -46,6 +46,12 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao 
      */
     protected $factory;
 
+    /**
+     *
+     * @var PDOStatement
+     */
+    protected $latestStatement;
+
     public function __construct( ShopPgsqlDaoFactory $factory = null ) {
         $this->factory = $factory;
     }
@@ -91,14 +97,14 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao 
             $sql .= " LIMIT " . $criteria[ 'limit' ];
         }
 
-        $sth = $this->factory->getConnection()->prepare( $sql );
+        $this->latestStatement = $this->factory->getConnection()->prepare( $sql );
 
-        $sth->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] :
+        $this->latestStatement->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] :
             null );
 
         $${table.getAttributeName()}s = array();
 
-        while( $row = $sth->fetch( PDO::FETCH_ASSOC ) ) {
+        while( $row = $this->latestStatement->fetch( PDO::FETCH_ASSOC ) ) {
             $${table.getAttributeName()}s[] = $this->$fillMethod( $row );
         }
 
@@ -142,12 +148,12 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao 
             $sql .= " LIMIT " . $criteria[ 'limit' ];
         }
 
-        $sth = $this->getFactory()->getConnection()->prepare( $sql );
+        $this->latestStatement = $this->getFactory()->getConnection()->prepare( $sql );
 
-        $sth->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] :
+        $this->latestStatement->execute( isset( $criteria[ 'bind' ] ) ? $criteria[ 'bind' ] :
             null );
 
-        $row = $sth->fetch( PDO::FETCH_ASSOC );
+        $row = $this->latestStatement->fetch( PDO::FETCH_ASSOC );
 
         if( count( $row ) ) {
             return $row[ 'count' ];
@@ -194,7 +200,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao 
     public function save${table.getEntityName()}( ${identifier-name-upper}${table.getEntityName()}Dto $${table.getAttributeName()},
          $transaction ){
         $sql = "";
-        $sth = null;
+        $this->latestStatement = null;
         $values = array(
 #foreach( $field in $table.getFields())
             ":${field.getName()}" => $${table.getAttributeName()}->get${field.getEntityName()}()#if( $velocityHasNext ),
@@ -232,9 +238,9 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao 
 #end )";
         }
 
-        $sth = $this->factory->getConnection()->prepare( $sql );
+        $this->latestStatement = $this->factory->getConnection()->prepare( $sql );
 
-        $sth->execute( $values );
+        $this->latestStatement->execute( $values );
     }
 
     public function delete${table.getEntityName()}( #foreach( $field in $table.getPks())$$field.getAttributeName()#if( $velocityHasNext ),#end #end) { 
@@ -254,10 +260,19 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao 
         
         );
 
-        $sth = $this->factory->getConnection()->prepare( $sql );
+        $this->latestStatement = $this->factory->getConnection()->prepare( $sql );
 
-        $sth->execute( $values );
+        $this->latestStatement->execute( $values );
+    }
+
+
+    /**
+    * Return the latest statement executed.
+    *
+    * @return PDOStatement
+    */
+    public function getLatestStatement() {
+        return $this->latestStatement;
     }
 
 }
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */

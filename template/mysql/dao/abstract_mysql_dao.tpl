@@ -50,6 +50,18 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
      */
     protected $factory;
 
+    /**
+     *
+     * @var PDOStatement
+     */
+    protected $latestStatement;
+
+    /**
+     *
+     * @var {$identifierName}MysqlDaoFactory
+     */
+    protected $factory;
+
     public function __construct({$identifierName}MysqlDaoFactory $factory = null)
     {
         $this->factory = $factory;
@@ -134,11 +146,11 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
             $sql .= " LIMIT " . $criteria['limit'];
         }
 
-        $sth = $this->getConnection()->prepare($sql);
-        $sth->execute(isset($criteria['bind']) ? $criteria['bind'] : null);
+        $this->latestStatement = $this->getConnection()->prepare($sql);
+        $this->latestStatement->execute(isset($criteria['bind']) ? $criteria['bind'] : null);
 
         ${$table->getAttributeName()}Array = array();
-        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $this->latestStatement->fetch(PDO::FETCH_ASSOC)) {
             $this->$buildArrayMethod(${$table->getAttributeName()}Array, $this->$fillMethod($row));
         }
         return ${$table->getAttributeName()}Array;
@@ -179,9 +191,9 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
             $sql .= " LIMIT " . $criteria['limit'];
         }
 
-        $sth = $this->getConnection()->prepare($sql);
-        $sth->execute(isset($criteria['bind']) ? $criteria['bind'] : null);
-        $row = $sth->fetch(PDO::FETCH_ASSOC);
+        $this->latestStatement = $this->getConnection()->prepare($sql);
+        $this->latestStatement->execute(isset($criteria['bind']) ? $criteria['bind'] : null);
+        $row = $this->latestStatement->fetch(PDO::FETCH_ASSOC);
         if (count($row)) {
             return $row['count'];
         }
@@ -259,8 +271,8 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
             if ($criteria['where'] != null) {
                 $sql .= " WHERE " . $criteria['where'];
             }
-            $sth = $this->getConnection()->prepare($sql);
-            return $sth->execute(
+            $this->latestStatement = $this->getConnection()->prepare($sql);
+            return $this->latestStatement->execute(
                 isset($criteria['bind']) ? $criteria['bind'] : null);
         }
         return false;
@@ -280,7 +292,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         $transaction
     ) {
         $sql = null;
-        $sth = null;
+        $this->latestStatement = null;
         $values = array(
 {foreach $table->getFields() as $field}
             ':{$field->getName()}' => ${$table->getAttributeName()}->get{$field->getEntityName()}(){if !$field@last},
@@ -320,8 +332,8 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
             return false;
         }
 
-        $sth = $this->getConnection()->prepare($sql);
-        $result = $sth->execute($values);
+        $this->latestStatement = $this->getConnection()->prepare($sql);
+        $result = $this->latestStatement->execute($values);
 {if count($table->getPkFields()) eq  1}
         if ($transaction == Conf::INSERT) {
             if ($result) {
@@ -348,7 +360,16 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
 {/foreach}
 
         );
-        $sth = $this->getConnection()->prepare($sql);
-        return $sth->execute($values);
+        $this->latestStatement = $this->getConnection()->prepare($sql);
+        return $this->latestStatement->execute($values);
+    }
+
+    /**
+    * Return the latest statement executed.
+    *
+    * @return PDOStatement
+    */
+    public function getLatestStatement() {
+        return $this->latestStatement;
     }
 }
