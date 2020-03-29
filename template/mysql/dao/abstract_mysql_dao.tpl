@@ -56,12 +56,6 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
      */
     protected $latestStatement;
 
-    /**
-     *
-     * @var {$identifierName}MysqlDaoFactory
-     */
-    protected $factory;
-
     public function __construct({$identifierName}MysqlDaoFactory $factory = null)
     {
         $this->factory = $factory;
