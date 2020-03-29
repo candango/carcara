@@ -292,7 +292,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
             ':{$field->getName()}' => ${$table->getAttributeName()}->get{$field->getEntityName()}(){if !$field@last},
 {/if}
 {/foreach}
-        
+
         );
 
         if ($transaction == Conf::INSERT) {
