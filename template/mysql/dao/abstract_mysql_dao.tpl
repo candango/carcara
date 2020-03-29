@@ -304,7 +304,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
                        ":{$field->getName()}{if !$field@last}, " .
 {/if}
 {/foreach} )";
-        }{if count($table->getNonPkFields()) gt  0} elseif ($transaction == {$identifierName}AbstractDaoFactory::UPDATE) {
+        }{if count($table->getNonPkFields()) gt  0} elseif ($transaction == Conf::UPDATE) {
             $sql = "UPDATE " . $this->getConf()->getDatabase() .
                    ".{$table->getName()} SET " .
 {foreach $table->getNonPkFields() as $field}
