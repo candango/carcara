@@ -289,7 +289,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         
         );
 
-        if ($transaction == {$identifierName}AbstractDaoFactory::INSERT) {
+        if ($transaction == Conf::INSERT) {
 {foreach $table->getSerialFields() as $field}
             unset($values[':{$field->getName()}']);
 {/foreach}
@@ -323,7 +323,7 @@ abstract class {$identifierName}{$table->getEntityName()}AbstractMysqlDao implem
         $sth = $this->getConnection()->prepare($sql);
         $result = $sth->execute($values);
 {if count($table->getPkFields()) eq  1}
-        if ($transaction == {$identifierName}AbstractDaoFactory::INSERT) {
+        if ($transaction == Conf::INSERT) {
             if ($result) {
                 ${$table->getAttributeName()}->set{$table->getFirstPkField()->getEntityName()}($this->getConnection()->lastInsertId());
             }

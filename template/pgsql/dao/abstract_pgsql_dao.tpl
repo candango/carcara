@@ -203,7 +203,7 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractPgsqlDao 
         
         );
 
-        if( $transaction == ${identifier-name-upper}${table.getEntityName()}DaoFactory::INSERT_TRANSACTION ) {
+        if( $transaction == Conf::INSERT ) {
 #foreach( $field in $table.getSerials())
             unset( $values[ ':${field.getName()}' ] );
 #end

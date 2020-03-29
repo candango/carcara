@@ -16,6 +16,10 @@ namespace Candango\Carcara
 
         const PGSQL = "pgsql";
 
+        const INSERT = "INSERT";
+
+        const UPDATE = "UPDATE";
+
         /**
          * Conf name
          *
