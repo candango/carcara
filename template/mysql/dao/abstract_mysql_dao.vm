@@ -195,10 +195,11 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
      * @return ${identifier-name-upper}${table.getEntityName()}Dto
      */
     public function fill${table.getEntityName()}( $row, $fillClass = '${identifier-name-upper}${table.getEntityName()}Dto' ){
+
         $${table.getAttributeName()} = new $fillClass();
 
 #foreach( $field in $table.getFields())
-        $${table.getAttributeName()}->set${field.getEntityName()}( ${dollarSign}row[ '${field.getName()}' ] );
+        $${table.getAttributeName()}->set${field.getEntityName()}( isset(${dollarSign}row[ '${field.getName()}' ]) ? ${dollarSign}row[ '${field.getName()}' ] : NULL );
 #end
 
         return $${table.getAttributeName()};
@@ -261,12 +262,12 @@ abstract class ${identifier-name-upper}${table.getEntityName()}AbstractMysqlDao 
 #foreach( $field in $table.getNonPks())
                        "${field.getName()} = :${field.getName()}#if( $velocityHasNext ), " .
 #end
-#end )" .
+#end  " .
                    "WHERE " .
 #foreach( $field in $table.getPks())
                        "${field.getName()} = :${field.getName()}#if( $velocityHasNext ), " .
 #end
-#end )";
+#end  ";
         }
         $sth = $this->factory->getConnection()->prepare( $sql );
         $result = $sth->execute( $values );
