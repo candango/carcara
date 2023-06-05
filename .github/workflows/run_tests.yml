@@ -1,0 +1,21 @@
+name: Run carcara tests
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ["7.4", "8.0", "8.1"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Composer install ${{ matrix.php }}
+        uses: php-actions/composer@v6
+        with:
+          php-version: ${{ matrix.php }}
+      - name: Run python behave tests
+        run: |
+          ./vendor/bin/phpunit --testdox
