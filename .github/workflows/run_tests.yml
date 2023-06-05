@@ -15,7 +15,7 @@ jobs:
       - name: Composer install ${{ matrix.php }}
         uses: php-actions/composer@v6
         with:
-          php-version: ${{ matrix.php }}
-      - name: Run python behave tests
+          php_version: ${{ matrix.php }}
+      - name: Run phpunit
         run: |
           ./vendor/bin/phpunit --testdox
